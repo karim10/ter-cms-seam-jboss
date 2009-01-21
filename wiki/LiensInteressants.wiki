@@ -5,7 +5,7 @@
 Les diagrammes de classes et use case de Joomla
   * http://linformalibre.f2lt.fr/index.php?title=Comprendre_Joomla_%C3%A0_l%27aide_d%27UML
 
- Seam
+Seam
   * documentation officielle : http://www.seamframework.org/Documentation
 
 Hibernate
