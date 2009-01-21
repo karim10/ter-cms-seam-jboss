@@ -12,11 +12,11 @@ Hibernate
   * documentation officielle : http://www.hibernate.org/5.html
 
 JSF
-la bibliothèque composants "JSF Core" (préfixe f:) : 
-  * http://java.sun.com/javaee/javaserverfaces/1.2/docs/tlddocs/f/tld-summary.html
+  la bibliothèque composants "JSF Core" (préfixe f:) : 
+    * http://java.sun.com/javaee/javaserverfaces/1.2/docs/tlddocs/f/tld-summary.html
 
-la bibliothèque composants "JSF HTML" (préfixe h:) : 
-  * http://java.sun.com/javaee/javaserverfaces/1.2/docs/tlddocs/h/tld-summary.html
+  la bibliothèque composants "JSF HTML" (préfixe h:) : 
+    * http://java.sun.com/javaee/javaserverfaces/1.2/docs/tlddocs/h/tld-summary.html
 
 RichFaces
 la démo / documentation des composants :
