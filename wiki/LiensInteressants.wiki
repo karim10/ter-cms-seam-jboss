@@ -1,0 +1,29 @@
+#Vous trouverez sur cette page tous les liens .
+
+= Les liens intéressants =
+
+Les diagrammes de classes et use case de Joomla
+  * http://linformalibre.f2lt.fr/index.php?title=Comprendre_Joomla_%C3%A0_l%27aide_d%27UML
+
+ Seam
+  * documentation officielle : http://www.seamframework.org/Documentation
+
+Hibernate
+  * documentation officielle : http://www.hibernate.org/5.html
+
+JSF
+la bibliothèque composants "JSF Core" (préfixe f:) : 
+  * http://java.sun.com/javaee/javaserverfaces/1.2/docs/tlddocs/f/tld-summary.html
+
+la bibliothèque composants "JSF HTML" (préfixe h:) : 
+  * http://java.sun.com/javaee/javaserverfaces/1.2/docs/tlddocs/h/tld-summary.html
+
+RichFaces
+la démo / documentation des composants :
+ * http://livedemo.exadel.com/richfaces-demo/richfaces/dataTable.jsf?c=dataTable&tab=usage
+
+Facelets
+  * la documentation officielle n'est pas très intéressante : https://facelets.dev.java.net/nonav/docs/dev/docbook.html
+  * deux articles beaucoup mieux, qui constituent un tutoriel très intéressant :
+    http://www.ibm.com/developerworks/java/library/j-facelets/
+    http://www.ibm.com/developerworks/java/library/j-facelets2.html
