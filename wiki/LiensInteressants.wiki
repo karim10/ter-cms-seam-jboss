@@ -2,6 +2,9 @@
 
 = Les liens intéressants =
 
+Présentation de SPIP ( notamment la partie : Caractéristiques et fonctionnalités de SPIP)
+  * http://labor-liber.org/fr/spip/presentation/all
+
 Les diagrammes de classes et use case de Joomla
   * http://linformalibre.f2lt.fr/index.php?title=Comprendre_Joomla_%C3%A0_l%27aide_d%27UML
 
