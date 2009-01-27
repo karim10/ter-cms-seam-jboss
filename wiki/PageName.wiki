@@ -1,12 +1,5 @@
-#labels Featured
-#informations à faire partager
+= Notes =
 
-= Introduction =
-
-Notes
-
-
-= Details =
 
 Compte rendu:
   *  on a définit les méthodes et les attributs des classes entités. (je pense qu'il en manque encore (voir downloads).
