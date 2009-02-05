@@ -1,0 +1,124 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:io="http://www.iocean.fr/iotags">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="css/site.css" rel="stylesheet" type="text/css" />
+    <title>TP JSF/Seam</title>
+</head>
+
+<body>
+<h:form>
+	<h1><h:outputText value="Boutique"/></h1>
+		
+	<table id="colonnes">
+	 <tr>
+	  <td rowspan="2" id="produit">
+		<!-- Cette colonne contiendra l'affichage de la liste des produits du catalogue -->
+	  	<h:dataTable id="catalogue"
+	  				value="#{catalogue.lignes}"
+	  				var="ligneCatalogue">
+	  				
+	  				<f:facet name="header">Produit</f:facet>
+	  				<h:column>
+	  				<f:facet name="header">Libelle</f:facet>
+	  				<h:outputText value="#{ligneCatalogue.produit.libelle}" />
+	  				</h:column>
+	  				<h:column>
+	  				<f:facet name="header">Image</f:facet>
+	  				<h:graphicImage value="images/logo_#{ligneCatalogue.produit.code}.jpg"/>
+	  				</h:column>
+	  				<h:column>
+	  				<f:facet name="header">Prix</f:facet>
+	  				<h:outputText value="#{ligneCatalogue.prix}">
+					<f:convertNumber pattern="###0.00 €"/>
+					</h:outputText>
+	  				</h:column>
+	  				<h:column>
+	  				<f:facet name="header">Details</f:facet>
+	  				<h:commandButton action="#{selection.select(ligneCatalogue.produit)}" value="Détails" />
+	  				</h:column>
+	  				<h:column>
+	  				<f:facet name="header">Ajout Panier</f:facet>
+	  				<h:commandButton action="#{panier.ajout(ligneCatalogue.produit)}" value="Ajouter" />
+	  				</h:column>
+		<!-- Cette colonne contiendra l'affichage du détail d'un produit et/ou du panier -->
+		
+		
+		</h:dataTable>
+		</td>
+		
+		
+		<td colspan="2">	
+	  		<h:panelGrid columns="">
+	  				<h:column>
+	  				<f:facet name="header">Description</f:facet>
+	  				<h:outputText value="#{selection.produit.description}" escape="false">
+	  				<img src="images/photo_#{selection.produit.code}.jpg" align="right"/>
+	  				</h:outputText>
+	  				
+	  				
+	  				</h:column>
+	  				<h:column>
+	  				<f:facet name="header">Ajout Panier</f:facet>
+	  				<h:commandButton action="#{panier.ajout(selection.produit)}" value="Ajouter Au Panier" />
+	  				</h:column>
+		</h:panelGrid>			
+		</td>
+		</tr>
+		
+		<tr>
+		
+		<h:outputText value="Le Panier est vide... Faites vos Achats !!" rendered="#{empty panier.lignes}"/>
+		
+		<td>
+		<h:dataTable id="panier" value="#{panier.lignes}" var="lignePanier" rendered="#{not empty panier.lignes}">
+					
+					<h:column>
+					
+	  				<f:facet name="header">Produit</f:facet>
+	  				<h:outputText value="#{lignePanier.produit.libelle}" />
+	  				</h:column>
+	  				<h:column>
+	  				<f:facet name="header">Prix</f:facet>
+	  				<h:outputText value="#{lignePanier.prixUnitaire}">
+					<f:convertNumber pattern="###0.00 €"/>
+					</h:outputText>
+	  				</h:column>
+	  				<h:column>
+	  				<f:facet name="header">Quantité</f:facet>
+	  				<h:inputText value="#{lignePanier.quantite}" size="3"/>
+	  				</h:column>
+	  				<h:column>
+	  				<f:facet name="header">Prix Total Produit</f:facet>
+	  				<h:outputText value="#{lignePanier.prix}">
+	  				<f:convertNumber pattern="###0.00 €"/>
+	  				</h:outputText>
+	  				</h:column>
+	  				
+	  				
+		</h:dataTable>
+		
+		</td>
+		<td>
+		<h:panelGrid columns="" rendered="#{not empty panier.lignes}">
+		<f:facet name="header">Prix Total du Panier</f:facet>
+		<h:outputText value="#{panier.montantPanier}" >
+		<f:convertNumber pattern="###0.00 €"/>
+		</h:outputText>
+		</h:panelGrid>
+		</td>
+	 </tr>
+	</table>	
+</h:form>
+</body>
+
+</html>

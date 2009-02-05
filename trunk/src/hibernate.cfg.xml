@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+    	 
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+        <property name="use_sql_comments">true</property>
+         
+        <!-- Connexion H2 -->
+        <property name="dialect">org.hibernate.dialect.H2Dialect</property>
+        <property name="connection.driver_class">org.h2.Driver</property>
+        <property name="connection.url">jdbc:h2:mem:coursjsf</property>
+        <property name="connection.username">sa</property>
+        <property name="hbm2ddl.auto">create-drop</property>
+ 
+        <!-- Connexion PostGreSQL -->
+<!--         
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="connection.url">jdbc:postgresql://localhost/coursjsf</property>
+        <property name="connection.username">coursjsf</property>
+        <property name="connection.password">coursjsf</property>
+        <property name="hbm2ddl.auto">create-drop</property>
+ -->
+        
+		<!-- Batch processing -->
+ 		 <property name="hibernate.default_batch_fetch_size">20</property>
+
+        <!-- Hibernate encoding -->
+        <property name="connection.useUnicode">true</property>
+    	<property name="connection.characterEncoding">utf-8</property>
+        
+		<!-- Cache -->
+		<property name="hibernate.cache.use_query_cache">true</property>
+        <property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+        
+        <!-- Transaction -->
+        <property name="transaction.flush_before_completion">true</property>
+        <property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+    	
+    	<!-- Mapping des entites -->
+    	<mapping class="coursjsf.Produit" />
+    	<mapping class="coursjsf.LigneCatalogue" />
+		
+    </session-factory>
+</hibernate-configuration>
