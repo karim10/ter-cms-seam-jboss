@@ -3,7 +3,7 @@
 = Les liens intéressants =
 
 Présentation des requêtes Hibernate SQL
-  * http://www.hibernate.org/hib_docs/v3/reference/fr-FR/html/objectstate-querying.html
+  * http://www.hibernate.org/hib_docs/v3/reference/fr-FR/html/index.html
 
 Présentation de SPIP ( notamment la partie : Caractéristiques et fonctionnalités de SPIP)
   * http://labor-liber.org/fr/spip/presentation/all
