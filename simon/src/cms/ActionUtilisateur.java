@@ -56,7 +56,6 @@ public class ActionUtilisateur implements ActionUtilisateurLocal {
 			sess.save(utilisateur);
 			tx.commit();
 			log.info("Registered new user utilisateur.login");
-			sess.close();
 			return null;
 		}
 		else{
