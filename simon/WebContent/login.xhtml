@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title> Content Management System</title>
+</head>
+<body>
+<h:outputText value="Content Management System" />
+<f:view>
+   <h:form >
+     <table border="0">
+       <s:validateAll>
+         <tr>
+           <td>Login</td>
+           <td><h:inputText value="#{utilisateur.login}"/></td>
+         </tr>
+         <tr>
+           <td>Prenom</td>
+           <td><h:inputText value="#{utilisateur.prenom}"/></td>
+         </tr>
+         <tr>
+           <td>Nom</td>
+           <td><h:inputText value="#{utilisateur.nom}"/></td>
+         </tr>
+         <tr>
+           <td>Motdepasse</td>
+           <td><h:inputSecret value="#{utilisateur.motDePasse}"/></td>
+         </tr>
+         <tr>
+           <td>e-mail</td>
+           <td><h:inputText value="#{utilisateur.email}"/></td>
+         </tr>
+         <tr>
+           <td>Site Web</td>
+           <td><h:inputText value="#{utilisateur.website}"/></td>
+         </tr>
+       </s:validateAll>
+     </table>
+     <h:messages/>
+     <h:commandButton type="submit" value="Register" action="#{actionUtilisateur.inscrire}"/>
+   </h:form>
+  </f:view>
+
+</body>
+</html>
