@@ -11,7 +11,7 @@ public interface ActionUtilisateurLocal {
 	
 	public Boolean isGestionnaire(Rubrique u);
 	
-	public boolean authenticate();
+	public boolean authentification();
 	
 	public String inscription();
 	

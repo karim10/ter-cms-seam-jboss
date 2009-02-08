@@ -18,7 +18,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.validator.Email;
 import org.hibernate.validator.Length;
+import org.hibernate.validator.Max;
 import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Pattern;
 
@@ -68,7 +70,7 @@ public abstract class UtilisateurAbstrait implements Serializable{
 	@NotNull 
 	@Length(min=6, max=20)
 	@Pattern(regex="[a-zA-Z]?[a-zA-Z0-9]+", 
-         message="le nom d'utilisateur doit commencer par une lettreet contenir seulement des lettres ou des chiffres")
+         message="le nom d'utilisateur doit commencer par une lettre et contenir seulement des lettres ou des chiffres")
 	public String getLogin() {
 		return login;
 	}
@@ -79,7 +81,6 @@ public abstract class UtilisateurAbstrait implements Serializable{
 	
 	@Column(name="NOM", updatable=true, nullable=false, length=50)
 	@NotNull
-	@Length(max = 50)
 	@Pattern(regex="[a-zA-Z]+", 
 	         message="Le Nom doit seulement contenir des lettres")
 	public String getNom() {
@@ -90,11 +91,10 @@ public abstract class UtilisateurAbstrait implements Serializable{
 		this.nom = nom;
 	}
 
-	@Length(min = 3, max = 40)
-	   @Pattern(regex="[a-zA-Z]+", 
+	@Pattern(regex="[a-zA-Z]+", 
 	         message="Le prénom doit seulement contenir des lettres")
 	@Column(name="PRENOM", updatable=true, nullable=false, length=50)
-	@NotNull 
+	@NotNull
 	public String getPrenom() {
 		return prenom;
 	}
@@ -104,7 +104,8 @@ public abstract class UtilisateurAbstrait implements Serializable{
 	}
 
 	@Column(name="MOT_DE_PASSE", updatable=true, length=20, nullable=false)
-	@NotNull 
+	@NotNull
+	@Length(min=8)
 	public String getMotDePasse() {
 		return motDePasse;
 	}
@@ -118,6 +119,7 @@ public abstract class UtilisateurAbstrait implements Serializable{
 	         message="L'email n'est pas valide")
 	@Column(name="EMAIL", updatable=true, length=30, nullable=false)
 	@NotNull
+	@Email
 	public String getEmail() {
 		return email;
 	}

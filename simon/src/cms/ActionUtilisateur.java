@@ -7,11 +7,8 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.NoResultException;
 
 
-import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.jboss.seam.ScopeType;
-import org.jboss.seam.annotations.Begin;
-import org.jboss.seam.annotations.End;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
@@ -32,11 +29,10 @@ public class ActionUtilisateur implements ActionUtilisateurLocal, Serializable {
 	
 	@Logger
 	private Log log;
-	      
-	private boolean inscrit;
 	
 	@In
 	private Identity identity;
+	     
 	
 	private String confirmation;
 
@@ -65,16 +61,6 @@ public class ActionUtilisateur implements ActionUtilisateurLocal, Serializable {
 	}
 
 
-	public boolean isInscrit() {
-		return inscrit;
-	}
-
-
-	public void setInscrit(boolean inscrit) {
-		this.inscrit = inscrit;
-	}
-
-
 	public Identity getIdentity() {
 		return identity;
 	}
@@ -95,8 +81,10 @@ public class ActionUtilisateur implements ActionUtilisateurLocal, Serializable {
 	}
 	   
 	
-	public boolean authenticate() {
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	public boolean authentification() {
 		try{    
+			@SuppressWarnings("unused")
 			Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 			List result = HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
 	            "from Utilisateur where login = :login and motDePasse = :motdepasse")
@@ -120,7 +108,7 @@ public class ActionUtilisateur implements ActionUtilisateurLocal, Serializable {
 	   public String inscription(){
 	      if (confirmation == null || !confirmation.equals(utilisateur.getMotDePasse())){
 	         FacesMessages.instance().addToControl("confirmation", "mot de passe incorect");
-	         return "/connexion.seam";
+	         return "/login.seam";
 	      }
 	      Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 	      if (HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Utilisateur where login = :login")
@@ -129,7 +117,7 @@ public class ActionUtilisateur implements ActionUtilisateurLocal, Serializable {
 	      {
 	         FacesMessages.instance().addToControl("login", 
 	               "Ce login a déjà été choisi, choisissez-en un différent");
-	         return "/connexion.seam"; 
+	         return "/login.seam"; 
 	      }
 	     
 	      try
@@ -146,7 +134,7 @@ public class ActionUtilisateur implements ActionUtilisateurLocal, Serializable {
 	      {
 	         FacesMessages.instance().addToControl("login", 
 	               "Ce login a déjà été choisi, choisissez-en un différent");
-	         return "/connexion.seam";  
+	         return "/login.seam";  
 	      }
 	}
 	   
