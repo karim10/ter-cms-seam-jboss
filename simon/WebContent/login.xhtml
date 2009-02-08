@@ -9,9 +9,9 @@
 	<title> Content Management System</title>
 </head>
 <body>
-<h:outputText value="Content Management System" />
+<h:outputText value="Inscription" />
 <f:view>
-   <h:form >
+   <h:form>
      <table border="0">
        <s:validateAll>
          <tr>
@@ -24,12 +24,20 @@
          </tr>
          <tr>
            <td>Nom</td>
-           <td><h:inputText value="#{utilisateur.nom}"/></td>
+           <td><h:inputText id="nom" value="#{utilisateur.nom}"/></td>
+           <h:message for="nom"/>
          </tr>
          <tr>
-           <td>Motdepasse</td>
-           <td><h:inputSecret value="#{utilisateur.motDePasse}"/></td>
+           <td>Mot de passe</td>
+           <td><h:inputSecret id="motDePasse" value="#{utilisateur.motDePasse}"/></td>
+           <h:message for="motDePasse"/>
          </tr>
+         <tr>
+         	<td>Confirmation Mot de passe</td>
+         	<td><h:inputSecret id="confirmation" value="#{actionUtilisateur.confirmation}"/></td>
+         	<h:message  for="confirmation"/>
+         </tr>
+        
          <tr>
            <td>e-mail</td>
            <td><h:inputText value="#{utilisateur.email}"/></td>
@@ -41,7 +49,7 @@
        </s:validateAll>
      </table>
      <h:messages/>
-     <h:commandButton type="submit" value="Register" action="#{actionUtilisateur.inscrire}"/>
+     <h:commandButton type="submit" value="Register" action="#{actionUtilisateur.inscription}"/>
    </h:form>
   </f:view>
 

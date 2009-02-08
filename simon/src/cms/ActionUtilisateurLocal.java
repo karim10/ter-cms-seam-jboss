@@ -2,7 +2,6 @@ package cms;
 
 public interface ActionUtilisateurLocal {
 
-	public String inscrire();
 	
 	public Boolean isAdmain();
 	
@@ -11,4 +10,9 @@ public interface ActionUtilisateurLocal {
 	public Boolean isRedacteur(Rubrique u);
 	
 	public Boolean isGestionnaire(Rubrique u);
+	
+	public boolean authenticate();
+	
+	public String inscription();
+	
 }

@@ -23,7 +23,7 @@ public abstract class Contenu implements Serializable{
 
 	private static final long serialVersionUID = 7430279630785144437L;
 
-	private int id_contenu;
+	private long id_contenu;
 	
 	private NiveauAccesContenu niveauAcces;
 	
@@ -45,11 +45,11 @@ public abstract class Contenu implements Serializable{
 
 	@Id @Column(name="ID_CONTENU")
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	public int getId_contenu() {
+	public long getId_contenu() {
 		return id_contenu;
 	}
 
-	public void setId_contenu(int id_contenu) {
+	public void setId_contenu(long id_contenu) {
 		this.id_contenu = id_contenu;
 	}
 
