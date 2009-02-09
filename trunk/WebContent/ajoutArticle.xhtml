@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+      
+<head>
+<title></title>
+</head>      
+<h:outputText value="Inscription" />
+<f:view>
+   <h:form>
+     <table border="0">
+       <s:validateAll> 
+         <tr>
+           <td>Titre</td>
+           <td><h:inputText id="titre" value="#{article.titreContenu}" required="true"/></td>
+           <td><h:message  for="titre"/></td>
+         </tr>
+         <tr>
+           <td>Sous Titre</td>
+           <td><h:inputTextarea id="sousTitre" value="#{article.sousTitre}"/></td>
+           <td><h:message  for="sousTitre"/></td>
+         </tr>
+         <tr>
+           <td>Description</td>
+           <td><h:inputTextarea id="description" value="#{article.description}"/></td>
+           <td><h:message  for="description"/></td>
+         </tr>
+         <tr>
+           <td>Texte</td>
+           <td><h:inputTextarea id="texte" value="#{article.texte}"/></td>
+           <td><h:message  for="texte"/></td>
+         </tr>
+         <tr>
+           <td>Lien Web</td>
+           <td><h:inputText value="#{article.lienWeb}"/></td>
+           <td></td>
+         </tr>
+       </s:validateAll>
+     </table>
+     <h:messages  />
+     <h:commandButton type="submit" value="valider" action="#{gestionContenu.addContenu(article)}"/>
+   </h:form>
+  </f:view>
+
+</html>
