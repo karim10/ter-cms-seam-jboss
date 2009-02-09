@@ -17,6 +17,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.validator.NotNull;
+
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 public abstract class Contenu implements Serializable{
@@ -73,6 +75,7 @@ public abstract class Contenu implements Serializable{
 	}
 
 	@Column(name="TITRE", updatable=true, nullable=false, length=50)
+	@NotNull
 	public String getTitreContenu() {
 		return titreContenu;
 	}
@@ -121,6 +124,7 @@ public abstract class Contenu implements Serializable{
 	
 	@OneToOne
 	@JoinColumn(name="ID_UTILISATEUR")
+	@NotNull
 	public Utilisateur getAuteur() {
 		return auteur;
 	}

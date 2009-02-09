@@ -20,7 +20,6 @@ import javax.persistence.UniqueConstraint;
 
 import org.hibernate.validator.Email;
 import org.hibernate.validator.Length;
-import org.hibernate.validator.Max;
 import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Pattern;
 

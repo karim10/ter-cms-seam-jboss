@@ -8,6 +8,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.jboss.seam.annotations.Create;
 
 public class GestionUtilisateur implements GestionUtilisateurLocal{
 
@@ -21,6 +22,7 @@ public class GestionUtilisateur implements GestionUtilisateurLocal{
 		return this.listUtilisateur;
 	}
 
+	@Create
 	@SuppressWarnings("unchecked")
 	public static List<Utilisateur> chargeUtilisateurs() throws HibernateException {
 		

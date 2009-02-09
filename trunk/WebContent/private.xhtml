@@ -11,7 +11,14 @@
 <body>
 
 <h:outputText value="Bonjour #{utilisateur.prenom} #{utilisateur.nom}, Bienvenue dans l'espace prive" />
-
+<h3>Gestion du contenu</h3>
+<ul>
+	<li>
+		<h:outputLink value="ajoutArticle.seam">
+		<h:outputText value="Ajout Article" />
+		</h:outputLink>
+	</li>
+</ul>	
 </body>
 
 </html>

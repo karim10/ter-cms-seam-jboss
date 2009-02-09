@@ -4,7 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.jboss.seam.annotations.Name;
+
 @Entity
+@Name("article")
 @Table(name="ARTICLE")
 public class Article extends Contenu{
 	
