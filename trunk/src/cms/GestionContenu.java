@@ -52,29 +52,28 @@ public class GestionContenu {
 		// Si l'utilisateur courant est admin, il a le droit
 		if(sessionUtilisateur.getUtilisateur().isAdmin()){
 			aLeDroit = true;
-		}
-		if(contenu instanceof Rubrique){
-			rubrique = (Rubrique) contenu;
-			if(rubrique.getListRedacteur().contains(sessionUtilisateur.getUtilisateur())){
-				aLeDroit = true;
-			}
-			if(rubrique.getListGestionnaire().contains(sessionUtilisateur.getUtilisateur())){
-				aLeDroit = true;
-			}
 		} else {
-			if(!contenu.getParent().getEtatContenu().equals(EtatContenu.NON_PUBLIE)){
-				throw new ContenuException("Veillez dépublier la rubrique : "+contenu.getParent().getTitreContenu());
-			}else {
-				contenu.setEtatContenu(EtatContenu.NON_PUBLIE);
+		// Sinon Si l'utilisateur courant est redacteur et/ou 
+		// gestionnaire de la rubrique parent, il a le droit
+			if(contenu instanceof Rubrique){
+				rubrique = (Rubrique) contenu;
+				if(rubrique.getListRedacteur().contains(sessionUtilisateur.getUtilisateur())){
+					aLeDroit = true;
+				} else {
+					if(rubrique.getListGestionnaire().contains(sessionUtilisateur.getUtilisateur())){
+						aLeDroit = true;
+					}
+				}
 			}
 		}
+		// Si l'utilisateur a le droit
 		if(aLeDroit){
 			if(contenu.getEtatContenu().equals(EtatContenu.NON_PUBLIE)){
-				throw new ContenuException("Elément déjà publié");
+				throw new ContenuException("Elément déjà dépublié");
 			} else {
-				// on publie la rubrique
+				// on dépublie la rubrique
 				contenu.setEtatContenu(EtatContenu.NON_PUBLIE);
-				//parcours de tous les enfants de la rubrique
+				// parcours de tous les enfants de la rubrique pour leur dépublication 
 				for(int i=0; i< rubrique.getListEnfant().size();i++){
 					if(rubrique.getListEnfant().get(i) instanceof Rubrique){
 						depublierContenu(rubrique);
@@ -82,7 +81,7 @@ public class GestionContenu {
 					rubrique.getListEnfant().get(i).setEtatContenu(EtatContenu.NON_PUBLIE);
 				}
 			}
-		}else {
+		} else {
 			throw new ContenuException("Vous n'avez pas le droit de dépublication ");
 		}
 	}
