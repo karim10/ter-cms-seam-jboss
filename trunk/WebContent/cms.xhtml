@@ -9,7 +9,7 @@
 </head>
 <body>
 	<h3 align="center">PAGE DE TESTS</h3>
-	<h:outputText value="Welcome #{utilisateur.prenom} #{utilisateur.nom}"/>
+	<h:outputText value="Welcome #{sessionUtilisateur.utilisateur.prenom} #{sessionUtilisateur.utilisateur.nom}"/>
 		<ul>
 			<li>
 				<h:outputLink value="login.seam">

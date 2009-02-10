@@ -54,7 +54,7 @@
 	<transaction:hibernate-transaction session="#{sessionHibernate}" />
 
 	<security:identity 
-		authenticate-method="#{actionUtilisateur.authentification}"
+		authenticate-method="#{authentification.authentification}"
     />
     
   	<ui:hibernate-entity-loader session="#{sessionHibernate}" />

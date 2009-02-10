@@ -36,7 +36,7 @@
          </tr>
          <tr>
          	<td>Confirmation Mot de passe</td>
-         	<td><h:inputSecret id="confirmation" value="#{actionUtilisateur.confirmation}" required="true"/></td>
+         	<td><h:inputSecret id="confirmation" value="#{inscription.confirmation}" required="true"/></td>
          	<td><h:message  for="confirmation"/></td>
          	
          </tr>
@@ -54,7 +54,7 @@
        </s:validateAll>
      </table>
      <h:messages  />
-     <h:commandButton type="submit" value="Register" action="#{actionUtilisateur.inscription}"/>
+     <h:commandButton type="submit" value="Valider" action="#{inscription.inscription}"/>
    </h:form>
   </f:view>
 

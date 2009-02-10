@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<h:outputText value="Bonjour #{utilisateur.prenom} #{utilisateur.nom}, Bienvenue dans l'espace prive" />
+<h:outputText value="Bonjour #{sessionUtilisateur.utilisateur.prenom} #{sessionUtilisateur.utilisateur.nom}, Bienvenue dans l'espace prive" />
 <h3>Gestion du contenu</h3>
 <ul>
 	<li>
@@ -31,7 +31,7 @@
 	</h:column>
 	</h:dataTable>
 	
-	<h:dataTable value="#{gestionContenu.listContenu}"
+	<h:dataTable value="#{sessionUtilisateur.listContenu}"
 	  			var="lc">
 	<h:column>
 		<f:facet name="header">Titre</f:facet>

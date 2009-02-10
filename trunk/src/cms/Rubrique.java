@@ -10,11 +10,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name="RUBRIQUE")
 public class Rubrique extends Contenu{
-
-	private static final long serialVersionUID = -1284946822374112514L;
 
 	private List<Contenu> listEnfant;
 	
