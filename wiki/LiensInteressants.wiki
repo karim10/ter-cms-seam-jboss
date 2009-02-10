@@ -2,6 +2,9 @@
 
 = Les liens intéressants =
 
+Lien du groupe
+  * http://groups.google.fr/group/ter_cms_jboss_seam?lnk=gcamh
+
 Présentation des requêtes Hibernate SQL
   * http://www.hibernate.org/hib_docs/v3/reference/fr-FR/html/index.html
 
