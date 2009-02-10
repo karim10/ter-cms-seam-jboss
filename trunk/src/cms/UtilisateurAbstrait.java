@@ -23,13 +23,12 @@ import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Pattern;
 
+@SuppressWarnings("serial")
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "login"))
 public abstract class UtilisateurAbstrait implements Serializable{
 	
-	private static final long serialVersionUID = -3609700573351783330L;
-
 	private long id_utilisateur;
 	
 	private String login;

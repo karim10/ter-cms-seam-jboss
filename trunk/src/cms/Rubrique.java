@@ -32,6 +32,7 @@ public class Rubrique extends Contenu{
 	        joinColumns=@JoinColumn(name="ID_RUBRIQUE_PERE"),
 	        inverseJoinColumns=@JoinColumn(name="ID_CONTENU_ENFANT")
 	    )
+	 
 	public List<Contenu> getListEnfant() {
 		return listEnfant;
 	}
@@ -74,6 +75,10 @@ public class Rubrique extends Contenu{
 		this.listGestionnaire = listGestionnaire;
 	}
 
+	/**
+	 * @param contenu
+	 * ajout un contenu dans la liste des enfants
+	 */
 	public void addEnfant(Contenu contenu){
 		getListEnfant().add(contenu);
 	}

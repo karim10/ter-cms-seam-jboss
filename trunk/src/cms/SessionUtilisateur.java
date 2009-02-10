@@ -2,7 +2,6 @@ package cms;
 
 import java.util.List;
 
-import org.hibernate.annotations.Loader;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
