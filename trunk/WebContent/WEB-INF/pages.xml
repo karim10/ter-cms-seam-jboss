@@ -9,6 +9,12 @@
 	
   <page view-id="/private.xhtml" login-required="true"/>
 
+	<page view-id="*">
+        <navigation from-action="#{identity.logout}">
+            <redirect view-id="/cms.xhtml"/>
+        </navigation>
+    </page>
+
   <exception class="org.jboss.seam.security.NotLoggedInException">
     <redirect view-id="/index.xhtml">
       <message>authentifiez vous svp</message>

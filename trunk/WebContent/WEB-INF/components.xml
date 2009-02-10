@@ -45,7 +45,8 @@
 		override-client="false" url-pattern="*.seam" />
 
 	<web:ajax4jsf-filter force-parser="false" enable-cache="true" />
-
+	
+	
 	<persistence:hibernate-session-factory name="hibernateSessionFactory"/>
 	<persistence:managed-hibernate-session name="sessionHibernate" 
 					auto-create="true"

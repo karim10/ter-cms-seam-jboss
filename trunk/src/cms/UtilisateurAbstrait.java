@@ -65,9 +65,9 @@ public abstract class UtilisateurAbstrait implements Serializable{
 		this.id_utilisateur = id_utilisateur;
 	}
 
-	@Column(name="LOGIN",nullable=false, length=20)
+	@Column(name="LOGIN",nullable=false, unique=true, length=20)
 	@NotNull 
-	@Length(min=6, max=20)
+	@Length(max=20)
 	@Pattern(regex="[a-zA-Z]?[a-zA-Z0-9]+", 
          message="le nom d'utilisateur doit commencer par une lettre et contenir seulement des lettres ou des chiffres")
 	public String getLogin() {
@@ -114,9 +114,10 @@ public abstract class UtilisateurAbstrait implements Serializable{
 	}
 	
 	@Length(max = 30)
-	@Pattern(regex="[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z]+", 
+	/*@Pattern(regex="[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z]+", 
 	         message="L'email n'est pas valide")
-	@Column(name="EMAIL", updatable=true, length=30, nullable=false)
+	*/
+	@Column(name="EMAIL", updatable=true, unique=true, length=30, nullable=false)
 	@NotNull
 	@Email
 	public String getEmail() {
@@ -154,7 +155,7 @@ public abstract class UtilisateurAbstrait implements Serializable{
 		this.admin = admin;
 	}
 
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(cascade=CascadeType.PERSIST)
 	@JoinColumn(name="ID_CONTENU")
 	public List<Contenu> getContenuAuteur() {
 		return contenuAuteur;

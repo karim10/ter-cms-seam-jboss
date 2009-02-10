@@ -6,24 +6,26 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Create;
+import org.jboss.seam.annotations.Destroy;
+import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
-import org.jboss.seam.security.Identity;
+import org.jboss.seam.annotations.datamodel.DataModel;
 
 @Name("gestionContenu")
-@Scope(ScopeType.STATELESS)
-public class GestionContenu implements GestionContenuLocal,Serializable {
-
-	private static final long serialVersionUID = -4743948469219937768L;
+@Scope(ScopeType.SESSION)
+public class GestionContenu implements GestionContenuLocal, Serializable{
+	
+	private static final long serialVersionUID = -7565868612122554426L;
 
 	@In	
 	private Utilisateur utilisateur;
 	
+	@DataModel
 	private List<Contenu> listContenu;
 	
 	public GestionContenu() {}
@@ -37,44 +39,34 @@ public class GestionContenu implements GestionContenuLocal,Serializable {
 	}
 
 	@Create
-	public void init(){
-		listContenu = chargeContenu();
+	@Factory("listContenu")
+	public void maj(){
+		chargeContenu();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Contenu> chargeContenu() throws HibernateException {
+	public void chargeContenu() throws HibernateException {
 		
-		List<Contenu> listC;
+		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 		
-		/** Getting the Session Factory and session */
-	    SessionFactory session = HibernateUtil.getSessionFactory();
-	    Session sess = session.getCurrentSession();
-	    
-	    /** Starting the Transaction */
-	    Transaction tx = sess.beginTransaction();
-		
-	    listC = (List<Contenu>)sess.createCriteria(Contenu.class).list();
-	    
-	    return listC;
+	    this.listContenu= (List<Contenu>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Contenu c").list();
+	    	    
 	}
 
-	public void addContenu(Contenu contenu) {
+	public void addContenu(Contenu contenu)throws HibernateException {
 		
-		/** Getting the Session Factory and session */
-	    SessionFactory session = HibernateUtil.getSessionFactory();
-	    Session sess = session.getCurrentSession();
-	    
-	    /** Starting the Transaction */
-	    Transaction tx = sess.beginTransaction();
+		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 	    
 	    contenu.setAuteur(utilisateur);
 	    contenu.setDateCreation(new Date());
 	    contenu.setEtatContenu(EtatContenu.EN_ATTENTE);
 	    contenu.setNiveauAcces(NiveauAccesContenu.PUBLIC);
 	    contenu.setDateMaj(new Date());
-	    sess.save(contenu);
+	    
+	    HibernateUtil.getSessionFactory().getCurrentSession().save(contenu);
 	    
 	    tx.commit();
+	    
 	    
 	}
 
@@ -95,5 +87,8 @@ public class GestionContenu implements GestionContenuLocal,Serializable {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Destroy
+	public void destroy(){}
 
 }

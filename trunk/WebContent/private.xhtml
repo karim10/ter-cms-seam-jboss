@@ -18,6 +18,40 @@
 		<h:outputText value="Ajout Article" />
 		</h:outputLink>
 	</li>
+	<li>
+	<h:outputText value="Affichage de la liste des utilisateurs" />
+	<h:commandButton action="#{gestionUtilisateur.chargeUtilisateurs}" value="Rafraichir" />
+	</li>
+	<h:dataTable value="#{gestionUtilisateur.listUtilisateur}"
+	  			var="lu">
+	<h:column>
+		<f:facet name="header">Prenom</f:facet>
+		<h:outputText value="#{lu.prenom}" />
+	</h:column>
+	<h:column>
+	 	<f:facet name="header">Nom</f:facet>
+	  	<h:outputText value="#{lu.nom}"/>
+	</h:column>
+	</h:dataTable>
+	<li>
+	<h:outputText value="Affichage de la liste du contenu" />
+	<h:commandButton action="#{gestionContenu.chargeContenu}" value="Rafraichir" />
+	</li>
+	<h:dataTable value="#{gestionContenu.listContenu}"
+	  			var="lc">
+	<h:column>
+		<f:facet name="header">Titre</f:facet>
+		<h:outputText value="#{lc.titreContenu}" />
+	</h:column>
+	<h:column>
+	 	<f:facet name="header">Texte</f:facet>
+	  	<h:outputText value="#{lc.texte}"/>
+	</h:column>
+	<h:column>
+	 	<f:facet name="header">Description</f:facet>
+	  	<h:outputText value="#{lc.description}"/>
+	</h:column>
+	</h:dataTable>
 </ul>	
 </body>
 

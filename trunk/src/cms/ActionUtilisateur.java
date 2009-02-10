@@ -7,6 +7,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.NoResultException;
 
 
+import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
@@ -32,7 +33,6 @@ public class ActionUtilisateur implements ActionUtilisateurLocal, Serializable {
 	
 	@In
 	private Identity identity;
-	     
 	
 	private String confirmation;
 
@@ -84,13 +84,13 @@ public class ActionUtilisateur implements ActionUtilisateurLocal, Serializable {
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public boolean authentification() {
 		try{    
-			@SuppressWarnings("unused")
-			Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+			Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();			
 			List result = HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
 	            "from Utilisateur where login = :login and motDePasse = :motdepasse")
 	            .setParameter("login", identity.getUsername())
 	            .setParameter("motdepasse", identity.getPassword())
 	            .list();
+			tx.commit();
 			if (result.size()==0){
 				return false;
 			}
@@ -107,11 +107,11 @@ public class ActionUtilisateur implements ActionUtilisateurLocal, Serializable {
 	
 	   public String inscription(){
 	      if (confirmation == null || !confirmation.equals(utilisateur.getMotDePasse())){
-	         FacesMessages.instance().addToControl("confirmation", "mot de passe incorect");
+	         FacesMessages.instance().addToControl("confirmation", "les 2 mot de passe ne correspondent pas");
 	         return "/login.seam";
 	      }
-	      Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-	      if (HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Utilisateur where login = :login")
+	      Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();	      
+	      if (HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from UtilisateurAbstrait where login = :login")
 	            .setParameter("login", utilisateur.getLogin())
 	            .list().size() > 0)
 	      {
@@ -126,9 +126,10 @@ public class ActionUtilisateur implements ActionUtilisateurLocal, Serializable {
 	    	  utilisateur.setCompteActive(false);
 	    	  HibernateUtil.getSessionFactory().getCurrentSession().save(utilisateur);
 	    	  tx.commit();
-	         
+	         utilisateur = null;
 	         return "/cms.seam";
 	      }
+	      
 	      
 	      catch (EntityExistsException ex)
 	      {
