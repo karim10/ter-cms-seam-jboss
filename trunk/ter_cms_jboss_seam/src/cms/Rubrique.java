@@ -97,17 +97,27 @@ public class Rubrique extends Contenu{
 	/**
 	 * <p>Ajout d'un contenu enfant à la liste des enfants
 	 * @param contenu</p>
+	 * @throws ContenuException 
 	 */
-	public void addEnfant(Contenu contenu){
-		getListEnfant().add(contenu);
+	public void addEnfant(Contenu contenu) throws ContenuException{
+		if(listEnfant.contains(contenu)){
+			throw new ContenuException("Cet objet existe déjà");
+		}else {
+			getListEnfant().add(contenu);	
+		}
 	}
 
 	/**
 	 * <p>Suppression d'un contenu enfant à la liste des enfants
 	 * @param contenu</p>
+	 * @throws ContenuException 
 	 */
-	public void removeEnfant(Contenu contenu){
-		getListEnfant().remove(contenu);
+	public void removeEnfant(Contenu contenu) throws ContenuException{
+		if(!listEnfant.contains(contenu)) {
+			throw new ContenuException("Cet objet n'existe pas, impossible de supprimer");
+		}else {
+			getListEnfant().remove(contenu);
+		}
 	}
 	
 	/**

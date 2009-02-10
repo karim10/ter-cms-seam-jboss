@@ -8,7 +8,7 @@ public class ContenuException extends Exception{
 
 	public ContenuException(){}
 	public ContenuException(String msg){
-		super(msg);
+		super(" Problème : "+ msg);
 	}
 	
 	
