@@ -18,10 +18,7 @@
 		<h:outputText value="Ajout Article" />
 		</h:outputLink>
 	</li>
-	<li>
-	<h:outputText value="Affichage de la liste des utilisateurs" />
-	<h:commandButton action="#{gestionUtilisateur.chargeUtilisateurs}" value="Rafraichir" />
-	</li>
+	
 	<h:dataTable value="#{gestionUtilisateur.listUtilisateur}"
 	  			var="lu">
 	<h:column>
@@ -33,10 +30,7 @@
 	  	<h:outputText value="#{lu.nom}"/>
 	</h:column>
 	</h:dataTable>
-	<li>
-	<h:outputText value="Affichage de la liste du contenu" />
-	<h:commandButton action="#{gestionContenu.chargeContenu}" value="Rafraichir" />
-	</li>
+	
 	<h:dataTable value="#{gestionContenu.listContenu}"
 	  			var="lc">
 	<h:column>

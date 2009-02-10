@@ -52,6 +52,7 @@ public class GestionUtilisateur implements GestionUtilisateurLocal,Serializable{
 		
 	    Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 		
+	    
 	    HibernateUtil.getSessionFactory().getCurrentSession().save(u);
 	    
 	    tx.commit();

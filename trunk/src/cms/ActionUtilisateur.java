@@ -111,7 +111,7 @@ public class ActionUtilisateur implements ActionUtilisateurLocal, Serializable {
 	         return "/login.seam";
 	      }
 	      Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();	      
-	      if (HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from UtilisateurAbstrait where login = :login")
+	      if (HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Utilisateur where login = :login")
 	            .setParameter("login", utilisateur.getLogin())
 	            .list().size() > 0)
 	      {

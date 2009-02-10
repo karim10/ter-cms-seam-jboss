@@ -113,10 +113,11 @@ public abstract class UtilisateurAbstrait implements Serializable{
 		this.motDePasse = motDePasse;
 	}
 	
-	@Length(max = 30)
+	
 	/*@Pattern(regex="[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z]+", 
 	         message="L'email n'est pas valide")
 	*/
+	@Length(max = 30)
 	@Column(name="EMAIL", updatable=true, unique=true, length=30, nullable=false)
 	@NotNull
 	@Email
