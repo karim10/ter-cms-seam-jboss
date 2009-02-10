@@ -45,6 +45,8 @@ public abstract class Contenu implements Serializable{
 	
 	private Utilisateur auteur;
 
+	private Utilisateur parent;
+
 	@Id @Column(name="ID_CONTENU")
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	public long getId_contenu() {
@@ -123,7 +125,7 @@ public abstract class Contenu implements Serializable{
 	}
 	
 	@OneToOne
-	@JoinColumn(name="ID_UTILISATEUR")
+	@JoinColumn(name="AUTEUR")
 	@NotNull
 	public Utilisateur getAuteur() {
 		return auteur;
@@ -142,6 +144,15 @@ public abstract class Contenu implements Serializable{
 		this.logo = logo;
 	}
 	
-	
+	@OneToOne
+	@JoinColumn(name="PARENT")
+	@NotNull
+	public Utilisateur getParent() {
+		return parent;
+	}
+
+	public void setParent(Utilisateur parent) {
+		this.parent = parent;
+	}
 	
 }

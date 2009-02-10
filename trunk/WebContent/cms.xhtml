@@ -9,7 +9,9 @@
 </head>
 <body>
 	<h3 align="center">PAGE DE TESTS</h3>
-	<h:outputText value="Welcome #{sessionUtilisateur.utilisateur.prenom} #{sessionUtilisateur.utilisateur.nom}"/>
+	
+	<h:outputText value="Welcome #{sessionUtilisateur.utilisateur.prenom} #{sessionUtilisateur.utilisateur.nom}" rendered="#{not empty sessionUtilisateur.utilisateur}"/>
+	
 		<ul>
 			<li>
 				<h:outputLink value="login.seam">
