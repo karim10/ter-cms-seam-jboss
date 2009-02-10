@@ -147,7 +147,7 @@ public abstract class UtilisateurAbstrait implements Serializable{
 	}
 
 	@Column(name="ADMIN", updatable=true, nullable=false)
-	public Boolean getAdmin() {
+	public Boolean isAdmin() {
 		return admin;
 	}
 
