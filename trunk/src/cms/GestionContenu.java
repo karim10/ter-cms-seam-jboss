@@ -16,6 +16,14 @@ public class GestionContenu {
 	@In @Out(scope=ScopeType.SESSION)
 	private SessionUtilisateur sessionUtilisateur;
 	
+	public SessionUtilisateur getSessionUtilisateur() {
+		return sessionUtilisateur;
+	}
+
+	public void setSessionUtilisateur(SessionUtilisateur sessionUtilisateur) {
+		this.sessionUtilisateur = sessionUtilisateur;
+	}
+
 	public GestionContenu() {}
 	
 	public void majContenu() throws HibernateException {
@@ -51,8 +59,12 @@ public class GestionContenu {
 		Rubrique rubrique = null;
 		// Si l'utilisateur courant est admin, il a le droit
 		if(sessionUtilisateur.getUtilisateur().isAdmin()){
+			if(contenu instanceof Rubrique){
+				rubrique = (Rubrique) contenu;
+			}
 			aLeDroit = true;
-		} else {
+		}
+		 else {
 		// Sinon Si l'utilisateur courant est redacteur et/ou 
 		// gestionnaire de la rubrique parent, il a le droit
 			if(contenu instanceof Rubrique){
@@ -65,20 +77,34 @@ public class GestionContenu {
 					}
 				}
 			}
+			else{
+				if(contenu.getParent().getListRedacteur().contains(sessionUtilisateur.getUtilisateur())){
+					aLeDroit = true;
+				} else {
+					if(contenu.getParent().getListGestionnaire().contains(sessionUtilisateur.getUtilisateur())){
+						aLeDroit = true;
+					}
+				}
+			}
 		}
 		// Si l'utilisateur a le droit
 		if(aLeDroit){
 			if(contenu.getEtatContenu().equals(EtatContenu.NON_PUBLIE)){
 				throw new ContenuException("Elément déjà dépublié");
 			} else {
-				// on dépublie la rubrique
+				// on dépublie le contenu
 				contenu.setEtatContenu(EtatContenu.NON_PUBLIE);
 				// parcours de tous les enfants de la rubrique pour leur dépublication 
+				if(contenu instanceof Rubrique){
 				for(int i=0; i< rubrique.getListEnfant().size();i++){
 					if(rubrique.getListEnfant().get(i) instanceof Rubrique){
 						depublierContenu(rubrique);
 					}
 					rubrique.getListEnfant().get(i).setEtatContenu(EtatContenu.NON_PUBLIE);
+				}
+				}
+				else{
+					contenu.setEtatContenu(EtatContenu.NON_PUBLIE);
 				}
 			}
 		} else {

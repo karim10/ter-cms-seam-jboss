@@ -45,7 +45,7 @@ public abstract class Contenu implements Serializable{
 	
 	private Utilisateur auteur;
 
-	private Contenu parent;
+	private Rubrique parent;
 
 	@Id @Column(name="ID_CONTENU")
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -147,11 +147,11 @@ public abstract class Contenu implements Serializable{
 	@OneToOne
 	@JoinColumn(name="PARENT")
 	@NotNull
-	public Contenu getParent() {
+	public Rubrique getParent() {
 		return parent;
 	}
 
-	public void setParent(Contenu parent) {
+	public void setParent(Rubrique parent) {
 		this.parent = parent;
 	}
 	
