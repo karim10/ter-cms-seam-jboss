@@ -23,6 +23,10 @@ public class Rubrique extends Contenu{
 	
 	public Rubrique(){}
 	
+	public Rubrique(String titre){
+		this.setTitreContenu(titre);
+	}
+	
 	@OneToMany(
 	        targetEntity=Contenu.class,
 	        cascade={CascadeType.PERSIST, CascadeType.MERGE}

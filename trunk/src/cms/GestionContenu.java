@@ -29,7 +29,15 @@ public class GestionContenu {
 	public void majContenu() throws HibernateException {
 		sessionUtilisateur.setListContenu(DataUtil.chargeContenu());
 	}
-
+	
+	public Rubrique creerRacine(){
+		Contenu root = new Rubrique("racine");
+		root.setParent((Rubrique) root);
+		root.setEtatContenu(EtatContenu.NON_PUBLIE);
+		return (Rubrique) root;
+	}
+	
+	
 	public void addContenu(Contenu contenu)throws HibernateException {
 		
 		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
@@ -134,11 +142,11 @@ public class GestionContenu {
 				aLeDroit = true;
 			}
 		} else {
-			if(!contenu.getParent().getEtatContenu().equals(EtatContenu.PUBLIE)){
-				throw new ContenuException("Veillez publier la rubrique : "+contenu.getParent().getTitreContenu());
-			}else {
+			//if(!contenu.getParent().getEtatContenu().equals(EtatContenu.PUBLIE)){
+				//throw new ContenuException("Veillez publier la rubrique : "+contenu.getParent().getTitreContenu());
+			//}else {
 				contenu.setEtatContenu(EtatContenu.PUBLIE);
-			}
+			//}
 		}
 
 		if(aLeDroit){
