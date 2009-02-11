@@ -41,10 +41,10 @@ public class Inscription {
 	}
 	   
 	
-	public String inscription(){
+	public Boolean inscription(){
 	     if (confirmation == null || !confirmation.equals(utilisateur.getMotDePasse())){
 	         FacesMessages.instance().addToControl("confirmation", "les 2 mot de passe ne correspondent pas");
-	         return "/login.seam";
+	         return false;
 	      }
 	      Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();	      
 	      if (HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Utilisateur where login = :login")
@@ -52,7 +52,7 @@ public class Inscription {
 	            .list().size() > 0){
 	         FacesMessages.instance().addToControl("login", 
 	               "Ce login a déjà été choisi, choisissez-en un différent");
-	         return "/login.seam"; 
+	         return false; 
 	      }
 	     
 	      try{
@@ -60,12 +60,12 @@ public class Inscription {
 	    	  utilisateur.setCompteActive(false);
 	    	  HibernateUtil.getSessionFactory().getCurrentSession().save(utilisateur);
 	    	  tx.commit();
-	    	  return "/cms.seam";
+	    	  return true;
 	      }
 	      catch (EntityExistsException ex){
 	         FacesMessages.instance().addToControl("login", 
 	               "Ce login a déjà été choisi, choisissez-en un différent");
-	         return "/login.seam";  
+	         return false;  
 	      }
 	}
 	   

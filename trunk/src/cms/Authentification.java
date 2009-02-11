@@ -13,7 +13,7 @@ import org.jboss.seam.security.Identity;
 public class Authentification {
 
 	@SuppressWarnings("unused")
-	@Out
+	@Out(required=false)
 	private SessionUtilisateur sessionUtilisateur;
 	
 	@In
@@ -31,11 +31,15 @@ public class Authentification {
 	            .setParameter("motdepasse", identity.getPassword())
 	            .list();
 			if (result.size()==0){
+				sessionUtilisateur = null;
 				return false;
 			}
 			else{
-				sessionUtilisateur = new SessionUtilisateur((Utilisateur) result.get(0),DataUtil.chargeContenu());
+				Utilisateur u = (Utilisateur)result.get(0);
+				if(u.isAdmin()){identity.addRole("admin");}
+				sessionUtilisateur = new SessionUtilisateur(u,DataUtil.chargeContenu());
 				//Contexts.getSessionContext().set("authenticatedUser", utilisateur);         
+				
 				return true;		
 			}
 		}
