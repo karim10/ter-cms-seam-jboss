@@ -126,7 +126,6 @@ public abstract class Contenu implements Serializable{
 	
 	@OneToOne
 	@JoinColumn(name="AUTEUR")
-	@NotNull
 	public Utilisateur getAuteur() {
 		return auteur;
 	}
@@ -146,7 +145,6 @@ public abstract class Contenu implements Serializable{
 	
 	@OneToOne
 	@JoinColumn(name="PARENT")
-	@NotNull
 	public Rubrique getParent() {
 		return parent;
 	}
