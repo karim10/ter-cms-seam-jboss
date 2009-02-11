@@ -130,9 +130,9 @@ public class GestionContenu {
 					//on vérifie si elle a des enfants
 					if(rubrique.getListEnfant().size() != 0) {
 						//parcours de tous les enfants de la rubrique
-						for(int i=0; i< rubrique.getListEnfant().size();i++){
-							//appel recursif de la méthode sur chaque enfant 
-							depublierContenu(rubrique.getListEnfant().get(i));
+						for(Contenu c : rubrique.getListEnfant()){
+							//appel recursif de la méthode sur chaque enfant
+							depublierContenu(c);
 						}
 					}
 				}
@@ -178,9 +178,9 @@ public class GestionContenu {
 					//on vérifie si elle a des enfants
 					if(rubrique.getListEnfant().size() != 0) {
 						//parcours de tous les enfants de la rubrique
-						for(int i=0; i< rubrique.getListEnfant().size();i++){
-							//appel recursif de la méthode sur chaque enfant 
-							publierContenu(rubrique.getListEnfant().get(i));
+						for(Contenu c : rubrique.getListEnfant()){
+							//appel recursif de la méthode sur chaque enfant
+							publierContenu(c);
 						}
 					}
 				}
@@ -226,9 +226,9 @@ public class GestionContenu {
 					//on vérifie si elle a des enfants
 					if(rubrique.getListEnfant().size() != 0) {
 						//parcours de tous les enfants de la rubrique
-						for(int i=0; i< rubrique.getListEnfant().size();i++){
-							//appel recursif de la méthode sur chaque enfant 
-							mettreCorbeille(rubrique.getListEnfant().get(i));
+						for(Contenu c : rubrique.getListEnfant()){
+							//appel recursif de la méthode sur chaque enfant
+							mettreCorbeille(c);
 						}
 					}
 				}
