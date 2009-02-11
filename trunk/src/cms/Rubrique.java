@@ -1,5 +1,6 @@
 package cms;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -26,6 +27,16 @@ public class Rubrique extends Contenu{
 	public Rubrique(String titre){
 		this.setTitreContenu(titre);
 	}
+	
+	public Rubrique(NiveauAccesContenu niveauAcces, EtatContenu etatContenu,
+			String titreContenu, Date dateCreation, Utilisateur auteur) {
+		this.setNiveauAcces(NiveauAccesContenu.PUBLIC);
+		this.setEtatContenu(etatContenu);
+		this.setTitreContenu(titreContenu);
+		this.setDateCreation(dateCreation);
+		this.setAuteur(auteur);
+	}
+	
 	
 	@OneToMany(
 	        targetEntity=Contenu.class,
