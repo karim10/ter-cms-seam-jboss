@@ -55,6 +55,7 @@ public class GestionContenuTest {
 		r.setEtatContenu(EtatContenu.PUBLIE);
 		gc.depublierContenu(r);
 		assertEquals(EtatContenu.NON_PUBLIE, r.getEtatContenu());
+		
 		//cas 2 : depublication Rubrique PUBLIE par Membre
 		r.setEtatContenu(EtatContenu.PUBLIE);
 		u.setAdmin(false);
@@ -65,7 +66,7 @@ public class GestionContenuTest {
 		fail();
 		}
 		catch(ContenuException e){
-			assertEquals(EtatContenu.PUBLIE, r.getEtatContenu());
+			e.getMessage();
 		}
 		//cas 3 : depublication Rubrique PUBLIE par Gestionnaire
 		r.setEtatContenu(EtatContenu.PUBLIE);
