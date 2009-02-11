@@ -9,13 +9,20 @@ import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
-
+/**
+ * 
+ * Composant Seam permettant de gérer les contenus
+ *
+ */
 @Name("gestionContenu")
 public class GestionContenu {
-	
+
+	/**
+	 * Injection du composant {@link SessionUtilisateur}<br />
+	 */
 	@In @Out(scope=ScopeType.SESSION)
 	private SessionUtilisateur sessionUtilisateur;
-	
+
 	public SessionUtilisateur getSessionUtilisateur() {
 		return sessionUtilisateur;
 	}
@@ -25,189 +32,219 @@ public class GestionContenu {
 	}
 
 	public GestionContenu() {}
-	
+
 	public void majContenu() throws HibernateException {
 		sessionUtilisateur.setListContenu(DataUtil.chargeContenu());
 	}
-	
+
 	public Rubrique creerRacine(){
 		Contenu root = new Rubrique("racine");
 		root.setParent((Rubrique) root);
 		root.setEtatContenu(EtatContenu.NON_PUBLIE);
 		return (Rubrique) root;
 	}
-	
-	
+
+	/**
+	 * Création d'un nouveau Contenu 
+	 * @param contenu
+	 * @throws HibernateException
+	 */
 	public void addContenu(Contenu contenu)throws HibernateException {
-		
+
 		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-	    
-	    contenu.setAuteur(sessionUtilisateur.getUtilisateur());
-	    contenu.setDateCreation(new Date());
-	    contenu.setEtatContenu(EtatContenu.EN_ATTENTE);
-	    contenu.setNiveauAcces(NiveauAccesContenu.PUBLIC);
-	    contenu.setDateMaj(new Date());
-	    
-	    HibernateUtil.getSessionFactory().getCurrentSession().save(contenu);
-	    
-	    sessionUtilisateur.getListContenu().add(contenu);
-	    
-	    tx.commit();
-	   
+
+		contenu.setAuteur(sessionUtilisateur.getUtilisateur());
+		contenu.setDateCreation(new Date());
+		contenu.setEtatContenu(EtatContenu.EN_ATTENTE);
+		contenu.setNiveauAcces(NiveauAccesContenu.PUBLIC);
+		contenu.setDateMaj(new Date());
+
+		HibernateUtil.getSessionFactory().getCurrentSession().save(contenu);
+
+		sessionUtilisateur.getListContenu().add(contenu);
+
+		tx.commit();
+
 	}
 
 	/**
-	 * <p>Methode permattant de dépublier un contenu
-	 * Si le contenu est déjà dépublié, une exception est levée
+	 * Methode qui vérifie si un contenu est une rubrique
+	 * @param contenu
+	 * @return {@link Boolean}
+	 */
+	public Boolean estRubrique(Contenu contenu){
+		return (contenu instanceof Rubrique);
+	}
+
+	/**
+	 * <p>Methode permettant de vérifier les droits de l'utilisateur courant<br />
+	 * @param contenu
+	 * @return {@link Boolean}
+	 * </p>
+	 */
+	public Boolean aLeDroit(Contenu contenu){
+		Rubrique rTemp = null;
+		Boolean resultat = false;
+
+		// si l'utilisateur courant est admin il a le droit
+		if(sessionUtilisateur.getUtilisateur().isAdmin()){
+			resultat = true;
+		}
+		//si le contenu est une rubrique
+		if (estRubrique(contenu)){
+			rTemp = (Rubrique) contenu;
+			// Si l'utilisateur courant est dans la liste des gestionnaires du contenu, il a le droit
+			if(rTemp.getListGestionnaire().contains(getSessionUtilisateur().getUtilisateur())){
+				resultat = true;
+			}
+		} else {
+			//C'est pas une Rubrique, on vérifie que l'utilisateur a le droit sur le parent du contenu en quesiotn
+			resultat = (contenu.getParent().getListGestionnaire().contains(sessionUtilisateur.getUtilisateur()));
+		}
+		return resultat;
+	}
+
+	/**
+	 * <p>Methode permattant de dépublier un contenu.<br />
+	 * L'utilisateur courant doit avoir les droits necessaires,<br />
+	 * Sinon une exception est levée.
+	 * Si le contenu est déjà dépublié, une exception est levée <br />
 	 * Sinon le contenu est dépublié
+	 * @param contenu
+	 * @throws ContenuException
 	 * </p>
 	 */
 	public void depublierContenu(Contenu contenu) throws ContenuException {
-		Boolean aLeDroit =false;
 		Rubrique rubrique = null;
-		// Si l'utilisateur courant est admin, il a le droit
-		if(sessionUtilisateur.getUtilisateur().isAdmin()){
-			if(contenu instanceof Rubrique){
-				rubrique = (Rubrique) contenu;
-			}
-			aLeDroit = true;
-		}
-		 else {
-		// Sinon Si l'utilisateur courant est redacteur et/ou 
-		// gestionnaire de la rubrique parent, il a le droit
-			if(contenu instanceof Rubrique){
-				rubrique = (Rubrique) contenu;
-				if(rubrique.getListRedacteur().contains(sessionUtilisateur.getUtilisateur())){
-					aLeDroit = true;
+		//Si l'utilisateur courant a le droit 
+		if(aLeDroit(contenu)) {
+			//Si le contenu est une rubrique
+			if(estRubrique(contenu)){
+				rubrique = (Rubrique)contenu;
+				// on verifie que la rubrique n'est pas déjà dépublié
+				if(rubrique.getEtatContenu().equals(EtatContenu.NON_PUBLIE)){
+					throw new ContenuException("Cette rubrique est déjà dépubliée ! ");
 				} else {
-					if(rubrique.getListGestionnaire().contains(sessionUtilisateur.getUtilisateur())){
-						aLeDroit = true;
+					// on dépublie la rubrique
+					rubrique.setEtatContenu(EtatContenu.NON_PUBLIE);
+					//on vérifie si elle a des enfants
+					if(rubrique.getListEnfant().size() != 0) {
+						//parcours de tous les enfants de la rubrique
+						for(int i=0; i< rubrique.getListEnfant().size();i++){
+							//appel recursif de la méthode sur chaque enfant 
+							depublierContenu(rubrique.getListEnfant().get(i));
+						}
 					}
 				}
-			}
-			else{
-				if(contenu.getParent().getListRedacteur().contains(sessionUtilisateur.getUtilisateur())){
-					aLeDroit = true;
-				} else {
-					if(contenu.getParent().getListGestionnaire().contains(sessionUtilisateur.getUtilisateur())){
-						aLeDroit = true;
-					}
-				}
-			}
-		}
-		// Si l'utilisateur a le droit
-		if(aLeDroit){
-			if(contenu.getEtatContenu().equals(EtatContenu.NON_PUBLIE)){
-				throw new ContenuException("Elément déjà dépublié");
 			} else {
-				// on dépublie le contenu
-				contenu.setEtatContenu(EtatContenu.NON_PUBLIE);
-				// parcours de tous les enfants de la rubrique pour leur dépublication 
-				if(contenu instanceof Rubrique){
-				for(int i=0; i< rubrique.getListEnfant().size();i++){
-					if(rubrique.getListEnfant().get(i) instanceof Rubrique){
-						depublierContenu(rubrique);
-					}
-					rubrique.getListEnfant().get(i).setEtatContenu(EtatContenu.NON_PUBLIE);
-				}
-				}
-				else{
+				//C'est pas une rubrique, on vérifie qu'il n'est pas déjà dépublié
+				if(contenu.getEtatContenu().equals(EtatContenu.NON_PUBLIE)){
+					throw new ContenuException("Ce contenu est déjà dépublié ! ");
+				}else {
+					//c'est bon on le dépublie
 					contenu.setEtatContenu(EtatContenu.NON_PUBLIE);
 				}
 			}
-		} else {
-			throw new ContenuException("Vous n'avez pas le droit de dépublication ");
+
+		}else {
+			//L'utilisateur n'a pas les droits nécessaires
+			throw new ContenuException("Vous n'avez pas le droit de dépublier ce contenu ! ");
 		}
 	}
 
 	/**
-	 * <p>Methode permattant de publier un contenu
-	 * Si le contenu est déjà publié, une exception est levée
+	 * <p>Methode permattant de publier un contenu.<br />
+	 * L'utilisateur courant doit avoir les droits necessaires,<br />
+	 * Sinon une exception est levée.
+	 * Si le contenu est déjà publié, une exception est levée <br />
 	 * Sinon le contenu est publié
+	 * @param contenu
+	 * @throws ContenuException
 	 * </p>
 	 */
 	public void publierContenu(Contenu contenu) throws ContenuException {
-		Boolean aLeDroit =false;
 		Rubrique rubrique = null;
-		// Si l'utilisateur courant est admin, il a le droit
-		if(sessionUtilisateur.getUtilisateur().isAdmin()){
-			aLeDroit = true;
-		}
-		if(contenu instanceof Rubrique){
-			rubrique = (Rubrique) contenu;
-			if(rubrique.getListRedacteur().contains(sessionUtilisateur.getUtilisateur())){
-				aLeDroit = true;
-			}
-			if(rubrique.getListGestionnaire().contains(sessionUtilisateur.getUtilisateur())){
-				aLeDroit = true;
-			}
-		} else {
-			//if(!contenu.getParent().getEtatContenu().equals(EtatContenu.PUBLIE)){
-				//throw new ContenuException("Veillez publier la rubrique : "+contenu.getParent().getTitreContenu());
-			//}else {
-				contenu.setEtatContenu(EtatContenu.PUBLIE);
-			//}
-		}
-
-		if(aLeDroit){
-			if(contenu.getEtatContenu().equals(EtatContenu.PUBLIE)){
-				throw new ContenuException("Elément déjà publié");
-			} else {
-				// on publie la rubrique
-				contenu.setEtatContenu(EtatContenu.PUBLIE);
-				//parcours de tous les enfants de la rubrique
-				for(int i=0; i< rubrique.getListEnfant().size();i++){
-					if(rubrique.getListEnfant().get(i) instanceof Rubrique){
-						publierContenu(rubrique);
+		//Si l'utilisateur courant a le droit 
+		if(aLeDroit(contenu)) {
+			//Si le contenu est une rubrique
+			if(estRubrique(contenu)){
+				rubrique = (Rubrique)contenu;
+				// on verifie que la rubrique n'est pas déjà publié
+				if(rubrique.getEtatContenu().equals(EtatContenu.PUBLIE)){
+					throw new ContenuException("Cette rubrique est déjà publiée ! ");
+				} else {
+					// on publie la rubrique
+					rubrique.setEtatContenu(EtatContenu.PUBLIE);
+					//on vérifie si elle a des enfants
+					if(rubrique.getListEnfant().size() != 0) {
+						//parcours de tous les enfants de la rubrique
+						for(int i=0; i< rubrique.getListEnfant().size();i++){
+							//appel recursif de la méthode sur chaque enfant 
+							publierContenu(rubrique.getListEnfant().get(i));
+						}
 					}
-					rubrique.getListEnfant().get(i).setEtatContenu(EtatContenu.PUBLIE);
+				}
+			} else {
+				//C'est pas une rubrique, on vérifie qu'il n'est pas déjà publié
+				if(contenu.getEtatContenu().equals(EtatContenu.PUBLIE)){
+					throw new ContenuException("Ce contenu est déjà publié ! ");
+				}else {
+					//c'est bon on le publie
+					contenu.setEtatContenu(EtatContenu.PUBLIE);
 				}
 			}
+
 		}else {
-			throw new ContenuException("Vous n'avez pas le droit de publication ");
+			//L'utilisateur n'a pas les droits nécessaires
+			throw new ContenuException("Vous n'avez pas le droit de publier ce contenu ! ");
 		}
 	}
-	
+
 	/**
-	 * Methode permettant de mettre à la corbeille un contenu
+	 * <p>Methode permattant de mettre à la corbeille un contenu.<br />
+	 * L'utilisateur courant doit avoir les droits necessaires,<br />
+	 * Sinon une exception est levée.
+	 * Si le contenu est déjà dans la corbeille, une exception est levée <br />
+	 * Sinon le contenu est mis dans la corbeille
 	 * @param contenu
+	 * @throws ContenuException
+	 * </p>
 	 */
 	public void mettreCorbeille(Contenu contenu) throws ContenuException {
-		Boolean aLeDroit =false;
 		Rubrique rubrique = null;
-		// Si l'utilisateur courant est admin, il a le droit
-		if(sessionUtilisateur.getUtilisateur().isAdmin()){
-			aLeDroit = true;
-		}
-		if(contenu instanceof Rubrique){
-			rubrique = (Rubrique) contenu;
-			if(rubrique.getListGestionnaire().contains(sessionUtilisateur.getUtilisateur())){
-				aLeDroit = true;
-			}
-		} else {
-			if(!contenu.getParent().getEtatContenu().equals(EtatContenu.CORBEILLE)){
-				throw new ContenuException("Veillez dépublier la rubrique : "+contenu.getParent().getTitreContenu());
-			}else {
-				contenu.setEtatContenu(EtatContenu.CORBEILLE);
-			}
-		}
-
-		if(aLeDroit){
-			if(contenu.getEtatContenu().equals(EtatContenu.CORBEILLE)){
-				throw new ContenuException("Elément déjà publié");
-			} else {
-				// on publie la rubrique
-				contenu.setEtatContenu(EtatContenu.CORBEILLE);
-				//parcours de tous les enfants de la rubrique
-				for(int i=0; i< rubrique.getListEnfant().size();i++){
-					if(rubrique.getListEnfant().get(i) instanceof Rubrique){
-						mettreCorbeille(rubrique);
+		//Si l'utilisateur courant a le droit 
+		if(aLeDroit(contenu)) {
+			//Si le contenu est une rubrique
+			if(estRubrique(contenu)){
+				rubrique = (Rubrique)contenu;
+				// on verifie que la rubrique n'est pas déjà dans la corbeille
+				if(rubrique.getEtatContenu().equals(EtatContenu.CORBEILLE)){
+					throw new ContenuException("Cette rubrique est déjà dans la corbeille ! ");
+				} else {
+					// on met la rubrique dans la corbeille
+					rubrique.setEtatContenu(EtatContenu.CORBEILLE);
+					//on vérifie si elle a des enfants
+					if(rubrique.getListEnfant().size() != 0) {
+						//parcours de tous les enfants de la rubrique
+						for(int i=0; i< rubrique.getListEnfant().size();i++){
+							//appel recursif de la méthode sur chaque enfant 
+							mettreCorbeille(rubrique.getListEnfant().get(i));
+						}
 					}
-					rubrique.getListEnfant().get(i).setEtatContenu(EtatContenu.CORBEILLE);
+				}
+			} else {
+				//C'est pas une rubrique, on vérifie qu'il n'est pas déjà dans la corbeille
+				if(contenu.getEtatContenu().equals(EtatContenu.CORBEILLE)){
+					throw new ContenuException("Ce contenu est déjà dans la corbeille ! ");
+				}else {
+					//c'est bon on le met dans la corbeille
+					contenu.setEtatContenu(EtatContenu.CORBEILLE);
 				}
 			}
+
 		}else {
-			throw new ContenuException("Vous n'avez pas le droit de Mise à la corbeille");
+			//L'utilisateur n'a pas les droits nécessaires
+			throw new ContenuException("Vous n'avez pas le droit de mettre à la corbeille ce contenu ! ");
 		}
 	}
 
@@ -220,7 +257,7 @@ public class GestionContenu {
 		if(sessionUtilisateur.getListContenu().contains(contenu)){
 			sessionUtilisateur.getListContenu().remove(contenu);
 		}else {
-			throw new ContenuException("L'élément de titre "+contenu.getTitreContenu()+" n'exite pas");
+			throw new ContenuException("L'élément de titre : "+contenu.getTitreContenu()+" n'exite pas");
 		}    
 	}
 

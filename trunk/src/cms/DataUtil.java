@@ -36,7 +36,7 @@ public class DataUtil {
 		
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 		
-	    return (List<Utilisateur>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Contenu u").list();
+	    return (List<Utilisateur>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from UtilisateurAbstrait u").list();
 	    	    
 	}
 	

@@ -18,7 +18,9 @@ import org.jboss.seam.annotations.datamodel.DataModel;
 public class GestionUtilisateur{
 
 	@DataModel
-	private List<Utilisateur> listUtilisateur;
+	private List<Utilisateur> listUtilisateur = new ArrayList<Utilisateur>();
+	
+	public GestionUtilisateur(){}
 	
 	public void setListUtilisateur(ArrayList<Utilisateur> listUtilisateur) {
 		this.listUtilisateur = listUtilisateur;

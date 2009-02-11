@@ -1,5 +1,6 @@
 package cms;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.seam.ScopeType;
@@ -16,7 +17,7 @@ public class SessionUtilisateur {
 	private Utilisateur utilisateur;
 	
 	@DataModel
-	private List<Contenu> listContenu;
+	private List<Contenu> listContenu = new ArrayList<Contenu>();
 
 	
 	
@@ -24,7 +25,6 @@ public class SessionUtilisateur {
 
 	
 	public SessionUtilisateur(Utilisateur utilisateur, List<Contenu> listContenu) {
-		super();
 		this.utilisateur = utilisateur;
 		this.listContenu = listContenu;
 	}
