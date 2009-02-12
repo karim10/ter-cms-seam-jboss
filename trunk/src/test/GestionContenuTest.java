@@ -30,6 +30,9 @@ public class GestionContenuTest {
 	public void setUp() throws Exception {
 		gc = new GestionContenu();
 		u = new Utilisateur();
+		u.setLogin("keira");
+		u.setNom("Simon");
+		u.setPrenom("Soulé");
 		su = new SessionUtilisateur();
 		r = new Rubrique();
 		a = new Article();
@@ -55,7 +58,6 @@ public class GestionContenuTest {
 		r.setEtatContenu(EtatContenu.PUBLIE);
 		gc.depublierContenu(r);
 		assertEquals(EtatContenu.NON_PUBLIE, r.getEtatContenu());
-		
 		//cas 2 : depublication Rubrique PUBLIE par Membre
 		r.setEtatContenu(EtatContenu.PUBLIE);
 		u.setAdmin(false);
@@ -66,7 +68,7 @@ public class GestionContenuTest {
 		fail();
 		}
 		catch(ContenuException e){
-			e.getMessage();
+			assertEquals(EtatContenu.PUBLIE, r.getEtatContenu());
 		}
 		//cas 3 : depublication Rubrique PUBLIE par Gestionnaire
 		r.setEtatContenu(EtatContenu.PUBLIE);
