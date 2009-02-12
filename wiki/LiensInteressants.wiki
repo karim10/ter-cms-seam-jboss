@@ -2,6 +2,9 @@
 
 = Les liens intéressants =
 
+Lien tuto sur facelets 
+  * http://facestutorials.icefaces.org/tutorial/facelets-tutorial.html#configure
+
 Lien du groupe
   * http://groups.google.fr/group/ter_cms_jboss_seam?lnk=gcamh
 
