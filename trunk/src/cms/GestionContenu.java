@@ -2,6 +2,8 @@ package cms;
 
 import java.util.Date;
 
+import javax.faces.application.FacesMessage;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Transaction;
 import org.jboss.seam.ScopeType;
@@ -9,6 +11,8 @@ import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
+import org.jboss.seam.faces.FacesMessages;
+
 /**
  * 
  * Composant Seam permettant de gérer les contenus
@@ -99,7 +103,10 @@ public class GestionContenu {
 			}
 		} else {
 			//C'est pas une Rubrique, on vérifie que l'utilisateur a le droit sur le parent du contenu en quesiotn
-			resultat = (contenu.getParent().getListGestionnaire().contains(sessionUtilisateur.getUtilisateur()));
+			if (contenu.getParent().getListGestionnaire().contains(sessionUtilisateur.getUtilisateur()) ||
+					sessionUtilisateur.getUtilisateur().isAdmin()) {
+				resultat = true;
+			}
 		}
 		return resultat;
 	}
@@ -123,6 +130,7 @@ public class GestionContenu {
 				rubrique = (Rubrique)contenu;
 				// on verifie que la rubrique n'est pas déjà dépublié
 				if(rubrique.getEtatContenu().equals(EtatContenu.NON_PUBLIE)){
+			          //FacesMessages.instance().add(new FacesMessage("Cette rubrique est déjà dépubliée ! "));
 					throw new ContenuException("Cette rubrique est déjà dépubliée ! ");
 				} else {
 					// on dépublie la rubrique
@@ -131,8 +139,7 @@ public class GestionContenu {
 					if(rubrique.getListEnfant().size() != 0) {
 						//parcours de tous les enfants de la rubrique
 						for(Contenu c : rubrique.getListEnfant()){
-							//appel recursif de la méthode sur chaque enfant
-							depublierContenu(c);
+							c.setEtatContenu(EtatContenu.NON_PUBLIE);
 						}
 					}
 				}
@@ -148,6 +155,7 @@ public class GestionContenu {
 
 		}else {
 			//L'utilisateur n'a pas les droits nécessaires
+	          //FacesMessages.instance().add(new FacesMessage("Vous n'avez pas le droit de dépublier ce contenu ! "));
 			throw new ContenuException("Vous n'avez pas le droit de dépublier ce contenu ! ");
 		}
 	}
@@ -179,8 +187,7 @@ public class GestionContenu {
 					if(rubrique.getListEnfant().size() != 0) {
 						//parcours de tous les enfants de la rubrique
 						for(Contenu c : rubrique.getListEnfant()){
-							//appel recursif de la méthode sur chaque enfant
-							publierContenu(c);
+							c.setEtatContenu(EtatContenu.PUBLIE);
 						}
 					}
 				}
@@ -227,8 +234,8 @@ public class GestionContenu {
 					if(rubrique.getListEnfant().size() != 0) {
 						//parcours de tous les enfants de la rubrique
 						for(Contenu c : rubrique.getListEnfant()){
-							//appel recursif de la méthode sur chaque enfant
-							mettreCorbeille(c);
+							c.setEtatContenu(EtatContenu.CORBEILLE);
+
 						}
 					}
 				}
