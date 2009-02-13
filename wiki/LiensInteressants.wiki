@@ -3,6 +3,9 @@
 
 = Les liens intéressants =
 
+Lien d'une étude de cas sur facelets dans un projet concret 
+  * http://mondossierweb.wordpress.com/2007/04/03/organisation-des-templates-dans-esup-mondossierweb/
+
 Lien tuto sur facelets 
   * http://facestutorials.icefaces.org/tutorial/facelets-tutorial.html#configure
 
