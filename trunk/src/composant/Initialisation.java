@@ -1,4 +1,4 @@
-package cms;
+package composant;
 
 import java.util.Date;
 

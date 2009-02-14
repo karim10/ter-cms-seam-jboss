@@ -1,4 +1,4 @@
-package cms;
+package entite;
 
 import java.io.Serializable;
 import java.util.List;

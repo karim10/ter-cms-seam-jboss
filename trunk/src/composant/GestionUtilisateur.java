@@ -1,4 +1,4 @@
-package cms;
+package composant;
 
 import java.util.ArrayList;
 import java.util.List;
