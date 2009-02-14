@@ -41,6 +41,7 @@ public class InitialisationTest {
 	@Test
 	public void testInit() {
 		init.init();
+		assertEquals("administrateur", init.getAdmin().getLogin());
 	}
 
 }

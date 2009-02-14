@@ -32,6 +32,20 @@ public class Inscription {
 		this.log = log;
 	}
 
+	/**
+	 * @return the utilisateur
+	 */
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+
+	/**
+	 * @param utilisateur the utilisateur to set
+	 */
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
+	}
+
 	public String getConfirmation() {
 		return confirmation;
 	}
@@ -43,7 +57,7 @@ public class Inscription {
 	
 	public Boolean inscription(){
 	     if (confirmation == null || !confirmation.equals(utilisateur.getMotDePasse())){
-	         FacesMessages.instance().addToControl("confirmation", "les 2 mot de passe ne correspondent pas");
+	         FacesMessages.instance().addToControl("confirmation", "les deux mot de passe ne correspondent pas");
 	         return false;
 	      }
 	      Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();	      
