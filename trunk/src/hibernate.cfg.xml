@@ -63,12 +63,12 @@
     	
     	<!-- Mapping des entites -->
   	
-  		<mapping class="cms.UtilisateurAbstrait"/>
-		<mapping class="cms.Utilisateur"/>
-		<mapping class="cms.Contenu"/>
-		<mapping class="cms.Rubrique"/>
-		<mapping class="cms.Article"/>
-		<mapping class="cms.Nouvelle"/>
+  		<mapping class="entite.UtilisateurAbstrait"/>
+		<mapping class="entite.Utilisateur"/>
+		<mapping class="entite.Contenu"/>
+		<mapping class="entite.Rubrique"/>
+		<mapping class="entite.Article"/>
+		<mapping class="entite.Nouvelle"/>
  	
     </session-factory>
 </hibernate-configuration>

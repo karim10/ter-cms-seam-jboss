@@ -172,7 +172,7 @@ public abstract class Contenu implements Serializable{
 	
 	@OneToOne
 	@JoinColumn(name="PARENT")
-	@NotNull
+	//@NotNull
 	public Rubrique getParent() {
 		return parent;
 	}
