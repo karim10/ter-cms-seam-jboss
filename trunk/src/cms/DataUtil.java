@@ -4,11 +4,6 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 
-import entite.Article;
-import entite.Contenu;
-import entite.Nouvelle;
-import entite.Utilisateur;
-
 @SuppressWarnings("unchecked")
 public class DataUtil {
 	

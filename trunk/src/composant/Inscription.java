@@ -47,7 +47,7 @@ public class Inscription {
 	
 	public Boolean inscription(){
 	     if (confirmation == null || !confirmation.equals(utilisateur.getMotDePasse())){
-	         FacesMessages.instance().addToControl("confirmation", "les 2 mot de passe ne correspondent pas");
+	         FacesMessages.instance().addToControl("confirmation", "les deux mot de passe ne correspondent pas");
 	         return false;
 	      }
 	      Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();	      

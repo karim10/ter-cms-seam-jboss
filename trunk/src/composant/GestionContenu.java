@@ -2,8 +2,6 @@ package composant;
 
 import java.util.Date;
 
-import javax.faces.application.FacesMessage;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Transaction;
 import org.jboss.seam.ScopeType;
@@ -11,17 +9,15 @@ import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
-import org.jboss.seam.faces.FacesMessages;
 
+import util.DataUtil;
+import util.HibernateUtil;
 import entite.Contenu;
 import entite.ContenuException;
 import entite.EtatContenu;
 import entite.NiveauAccesContenu;
 import entite.Rubrique;
 import entite.Utilisateur;
-
-import util.DataUtil;
-import util.HibernateUtil;
 
 /**
  * 

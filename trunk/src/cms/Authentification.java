@@ -9,11 +9,6 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.security.Identity;
 
-import util.DataUtil;
-import util.HibernateUtil;
-
-import entite.Utilisateur;
-
 @Name("authentification")
 public class Authentification {
 

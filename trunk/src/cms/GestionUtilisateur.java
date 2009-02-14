@@ -13,11 +13,6 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
 
-import entite.Utilisateur;
-
-import util.DataUtil;
-import util.HibernateUtil;
-
 @Name("gestionUtilisateur")
 @Scope(ScopeType.SESSION)
 public class GestionUtilisateur{

@@ -9,10 +9,6 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
 
-import entite.Contenu;
-import entite.IUtilisateur;
-import entite.Utilisateur;
-
 @Name("sessionUtilisateur")
 @Scope(ScopeType.SESSION)
 public class SessionUtilisateur {

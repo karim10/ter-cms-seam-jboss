@@ -5,13 +5,6 @@ import java.util.Date;
 import org.hibernate.Transaction;
 import org.jboss.seam.annotations.Name;
 
-import entite.EtatContenu;
-import entite.NiveauAccesContenu;
-import entite.Rubrique;
-import entite.Utilisateur;
-
-import util.HibernateUtil;
-
 @Name("initialisation")
 public class Initialisation {
 	

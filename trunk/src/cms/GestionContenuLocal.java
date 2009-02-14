@@ -2,8 +2,6 @@ package cms;
 
 import java.util.List;
 
-import entite.Contenu;
-
 public interface GestionContenuLocal {
 	
 	public List<Contenu> getListContenu();

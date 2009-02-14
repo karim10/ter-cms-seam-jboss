@@ -9,10 +9,6 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.log.Log;
 
-import entite.Utilisateur;
-
-import util.HibernateUtil;
-
 
 @Name("inscription")
 public class Inscription {
