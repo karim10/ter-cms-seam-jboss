@@ -9,6 +9,8 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
 
+import util.DataUtil;
+
 import entite.Contenu;
 import entite.IUtilisateur;
 import entite.Utilisateur;
@@ -21,7 +23,7 @@ public class SessionUtilisateur {
 	private IUtilisateur utilisateur;
 	
 	@DataModel
-	private List<Contenu> listContenu = new ArrayList<Contenu>();
+	private List<Contenu> listContenu = DataUtil.chargeContenu();
 
 	
 	

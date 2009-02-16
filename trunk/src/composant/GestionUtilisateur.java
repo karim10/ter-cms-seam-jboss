@@ -12,6 +12,7 @@ import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
+import org.jboss.seam.annotations.security.Restrict;
 
 import entite.Utilisateur;
 
@@ -31,6 +32,7 @@ public class GestionUtilisateur{
 		this.listUtilisateur = listUtilisateur;
 	}
 	
+	@Restrict("#{s:hasRole('admin')}")
 	public List<Utilisateur> getListUtilisateur() {		
 		return this.listUtilisateur;
 	}

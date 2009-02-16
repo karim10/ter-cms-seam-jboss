@@ -3,6 +3,7 @@ package entite;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -62,6 +64,7 @@ public abstract class Contenu implements Serializable{
 	}
 
 	@Column(name="NIVEAU_ACCES", updatable=true, nullable=false)
+	@Enumerated(EnumType.STRING)
 	public NiveauAccesContenu getNiveauAcces() {
 		return niveauAcces;
 	}

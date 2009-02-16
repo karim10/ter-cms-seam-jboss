@@ -54,7 +54,6 @@ public abstract class UtilisateurAbstrait implements Serializable{
 	private List<Rubrique> contenuGestionnaire;
 
 	@Id @Column(name="ID_UTILISATEUR")
-	@NotNull
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	public long getId_utilisateur() {
 		return id_utilisateur;
@@ -164,7 +163,13 @@ public abstract class UtilisateurAbstrait implements Serializable{
 		this.admin = admin;
 	}
 
-	@OneToMany(cascade=CascadeType.PERSIST)
+	@OneToMany(targetEntity=Contenu.class,
+			cascade={CascadeType.PERSIST,CascadeType.MERGE})
+	@JoinTable(
+			name="AUTEUR_CONTENU",
+				joinColumns=@JoinColumn(name="ID_UTILISATEUR"),
+				inverseJoinColumns=@JoinColumn(name="ID_CONTENU")
+			)
 	@JoinColumn(name="ID_CONTENU")
 	public List<Contenu> getContenuAuteur() {
 		return contenuAuteur;

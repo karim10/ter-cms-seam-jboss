@@ -68,6 +68,7 @@ public class GestionContenu {
 		contenu.setEtatContenu(EtatContenu.EN_ATTENTE);
 		contenu.setNiveauAcces(NiveauAccesContenu.PUBLIC);
 		contenu.setDateMaj(new Date());
+		contenu.setParent((Rubrique)getSessionUtilisateur().getListContenu().get(0));
 
 		HibernateUtil.getSessionFactory().getCurrentSession().save(contenu);
 
