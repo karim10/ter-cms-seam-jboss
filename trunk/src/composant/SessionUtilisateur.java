@@ -18,9 +18,6 @@ import entite.Utilisateur;
 @Scope(ScopeType.SESSION)
 public class SessionUtilisateur {
 
-	/**
-	 * injection du composant {@link Utilisateur}
-	 */
 	@In
 	private IUtilisateur utilisateur;
 	
@@ -28,6 +25,10 @@ public class SessionUtilisateur {
 		
 	public SessionUtilisateur() {}
 
+	/**
+	 * <p>initialisation de accesBackend lors 
+	 * de l'initialisation du composant.</p>
+	 */
 	@Create
 	public void init(){
 		accesBackend = accesBackend();
@@ -56,7 +57,11 @@ public class SessionUtilisateur {
 		this.accesBackend = accesBackend;
 	}
 
-
+	/**
+	 * Verifie les droits d'acces d'un utilisateur
+	 * @return vrai si gestionnaire, redacteur et/ou admin d'au moins un contenu
+	 *         faux sinon
+	 */
 	public Boolean accesBackend(){
 		if(getUtilisateur().isAdmin())return true;
 		List<Rubrique> l = DataUtil.chargeRubrique();

@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Create;
@@ -45,14 +44,18 @@ public class GestionContenu {
 	@DataModel
 	private List<Contenu> listContenu;
 	
+	@DataModelSelection
+	@Out(required=false)
+	private Contenu contenu;
+	
+	/**
+	 * <p>Crée la listContenu lors de l'initialisation du composant 
+	 * à partir du contenu de la base de donnée.</p>
+	 */
 	@Create
 	public void init(){
 		listContenu = DataUtil.chargeContenu();
 	}
-	
-	@DataModelSelection
-	@Out(required=false)
-	private Contenu contenu;
 	
 	public SessionUtilisateur getSessionUtilisateur() {
 		return sessionUtilisateur;
@@ -80,13 +83,8 @@ public class GestionContenu {
 
 	public GestionContenu() {}
 
-
-	public void majContenu() throws HibernateException {
-		setListContenu(DataUtil.chargeContenu());
-	}
-
 	/**
-	 * Création d'un nouveau Contenu 
+	 * Crée un nouveau Contenu 
 	 * @param contenu
 	 * @throws HibernateException
 	 */
@@ -111,16 +109,61 @@ public class GestionContenu {
 	}
 
 	/**
-	 * Methode qui vérifie si un contenu est une rubrique
+	 *<p> Modifie un contenu
 	 * @param contenu
-	 * @return {@link Boolean}
+	 * @throws HibernateException, ContenuException</p>
 	 */
-	public Boolean estRubrique(Contenu contenu){
-		return (contenu instanceof Rubrique);
+	public void modifierContenu(Contenu contenu) throws HibernateException, ContenuException {
+		Long id = contenu.getId_contenu();
+		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		Contenu c = (Contenu)HibernateUtil.getSessionFactory().getCurrentSession().load(Contenu.class,id);
+		if(contenu!=null){
+			if(aLeDroit(c)){
+				Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+				HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(contenu);
+				tx.commit();
+				for(int i=0 ;i<getListContenu().size(); i++){
+					if(getListContenu().get(i).getId_contenu() == id){
+						getListContenu().remove(i);
+						getListContenu().add(i,contenu);
+						return;
+					}
+				}
+			}
+		} else {
+			throw new ContenuException("L'élément n'exite pas");
+		}   
 	}
-
+	
+	
 	/**
-	 * <p>Methode permettant de vérifier les droits de l'utilisateur courant<br />
+	 *<p> Supprime un contenu
+	 * @param contenu
+	 * @throws HibernateException, ContenuException</p>
+	 */
+	public void removeContenu(Contenu contenu) throws HibernateException, ContenuException {
+		Long id = contenu.getId_contenu();
+		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		Contenu c = (Contenu)HibernateUtil.getSessionFactory().getCurrentSession().load(Contenu.class,id);
+		if(contenu!=null){
+			if(aLeDroit(c)){
+				Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+				HibernateUtil.getSessionFactory().getCurrentSession().delete(c);
+				tx.commit();
+				for(Contenu ctn : getListContenu()){
+					if(ctn.getId_contenu() == id){
+						getListContenu().remove(contenu);
+						return;
+					}
+				}
+			}
+		} else {
+			throw new ContenuException("L'élément n'exite pas");
+		}   
+	}
+	
+	/**
+	 * <p>Vérifie les droits de l'utilisateur courant<br />
 	 * @param contenu
 	 * @return {@link Boolean}
 	 * </p>
@@ -151,7 +194,7 @@ public class GestionContenu {
 	}
 
 	/**
-	 * <p>Methode permattant de dépublier un contenu.<br />
+	 * <p>Dépublie un contenu.<br />
 	 * L'utilisateur courant doit avoir les droits necessaires,<br />
 	 * Sinon une exception est levée.
 	 * Si le contenu est déjà dépublié, une exception est levée <br />
@@ -205,7 +248,7 @@ public class GestionContenu {
 	}
 
 	/**
-	 * <p>Methode permattant de publier un contenu.<br />
+	 * <p>Publie un contenu.<br />
 	 * L'utilisateur courant doit avoir les droits necessaires,<br />
 	 * Sinon une exception est levée.
 	 * Si le contenu est déjà publié, une exception est levée <br />
@@ -263,7 +306,7 @@ public class GestionContenu {
 		}
 	}
 	/**
-	 * <p>Methode permattant de mettre à la corbeille un contenu.<br />
+	 * <p>Met à la corbeille un contenu.<br />
 	 * L'utilisateur courant doit avoir les droits necessaires,<br />
 	 * Sinon une exception est levée.
 	 * Si le contenu est déjà dans la corbeille, une exception est levée <br />
@@ -310,69 +353,40 @@ public class GestionContenu {
 		}
 	}
 
+	
+	
 	/**
-	 *<p> Methode permettant de supprimer un contenu
-	 * @param contenu</p>
+	 * Methode qui vérifie si un contenu est une rubrique
+	 * @param contenu
+	 * @return {@link Boolean}
 	 */
-	public void modifierContenu(Contenu contenu) throws ContenuException {
-		Long id = contenu.getId_contenu();
-		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-		Contenu c = (Contenu)HibernateUtil.getSessionFactory().getCurrentSession().load(Contenu.class,id);
-		if(contenu!=null){
-		if(aLeDroit(c)){
-			Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-			HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(contenu);
-			tx.commit();
-			for(int i=0 ;i<getListContenu().size(); i++){
-				if(getListContenu().get(i).getId_contenu() == id){
-					getListContenu().remove(i);
-					getListContenu().add(i,contenu);
-					return;
-				}
-			}
-		}
-		}else {
-			throw new ContenuException("L'élément n'exite pas");
-		}   
+	public Boolean estRubrique(Contenu contenu){
+		return (contenu instanceof Rubrique);
 	}
 	
 	/**
-	 *<p> Methode permettant de modifier un contenu
-	 * @param contenu</p>
+	 * Vérifie si le contenu est une rubrique
+	 * @param contenu
+	 * @return {@link Boolean}
 	 */
-	public String modifier(){
-		return "/modifier.xhtml" ;
-	}
-	
-	public void removeContenu(Contenu contenu) throws ContenuException {
-		Long id = contenu.getId_contenu();
-		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-		Contenu c = (Contenu)HibernateUtil.getSessionFactory().getCurrentSession().load(Contenu.class,id);
-		if(contenu!=null){
-		if(aLeDroit(c)){
-			Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-			HibernateUtil.getSessionFactory().getCurrentSession().delete(c);
-			tx.commit();
-			for(Contenu ctn : getListContenu()){
-				if(ctn.getId_contenu() == id){
-					getListContenu().remove(contenu);
-					return;
-				}
-			}
-		}
-		}else {
-			throw new ContenuException("L'élément n'exite pas");
-		}   
-	}
-	
 	public boolean estRubrique(){
 		return contenu.getTypeContenu().equals(TypeContenu.RUBRIQUE);
 	}
 	
+	/**
+	 * Vérifie si le contenu est une nouvelle
+	 * @param contenu
+	 * @return {@link Boolean}
+	 */
 	public boolean estNouvelle(){
 		return contenu.getTypeContenu().equals(TypeContenu.NOUVELLE);
 	}
 	
+	/**
+	 * Vérifie si le contenu est un article
+	 * @param contenu
+	 * @return {@link Boolean}
+	 */
 	public boolean estArticle(){
 		return contenu.getTypeContenu().equals(TypeContenu.ARTICLE);
 	}

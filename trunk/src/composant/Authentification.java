@@ -23,7 +23,11 @@ public class Authentification {
 	@In
 	private Identity identity;
 	
-	
+	/**
+	 * authentifie un utilisateur
+	 * @return vrai si l'authentification est effectué
+	 *         faux sinon 
+	 */
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public boolean authentification() {
 		try{    
@@ -34,16 +38,14 @@ public class Authentification {
 	            .setParameter("login", identity.getUsername())
 	            .setParameter("motdepasse", identity.getPassword())
 	            .list();
+			
 			if (result.size()==0){
 				sessionUtilisateur = null;
 				return false;
-			}
-			else{
+			} else {
 				Utilisateur u = (Utilisateur)result.get(0);
 				if(u.isAdmin()){identity.addRole("admin");}
-				sessionUtilisateur = new SessionUtilisateur(u);
-				//Contexts.getSessionContext().set("authenticatedUser", utilisateur);         
-				
+				sessionUtilisateur = new SessionUtilisateur(u);         
 				return true;		
 			}
 		}

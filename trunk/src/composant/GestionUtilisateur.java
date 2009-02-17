@@ -37,12 +37,21 @@ public class GestionUtilisateur{
 		return this.listUtilisateur;
 	}
 
+	/**
+	 * <p>Crée la listUtilisateur lors de l'initialisation du composant 
+	 * à partir du contenu de la base de donnée.</p>
+	 */
 	@Create
 	@Factory("listUtilisateur")
 	public void maj(){
 		listUtilisateur = DataUtil.chargeUtilisateurs();
 	}
 	
+	/**
+	 * <p>Crée un nouveau utilisateur</p>
+	 * @param u
+	 * @throws HibernateException
+	 */
 	public void addUtilisateur(Utilisateur u) throws HibernateException {
 		
 	    Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
@@ -56,6 +65,30 @@ public class GestionUtilisateur{
 	    
 	}
 
+	/**
+	 * <p>Modifie un utilisateur</p>
+	 * @param u
+	 * @throws HibernateException
+	 */
+	public void modifierUtilisateur(Utilisateur u) throws HibernateException {
+	
+		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		
+		Object o = HibernateUtil.getSessionFactory().getCurrentSession().load(Utilisateur.class, u.getId_utilisateur());
+		
+		HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(o);
+		
+		getListUtilisateur().remove(u);
+	    
+	    tx.commit();
+		
+	}
+	
+	/**
+	 * <p>Supprime un utilisateur</p>
+	 * @param u
+	 * @throws HibernateException
+	 */
 	public void removeUtilisateur(Utilisateur u) throws HibernateException {
 	
 		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();

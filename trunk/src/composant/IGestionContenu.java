@@ -4,11 +4,13 @@ import java.util.List;
 
 import entite.Contenu;
 
-public interface GestionContenuLocal {
+public interface IGestionContenu {
 	
 	public List<Contenu> getListContenu();
 	
 	public void addContenu(Contenu contenu);
+	
+	public void modifierContenu(Contenu contenu);
 	
 	public void removeContenu(Contenu contenu);
 	

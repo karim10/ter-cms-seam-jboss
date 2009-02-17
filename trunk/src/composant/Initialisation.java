@@ -17,8 +17,14 @@ import util.HibernateUtil;
 public class Initialisation {
 	
 	private Utilisateur admin;
+	
 	private Rubrique root; 
-    public void init() {
+    
+	/**
+	 * <p>initialise le CMS<br/>
+	 * crée la rubrique racine et l'utilicateur administrateur</p>
+	 */
+	public void init() {
     	admin = new Utilisateur("administrateur","admin","admin","administrateur","admin@admin.admin",true,true);
 		 root = new Rubrique(NiveauAccesContenu.PUBLIC,EtatContenu.PUBLIE,"ROOT",new Date(),admin);
 		root.setParent(root);

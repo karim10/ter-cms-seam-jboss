@@ -45,7 +45,11 @@ public class Inscription {
 		this.confirmation = confirmation;
 	}
 	   
-	
+	/**
+	 * <p>Inscrit un nouveau utilisateur
+	 * @return vrai si l'inscription s'est effectuée
+	 *         faux sinon</p>
+	 */
 	public Boolean inscription(){
 	     if (confirmation == null || !confirmation.equals(utilisateur.getMotDePasse())){
 	         FacesMessages.instance().addToControl("confirmation", "les deux mot de passe ne correspondent pas");
