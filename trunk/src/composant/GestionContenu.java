@@ -1,14 +1,20 @@
 package composant;
 
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
+import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.annotations.datamodel.DataModel;
+import org.jboss.seam.annotations.datamodel.DataModelSelection;
 
 import util.DataUtil;
 import util.HibernateUtil;
@@ -17,6 +23,7 @@ import entite.ContenuException;
 import entite.EtatContenu;
 import entite.NiveauAccesContenu;
 import entite.Rubrique;
+import entite.TypeContenu;
 import entite.Utilisateur;
 
 /**
@@ -25,6 +32,7 @@ import entite.Utilisateur;
  *
  */
 @Name("gestionContenu")
+@Scope(ScopeType.SESSION)
 public class GestionContenu {
 
 	/**
@@ -32,7 +40,20 @@ public class GestionContenu {
 	 */
 	@In @Out(scope=ScopeType.SESSION)
 	private SessionUtilisateur sessionUtilisateur;
-
+	
+	
+	@DataModel
+	private List<Contenu> listContenu;
+	
+	@Create
+	public void init(){
+		listContenu = DataUtil.chargeContenu();
+	}
+	
+	@DataModelSelection
+	@Out(required=false)
+	private Contenu contenu;
+	
 	public SessionUtilisateur getSessionUtilisateur() {
 		return sessionUtilisateur;
 	}
@@ -40,18 +61,28 @@ public class GestionContenu {
 	public void setSessionUtilisateur(SessionUtilisateur sessionUtilisateur) {
 		this.sessionUtilisateur = sessionUtilisateur;
 	}
+	
+	public List<Contenu> getListContenu() {
+		return listContenu;
+	}
+
+	public void setListContenu(List<Contenu> listContenu) {
+		this.listContenu = listContenu;
+	}
+
+	public Contenu getContenu() {
+		return contenu;
+	}
+
+	public void setContenu(Contenu contenu) {
+		this.contenu = contenu;
+	}
 
 	public GestionContenu() {}
 
-	public void majContenu() throws HibernateException {
-		sessionUtilisateur.setListContenu(DataUtil.chargeContenu());
-	}
 
-	public Rubrique creerRacine(){
-		Contenu root = new Rubrique("racine");
-		root.setParent((Rubrique) root);
-		root.setEtatContenu(EtatContenu.NON_PUBLIE);
-		return (Rubrique) root;
+	public void majContenu() throws HibernateException {
+		setListContenu(DataUtil.chargeContenu());
 	}
 
 	/**
@@ -68,11 +99,12 @@ public class GestionContenu {
 		contenu.setEtatContenu(EtatContenu.EN_ATTENTE);
 		contenu.setNiveauAcces(NiveauAccesContenu.PUBLIC);
 		contenu.setDateMaj(new Date());
-		contenu.setParent((Rubrique)getSessionUtilisateur().getListContenu().get(0));
+		contenu.setTypeContenu(TypeContenu.ARTICLE);
+		contenu.setParent((Rubrique)getListContenu().get(0));
 
 		HibernateUtil.getSessionFactory().getCurrentSession().save(contenu);
 
-		sessionUtilisateur.getListContenu().add(contenu);
+		getListContenu().add(contenu);
 
 		tx.commit();
 
@@ -102,14 +134,14 @@ public class GestionContenu {
 			resultat = true;
 		}
 		//si le contenu est une rubrique
-		if (estRubrique(contenu)){
+		else if (estRubrique(contenu)){
 			rTemp = (Rubrique) contenu;
 			// Si l'utilisateur courant est dans la liste des gestionnaires du contenu, il a le droit
 			if(sessionUtilisateur.getUtilisateur().isGestionnaire(rTemp)){
 				resultat = true;
 			}
 		} else {
-			//C'est pas une Rubrique, on vérifie que l'utilisateur a le droit sur le parent du contenu en quesiotn
+			//C'est pas une Rubrique, on vérifie que l'utilisateur a le droit sur le parent du contenu en question
 			if(sessionUtilisateur.getUtilisateur().isGestionnaire(contenu.getParent()) ||
 					sessionUtilisateur.getUtilisateur().isAdmin()){
 				resultat = true;
@@ -282,15 +314,68 @@ public class GestionContenu {
 	 *<p> Methode permettant de supprimer un contenu
 	 * @param contenu</p>
 	 */
-	public void removeContenu(Contenu contenu) throws ContenuException {
-		// TODO Auto-generated method stub
-		if(sessionUtilisateur.getListContenu().contains(contenu)){
-			sessionUtilisateur.getListContenu().remove(contenu);
+	public void modifierContenu(Contenu contenu) throws ContenuException {
+		Long id = contenu.getId_contenu();
+		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		Contenu c = (Contenu)HibernateUtil.getSessionFactory().getCurrentSession().load(Contenu.class,id);
+		if(contenu!=null){
+		if(aLeDroit(c)){
+			Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+			HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(contenu);
+			tx.commit();
+			for(int i=0 ;i<getListContenu().size(); i++){
+				if(getListContenu().get(i).getId_contenu() == id){
+					getListContenu().remove(i);
+					getListContenu().add(i,contenu);
+					return;
+				}
+			}
+		}
 		}else {
-			throw new ContenuException("L'élément de titre : "+contenu.getTitreContenu()+" n'exite pas");
-		}    
+			throw new ContenuException("L'élément n'exite pas");
+		}   
 	}
-
+	
+	/**
+	 *<p> Methode permettant de modifier un contenu
+	 * @param contenu</p>
+	 */
+	public String modifier(){
+		return "/modifier.xhtml" ;
+	}
+	
+	public void removeContenu(Contenu contenu) throws ContenuException {
+		Long id = contenu.getId_contenu();
+		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		Contenu c = (Contenu)HibernateUtil.getSessionFactory().getCurrentSession().load(Contenu.class,id);
+		if(contenu!=null){
+		if(aLeDroit(c)){
+			Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+			HibernateUtil.getSessionFactory().getCurrentSession().delete(c);
+			tx.commit();
+			for(Contenu ctn : getListContenu()){
+				if(ctn.getId_contenu() == id){
+					getListContenu().remove(contenu);
+					return;
+				}
+			}
+		}
+		}else {
+			throw new ContenuException("L'élément n'exite pas");
+		}   
+	}
+	
+	public boolean estRubrique(){
+		return contenu.getTypeContenu().equals(TypeContenu.RUBRIQUE);
+	}
+	
+	public boolean estNouvelle(){
+		return contenu.getTypeContenu().equals(TypeContenu.NOUVELLE);
+	}
+	
+	public boolean estArticle(){
+		return contenu.getTypeContenu().equals(TypeContenu.ARTICLE);
+	}
 
 	@Destroy
 	public void destroy(){}

@@ -51,7 +51,6 @@ public class GestionContenuTest {
 		r.setListEnfant(new LinkedList<Contenu>());
 		r.setListGestionnaire(new LinkedList<Utilisateur>());
 		r.setListRedacteur(new LinkedList<Utilisateur>());
-		su.setListContenu(new LinkedList<Contenu>());
 		su.setUtilisateur(u);
 		gc.setSessionUtilisateur(su);
 		//cas 1 : depublication Rubrique PUBLIE par Admin

@@ -9,7 +9,6 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.security.Identity;
 
-import util.DataUtil;
 import util.HibernateUtil;
 
 import entite.Utilisateur;
@@ -42,7 +41,7 @@ public class Authentification {
 			else{
 				Utilisateur u = (Utilisateur)result.get(0);
 				if(u.isAdmin()){identity.addRole("admin");}
-				sessionUtilisateur = new SessionUtilisateur(u,DataUtil.chargeContenu());
+				sessionUtilisateur = new SessionUtilisateur(u);
 				//Contexts.getSessionContext().set("authenticatedUser", utilisateur);         
 				
 				return true;		

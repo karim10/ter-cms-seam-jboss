@@ -7,6 +7,7 @@ import org.hibernate.HibernateException;
 import entite.Article;
 import entite.Contenu;
 import entite.Nouvelle;
+import entite.Rubrique;
 import entite.Utilisateur;
 
 @SuppressWarnings("unchecked")
@@ -26,6 +27,14 @@ public class DataUtil {
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 		
 	    return (List<Article>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Article a").list();
+	    	    
+	}
+	
+	public static List<Rubrique> chargeRubrique() throws HibernateException {
+		
+		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		
+	    return (List<Rubrique>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Rubrique r").list();
 	    	    
 	}
 	

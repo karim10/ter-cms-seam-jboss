@@ -9,7 +9,7 @@ import org.jboss.seam.annotations.Name;
 @Entity
 @Name("article")
 @Table(name="ARTICLE")
-public class Article extends Contenu{
+public class Article extends ContenuText{
 	
 	private static final long serialVersionUID = -3749690144340630747L;
 

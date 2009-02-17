@@ -29,11 +29,21 @@
 				</h:outputLink>
 			</li>
 			
+			<s:fragment rendered="#{identity.isLoggedIn()}">
 			<li>
 				<h:outputLink value="private.seam">
 				<h:outputText value="Espace prive" />
 				</h:outputLink>
 			</li>
+			
+			<s:fragment rendered="#{sessionUtilisateur.accesBackend()}">
+			<li>
+				<h:outputLink value="private.seam">
+				<h:outputText value="Back End" />
+				</h:outputLink>
+			</li>
+			</s:fragment>
+			</s:fragment>
 		</ul>
 </body>
 </html>

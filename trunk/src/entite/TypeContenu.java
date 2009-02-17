@@ -1,13 +1,14 @@
 package entite;
 
-public enum NiveauAccesContenu {
+public enum TypeContenu {
 
-	PUBLIC("Public"), 
-	PRIVEE("Privee");
+	RUBRIQUE("Rubrique"), 
+	ARTICLE("Article"),
+	NOUVELLE("Nouvelle");
 
 	public final String label;
 
-	NiveauAccesContenu(String label){
+	TypeContenu(String label){
 		this.label = label;
 	}
 	

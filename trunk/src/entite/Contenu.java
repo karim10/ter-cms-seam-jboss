@@ -1,9 +1,9 @@
 package entite;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
+
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,11 +23,15 @@ import org.hibernate.validator.NotNull;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
-public abstract class Contenu implements Serializable{
+public abstract class Contenu implements  Serializable{
 
 	private static final long serialVersionUID = 7430279630785144437L;
 
+	// Attributs
+	
 	private long id_contenu;
+	
+	private TypeContenu typeContenu;
 	
 	private NiveauAccesContenu niveauAcces;
 	
@@ -41,8 +45,6 @@ public abstract class Contenu implements Serializable{
 	
 	private String lienWeb;
 	
-	private String texte;
-	
 	private Date dateCreation;
 	
 	private Date dateMaj;
@@ -53,6 +55,8 @@ public abstract class Contenu implements Serializable{
 
 	private Rubrique parent;
 
+	// getter setter
+	
 	@Id @Column(name="ID_CONTENU")
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	public long getId_contenu() {
@@ -84,13 +88,6 @@ public abstract class Contenu implements Serializable{
 	}
 
 	/**
-	 * @param etatSauve the etatSauve to set
-	 */
-	public void setEtatSauve(EtatContenu etatSauve) {
-		this.etatSauve = etatSauve;
-	}
-
-	/**
 	 * @return the etatSauve
 	 */
 	@Column(name="ETAT_CONTENU_SAUVE", updatable=true, nullable=true)
@@ -98,11 +95,28 @@ public abstract class Contenu implements Serializable{
 	public EtatContenu getEtatSauve() {
 		return etatSauve;
 	}
+	
+	/**
+	 * @param etatSauve the etatSauve to set
+	 */
+	public void setEtatSauve(EtatContenu etatSauve) {
+		this.etatSauve = etatSauve;
+	}
 
-	//verifie qu'un contenu a été modifié 
+	
+	/**
+	 * @return the typeContenu
+	 */
+	@Column(name="TYPE",updatable=false, nullable=false)
+	public TypeContenu getTypeContenu() {
+		return typeContenu;
+	}
 
-	public Boolean etatCotenuModifie(){
-		return (!this.etatSauve.equals(null));
+	/**
+	 * @param etatSauve the typeContenu to set
+	 */
+	public void setTypeContenu(TypeContenu typeContenu) {
+		this.typeContenu = typeContenu;
 	}
 
 
@@ -123,15 +137,6 @@ public abstract class Contenu implements Serializable{
 
 	public void setLienWeb(String lienWeb) {
 		this.lienWeb = lienWeb;
-	}
-
-	@Column(name="TEXTE", updatable=true)
-	public String getTexte() {
-		return texte;
-	}
-
-	public void setTexte(String texte) {
-		this.texte = texte;
 	}
 
 	@Column(name="DATE_CREATION", updatable=false, nullable=false)	
@@ -182,6 +187,12 @@ public abstract class Contenu implements Serializable{
 
 	public void setParent(Rubrique parent) {
 		this.parent = parent;
+	}
+	
+	// Methodes 
+	
+	public Boolean etatCotenuModifie(){
+		return (!this.etatSauve.equals(null));
 	}
 	
 }

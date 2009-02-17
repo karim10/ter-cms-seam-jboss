@@ -50,6 +50,8 @@ public class GestionUtilisateur{
 	    
 	    HibernateUtil.getSessionFactory().getCurrentSession().save(u);
 	    
+	    getListUtilisateur().add(u);
+	    
 	    tx.commit();
 	    
 	}
@@ -58,7 +60,11 @@ public class GestionUtilisateur{
 	
 		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 		
-		HibernateUtil.getSessionFactory().getCurrentSession().delete(u);
+		Object o = HibernateUtil.getSessionFactory().getCurrentSession().load(Utilisateur.class, u.getId_utilisateur());
+		
+		HibernateUtil.getSessionFactory().getCurrentSession().delete(o);
+		
+		getListUtilisateur().remove(u);
 	    
 	    tx.commit();
 		
