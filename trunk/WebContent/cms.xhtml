@@ -1,28 +1,49 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:s="http://jboss.com/products/seam/taglib"
-          xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:rich="http://richfaces.org/rich"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-
 <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Log</title>
+<title>Page De Tests Temporaire</title>
 </head>
 <body>
-        <h:outputText value="Bonjour #{sessionUtilisateur.utilisateur.prenom} #{sessionUtilisateur.utilisateur.nom}, Bienvenue dans l'espace prive
-        #{gestionContenu.init()} #{gestionUtilisateur.init()}"/>
-        <ul>
-
-        
-        
-         <h:outputLink value="admin.seam">Administration<br/></h:outputLink>
-        <h:outputLink value="gestionUtilisateur.seam">Gestion des utilisateurs<br/></h:outputLink>
-        <h:outputLink value="gestionContenu.seam">Gestion du contenu<br/></h:outputLink>
-        
-        
-</ul>   
+	<h3 align="center">PAGE DE TESTS</h3>
+	<ul>
+	<s:link value="Init" action="#{initialisation.init()}"/>
+			<li>
+				<h:outputLink value="login.seam">
+				<h:outputText value="Inscription" />
+				</h:outputLink>
+			</li>
+			
+			<li>
+				<h:outputLink value="connexion.seam">
+				<h:outputText value="Connexion" />
+				</h:outputLink>
+			</li>
+			
+			<li>
+				<h:outputLink value="cms.seam">
+				<h:outputText value="En Construction..." />
+				</h:outputLink>
+			</li>
+			
+			
+			<li>
+				<h:outputLink value="admin.seam">
+				<h:outputText value="Administration" />
+				</h:outputLink>
+			</li>
+			
+		
+			<li>
+				<h:outputLink value="private.seam">
+				<h:outputText value="Back End" />
+				</h:outputLink>
+			</li>
+		
+			
+		</ul>
 </body>
-
 </html>
