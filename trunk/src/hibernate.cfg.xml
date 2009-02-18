@@ -40,7 +40,7 @@
 		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="connection.password"></property>
  		<property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
-        <property name="hbm2ddl.auto" >update</property>
+        <property name="hbm2ddl.auto" >create-drop</property>
   
   
        

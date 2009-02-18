@@ -15,6 +15,7 @@
 			<default-locale>fr_FR</default-locale>
 			<supported-locale>en_EN</supported-locale>
 		</locale-config>
+		
 	</application>
 	
 	<converter>

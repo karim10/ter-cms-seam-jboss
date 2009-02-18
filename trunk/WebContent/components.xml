@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="iso-8859-1"?>
 <components xmlns="http://jboss.com/products/seam/components"
 	xmlns:async="http://jboss.com/products/seam/async"
 	xmlns:core="http://jboss.com/products/seam/core"
@@ -27,7 +27,7 @@
 	<!-- [PRODUCTION] -->
 	<core:init debug="false" />
 	
-	<!-- DÃ©finition du bundle de message Ã  utiliser -->
+	<!-- Définition du bundle de message à utiliser -->
 	<core:resource-loader>
     	<core:bundle-names>
     		<value>messages</value>
@@ -41,7 +41,7 @@
 	<web:multipart-filter create-temp-files="true"
 		max-request-size="10000000" />
 
-	<web:character-encoding-filter encoding="UTF-8"
+	<web:character-encoding-filter encoding="iso-8859-1"
 		override-client="false" url-pattern="*.seam" />
 
 	<web:ajax4jsf-filter force-parser="false" enable-cache="true" />

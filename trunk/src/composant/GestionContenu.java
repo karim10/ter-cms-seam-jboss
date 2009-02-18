@@ -210,51 +210,18 @@ public class GestionContenu {
 	 * </p>
 	 */
 	public void depublierContenu(Contenu contenu) throws ContenuException {
-		Rubrique rubrique = null;
+
 		//Si l'utilisateur courant a le droit 
 		if(aLeDroit(contenu)) {
-			//Si le contenu est une rubrique
-			if(estRubrique(contenu)){
-				rubrique = (Rubrique)contenu;
-				// on verifie que la rubrique n'est pas déjà dépublié
-				if(rubrique.getEtatContenu().equals(EtatContenu.NON_PUBLIE)){
-					//FacesMessages.instance().add(new FacesMessage("Cette rubrique est déjà dépubliée ! "));
-					throw new ContenuException("Cette rubrique est déjà dépubliée ! ");
-				} else {
-					// on sauve son état
-					rubrique.setEtatSauve(rubrique.getEtatContenu());
-					// on dépublie la rubrique
-					rubrique.setEtatContenu(EtatContenu.NON_PUBLIE);
-					//on vérifie si elle a des enfants
-					if(rubrique.getListEnfant().size() != 0) {
-						//parcours de tous les enfants de la rubrique
-						for(Contenu c : rubrique.getListEnfant()){
-								//appel recursif sur l'enfant
-								depublierContenu(c);							
-						}
-					}
-				}
-			} else {
-				//C'est pas une rubrique, on vérifie qu'il n'est pas déjà dépublié
-				if(contenu.getEtatContenu().equals(EtatContenu.NON_PUBLIE)){
-					throw new ContenuException("Ce contenu est déjà dépublié ! ");
-				}else {
-					//on sauve son état
-					contenu.setEtatSauve(contenu.getEtatContenu());
-					//c'est bon on le dépublie
-					contenu.setEtatContenu(EtatContenu.NON_PUBLIE);
-				}
-			}
-
+			contenu.setEtatContenu(EtatContenu.NON_PUBLIE);
 		}else {
 			//L'utilisateur n'a pas les droits nécessaires
-			//FacesMessages.instance().add(new FacesMessage("Vous n'avez pas le droit de dépublier ce contenu ! "));
 			throw new ContenuException("Vous n'avez pas le droit de dépublier ce contenu ! ");
 		}
 	}
 
 	/**
-	 * <p>Publie un contenu.<br />
+	 * <p>Methode permattant de publier un contenu.<br />
 	 * L'utilisateur courant doit avoir les droits necessaires,<br />
 	 * Sinon une exception est levée.
 	 * Si le contenu est déjà publié, une exception est levée <br />
@@ -264,55 +231,16 @@ public class GestionContenu {
 	 * </p>
 	 */
 	public void publierContenu(Contenu contenu) throws ContenuException {
-		Rubrique rubrique = null;
+
 		//Si l'utilisateur courant a le droit 
 		if(aLeDroit(contenu)) {
-			//Si le contenu est une rubrique
-			if(estRubrique(contenu)){
-				rubrique = (Rubrique)contenu;
-				// on verifie que la rubrique n'est pas déjà publié
-				if(rubrique.getEtatContenu().equals(EtatContenu.PUBLIE)){
-					//FacesMessages.instance().add(new FacesMessage("Cette rubrique est déjà publiée ! "));
-					throw new ContenuException("Cette rubrique est déjà publiée ! ");
-				} else {
-					
-					// on publie la rubrique
-					rubrique.setEtatContenu(EtatContenu.PUBLIE);
-					//on vérifie si elle a des enfants
-					if(rubrique.getListEnfant().size() != 0) {
-						//parcours de tous les enfants de la rubrique
-						for(Contenu c : rubrique.getListEnfant()){
-							// on verifie son etata sauvé
-							if(c.etatCotenuModifie()){
-								//on restore son etat sauvé
-								c.setEtatContenu(contenu.getEtatSauve());
-							}
-							if(estRubrique(c)){
-								//appel recursif sur l'enfant
-								publierContenu(c);
-							}							
-						}
-					}
-				}
-			} else {
-				//C'est pas une rubrique, on vérifie qu'il n'est pas déjà publié
-				if(contenu.getEtatContenu().equals(EtatContenu.PUBLIE)){
-					throw new ContenuException("Ce contenu est déjà publié ! ");
-				}else {
-					
-					//c'est bon on le publie
-					contenu.setEtatContenu(EtatContenu.PUBLIE);
-				}
-			}
-
+			contenu.setEtatContenu(EtatContenu.PUBLIE);
 		}else {
 			//L'utilisateur n'a pas les droits nécessaires
-			//FacesMessages.instance().add(new FacesMessage("Vous n'avez pas le droit de dépublier ce contenu ! "));
-			throw new ContenuException("Vous n'avez pas le droit de dépublier ce contenu ! ");
+			throw new ContenuException("Vous n'avez pas le droit de publier ce contenu ! ");
 		}
-	}
-	/**
-	 * <p>Met à la corbeille un contenu.<br />
+	}	/**
+	 * <p>Methode permattant de mettre à la corbeille un contenu.<br />
 	 * L'utilisateur courant doit avoir les droits necessaires,<br />
 	 * Sinon une exception est levée.
 	 * Si le contenu est déjà dans la corbeille, une exception est levée <br />
@@ -322,42 +250,16 @@ public class GestionContenu {
 	 * </p>
 	 */
 	public void mettreCorbeille(Contenu contenu) throws ContenuException {
-		Rubrique rubrique = null;
+
 		//Si l'utilisateur courant a le droit 
 		if(aLeDroit(contenu)) {
-			//Si le contenu est une rubrique
-			if(estRubrique(contenu)){
-				rubrique = (Rubrique)contenu;
-				// on verifie que la rubrique n'est pas déjà dans la corbeille
-				if(rubrique.getEtatContenu().equals(EtatContenu.CORBEILLE)){
-					throw new ContenuException("Cette rubrique est déjà dans la corbeille ! ");
-				} else {
-					// on met la rubrique dans la corbeille
-					rubrique.setEtatContenu(EtatContenu.CORBEILLE);
-					//on vérifie si elle a des enfants
-					if(rubrique.getListEnfant().size() != 0) {
-						//parcours de tous les enfants de la rubrique
-						for(Contenu c : rubrique.getListEnfant()){
-							c.setEtatContenu(EtatContenu.CORBEILLE);
-
-						}
-					}
-				}
-			} else {
-				//C'est pas une rubrique, on vérifie qu'il n'est pas déjà dans la corbeille
-				if(contenu.getEtatContenu().equals(EtatContenu.CORBEILLE)){
-					throw new ContenuException("Ce contenu est déjà dans la corbeille ! ");
-				}else {
-					//c'est bon on le met dans la corbeille
-					contenu.setEtatContenu(EtatContenu.CORBEILLE);
-				}
-			}
-
+			contenu.setEtatContenu(EtatContenu.CORBEILLE);
 		}else {
 			//L'utilisateur n'a pas les droits nécessaires
-			throw new ContenuException("Vous n'avez pas le droit de mettre à la corbeille ce contenu ! ");
+			throw new ContenuException("Vous n'avez pas le droit de mettre ce contenu à la poubelle ! ");
 		}
 	}
+
 	
 	/**
 	 * Vérifie si le contenu est une rubrique
