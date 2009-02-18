@@ -3,6 +3,7 @@ package util;
 import java.util.List;
 
 import org.hibernate.HibernateException;
+import org.jboss.seam.annotations.Name;
 
 import entite.Article;
 import entite.Contenu;
@@ -10,6 +11,7 @@ import entite.Nouvelle;
 import entite.Rubrique;
 import entite.Utilisateur;
 
+@Name("datautil")
 @SuppressWarnings("unchecked")
 public class DataUtil {
 	

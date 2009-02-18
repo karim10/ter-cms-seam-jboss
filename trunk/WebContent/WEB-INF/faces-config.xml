@@ -16,5 +16,14 @@
 			<supported-locale>en_EN</supported-locale>
 		</locale-config>
 	</application>
+	
+	<converter>
+                <converter-id>rubriqueConverter</converter-id>
+                <converter-class>
+                    util.RubriqueConverter
+                </converter-class>
+          </converter>
+	
+	
 
 </faces-config>

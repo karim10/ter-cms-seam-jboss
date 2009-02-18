@@ -11,8 +11,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.jboss.seam.annotations.Name;
+
 @SuppressWarnings("serial")
 @Entity
+@Name("rubrique")
 @Table(name="RUBRIQUE")
 public class Rubrique extends Contenu{
 
@@ -47,7 +50,6 @@ public class Rubrique extends Contenu{
 	        joinColumns=@JoinColumn(name="ID_RUBRIQUE_PERE"),
 	        inverseJoinColumns=@JoinColumn(name="ID_CONTENU_ENFANT")
 	    )
-	 
 	public List<Contenu> getListEnfant() {
 		return listEnfant;
 	}

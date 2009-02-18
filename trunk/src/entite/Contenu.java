@@ -69,6 +69,7 @@ public abstract class Contenu implements  Serializable{
 
 	@Column(name="NIVEAU_ACCES", updatable=true, nullable=false)
 	@Enumerated(EnumType.STRING)
+	@NotNull
 	public NiveauAccesContenu getNiveauAcces() {
 		return niveauAcces;
 	}
@@ -160,7 +161,7 @@ public abstract class Contenu implements  Serializable{
 	}
 	
 	@OneToOne
-	@JoinColumn(name="AUTEUR")
+	@JoinColumn(name="AUTEUR", nullable=false)
 	public Utilisateur getAuteur() {
 		return auteur;
 	}
@@ -179,8 +180,8 @@ public abstract class Contenu implements  Serializable{
 	}
 	
 	@OneToOne
-	@JoinColumn(name="PARENT")
-	//@NotNull
+	@JoinColumn(name="PARENT",nullable=true)
+	@NotNull
 	public Rubrique getParent() {
 		return parent;
 	}

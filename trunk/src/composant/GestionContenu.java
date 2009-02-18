@@ -17,10 +17,12 @@ import org.jboss.seam.annotations.datamodel.DataModelSelection;
 
 import util.DataUtil;
 import util.HibernateUtil;
+import entite.Article;
 import entite.Contenu;
 import entite.ContenuException;
 import entite.EtatContenu;
 import entite.NiveauAccesContenu;
+import entite.Nouvelle;
 import entite.Rubrique;
 import entite.TypeContenu;
 import entite.Utilisateur;
@@ -90,16 +92,19 @@ public class GestionContenu {
 	 */
 	public void addContenu(Contenu contenu)throws HibernateException {
 
-		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-
+		if(contenu instanceof Rubrique)contenu.setTypeContenu(TypeContenu.RUBRIQUE);
+		else if(contenu instanceof Article)contenu.setTypeContenu(TypeContenu.ARTICLE);
+		else if(contenu instanceof Nouvelle)contenu.setTypeContenu(TypeContenu.NOUVELLE);
+		
 		contenu.setAuteur((Utilisateur) sessionUtilisateur.getUtilisateur());
+		
 		contenu.setDateCreation(new Date());
-		contenu.setEtatContenu(EtatContenu.EN_ATTENTE);
-		contenu.setNiveauAcces(NiveauAccesContenu.PUBLIC);
 		contenu.setDateMaj(new Date());
-		contenu.setTypeContenu(TypeContenu.ARTICLE);
-		contenu.setParent((Rubrique)getListContenu().get(0));
-
+		
+		contenu.setEtatContenu(EtatContenu.EN_ATTENTE);
+		
+		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		
 		HibernateUtil.getSessionFactory().getCurrentSession().save(contenu);
 
 		getListContenu().add(contenu);
@@ -125,6 +130,7 @@ public class GestionContenu {
 				for(int i=0 ;i<getListContenu().size(); i++){
 					if(getListContenu().get(i).getId_contenu() == id){
 						getListContenu().remove(i);
+						contenu.setDateMaj(new Date());
 						getListContenu().add(i,contenu);
 						return;
 					}
@@ -352,24 +358,13 @@ public class GestionContenu {
 			throw new ContenuException("Vous n'avez pas le droit de mettre à la corbeille ce contenu ! ");
 		}
 	}
-
-	
-	
-	/**
-	 * Methode qui vérifie si un contenu est une rubrique
-	 * @param contenu
-	 * @return {@link Boolean}
-	 */
-	public Boolean estRubrique(Contenu contenu){
-		return (contenu instanceof Rubrique);
-	}
 	
 	/**
 	 * Vérifie si le contenu est une rubrique
 	 * @param contenu
 	 * @return {@link Boolean}
 	 */
-	public boolean estRubrique(){
+	public boolean estRubrique(Contenu contenu){
 		return contenu.getTypeContenu().equals(TypeContenu.RUBRIQUE);
 	}
 	
@@ -378,7 +373,7 @@ public class GestionContenu {
 	 * @param contenu
 	 * @return {@link Boolean}
 	 */
-	public boolean estNouvelle(){
+	public boolean estNouvelle(Contenu contenu ){
 		return contenu.getTypeContenu().equals(TypeContenu.NOUVELLE);
 	}
 	
@@ -387,7 +382,7 @@ public class GestionContenu {
 	 * @param contenu
 	 * @return {@link Boolean}
 	 */
-	public boolean estArticle(){
+	public boolean estArticle(Contenu contenu){
 		return contenu.getTypeContenu().equals(TypeContenu.ARTICLE);
 	}
 

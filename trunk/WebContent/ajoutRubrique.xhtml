@@ -8,39 +8,25 @@
 <head>
 <title></title>
 </head>      
-<h:outputText value="Inscription" />
+<h:outputText value="Ajout d'une rubrique" />
 <f:view>
    <h:form>
      <table border="0">
        <s:validateAll> 
          <tr>
            <td>Titre</td>
-           <td><h:inputText id="titre" value="#{article.titreContenu}" required="true"/></td>
+           <td><h:inputText id="titre" value="#{rubrique.titreContenu}" required="true"/></td>
            <td><h:message  for="titre"/></td>
          </tr>
-         <tr>
-           <td>Sous Titre</td>
-           <td><h:inputTextarea id="sousTitre" value="#{article.sousTitre}"/></td>
-           <td><h:message  for="sousTitre"/></td>
-         </tr>
-         <tr>
-           <td>Description</td>
-           <td><h:inputTextarea id="description" value="#{article.description}"/></td>
-           <td><h:message  for="description"/></td>
-         </tr>
-         <tr>
-           <td>Texte</td>
-           <td><h:inputTextarea id="texte" value="#{article.texte}"/></td>
-           <td><h:message  for="texte"/></td>
-         </tr>
+         
          <tr>
            <td>Niveau d'acces</td>
            <td>
-           		<h:selectOneMenu value="#{article.niveauAcces}" required="true">
+           		<h:selectOneMenu value="#{rubrique.niveauAcces}" required="true">
   					<s:selectItems value="#{enum.getListNiveauAcces()}" 
   							var="niveauAcces" 
   							label="#{niveauAcces.label}" 
-  							noSelectionLabel="Choisir svp"
+  						
   							 />
   					<s:convertEnum />
 				</h:selectOneMenu>
@@ -50,28 +36,29 @@
          <tr>
            <td>Rubrique Parent</td>
            <td>
-           <h:selectOneMenu value="#{article.parent}" required="true">
+           <h:selectOneMenu value="#{rubrique.parent}" required="true">
   			<s:selectItems value="#{datautil.chargeRubrique()}" 
   							var="ctn" 
-  							label="#{ctn.titreContenu}" 
-  							noSelectionLabel="Choisir svp" />
-  							<f:converter converterId="rubriqueConverter"/>
+  							label="#{ctn.titreContenu}"
+  							noSelectionLabel="Choisir svp"
+  							/>
+  							<f:converter converterId="rubriqueConverter"/>		
 			</h:selectOneMenu>
 			</td>
            	<td></td>
          </tr>
          <tr>
            <td>Lien Web</td>
-           <td><h:inputText value="#{article.lienWeb}"/></td>
+           <td><h:inputText value="#{rubrique.lienWeb}"/></td>
            <td></td>
          </tr>
        </s:validateAll>
      </table>
      <h:messages  />
-     <h:commandButton type="submit" value="valider" action="#{gestionContenu.addContenu(article)}"/>
+     <h:commandButton type="submit" value="valider" action="#{gestionContenu.addContenu(rubrique)}"/>
+     
    </h:form>
    <s:button value="retour" action="/private.seam"/>
-   	
   </f:view>
 
 </html>

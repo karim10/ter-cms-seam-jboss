@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+	  xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:outputText value="Bonjour #{sessionUtilisateur.utilisateur.prenom} #{sessionUtilisateur.utilisateur.nom}, Bienvenue dans l'espace prive" />
+
+<h:outputText><h3>Gestion des utilisateurs</h3></h:outputText>
+	
+	
+	<!-- affichage des utilisateurs  -->
+	
+	<rich:dataTable value="#{listUtilisateur}"
+	  				var="lu"
+	  				rendered="#{s:hasRole('admin')}">
+	  	
+	  	<!-- affichage de l'identifiant  -->			
+		<h:column>
+			<f:facet name="header">Id</f:facet>
+			<h:outputText value="#{lu.id_utilisateur}" />
+		</h:column>
+		
+		<!-- affichage du prenom  -->
+		<h:column>
+			<f:facet name="header">Prenom</f:facet>
+			<h:outputText value="#{lu.prenom}" />
+		</h:column>
+	
+		<!-- affichage du nom  -->
+		<h:column>
+	 		<f:facet name="header">Nom</f:facet>
+	  		<h:outputText value="#{lu.nom}"/>
+		</h:column>
+    	
+    	<!-- lien pour modifier l'utilisateur  -->
+    	<h:column>
+      		<s:link value="Modifier" action="/modifierUtilisateur.seam" />
+    	</h:column>
+		
+		<!-- lien pour supprimer l'utilisateur  -->
+		<h:column>
+			<s:link value="Supprimer" action="#{gestionUtilisateur.removeUtilisateur(gestionUtilisateur.utilisateur)}" />
+		</h:column>
+	</rich:dataTable>
+	
+
+</html>
