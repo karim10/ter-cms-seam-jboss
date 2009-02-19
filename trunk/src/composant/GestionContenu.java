@@ -21,7 +21,6 @@ import entite.Article;
 import entite.Contenu;
 import entite.ContenuException;
 import entite.EtatContenu;
-import entite.NiveauAccesContenu;
 import entite.Nouvelle;
 import entite.Rubrique;
 import entite.TypeContenu;
