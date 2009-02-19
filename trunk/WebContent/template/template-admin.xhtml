@@ -8,11 +8,16 @@
 	
 	<head>
 		<title>Administration - <ui:insert name="pageTitle">par defaut</ui:insert></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	    <meta http-equiv="Content-Language" content="fr" />
 	    <meta http-equiv="imagetoolbar" content="no" />
+<<<<<<< .mine
+	    <meta name="keywords" content="CMS, cms, TER, Jboss Seam, Keira, Duval, Soulé" />
+	    <meta name="description" content="TER M2 Génie Logiciel, CMS sur Jboss Seam" />
+=======
 	    <meta name="keywords" content="CMS, cms, TER, Jboss Seam, Keira, Duval, Soule" />
 	    <meta name="description" content="TER M2 Genie Logiciel, CMS sur Jboss Seam" />
+>>>>>>> .r66
 	    <link href="./css/style.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
@@ -31,7 +36,9 @@
 			<div id="contentMain">
 				<!--debut content -->
 				<div id="content">
-					<h2><ui:insert name="contentTitle" >Titre content par defaut</ui:insert></h2>					
+				
+					<h2><ui:insert name="contentTitle" >Titre content par defaut</ui:insert></h2>
+					<ui:insert name="content" />					
 				</div>
 				<!--fin contenu -->
 				<br class="spacer" />
