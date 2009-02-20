@@ -31,8 +31,6 @@ public abstract class Contenu implements  Serializable{
 	
 	private long id_contenu;
 	
-	private TypeContenu typeContenu;
-	
 	private NiveauAccesContenu niveauAcces;
 	
 	// etat courant du contenu (valeur par defaut à la création)
@@ -102,22 +100,6 @@ public abstract class Contenu implements  Serializable{
 	 */
 	public void setEtatSauve(EtatContenu etatSauve) {
 		this.etatSauve = etatSauve;
-	}
-
-	
-	/**
-	 * @return the typeContenu
-	 */
-	@Column(name="TYPE",updatable=false, nullable=false)
-	public TypeContenu getTypeContenu() {
-		return typeContenu;
-	}
-
-	/**
-	 * @param etatSauve the typeContenu to set
-	 */
-	public void setTypeContenu(TypeContenu typeContenu) {
-		this.typeContenu = typeContenu;
 	}
 
 

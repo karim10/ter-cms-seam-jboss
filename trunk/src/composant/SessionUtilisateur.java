@@ -20,19 +20,9 @@ public class SessionUtilisateur {
 
 	@In
 	private IUtilisateur utilisateur;
-	
-	private Boolean accesBackend;
 		
 	public SessionUtilisateur() {}
 
-	/**
-	 * <p>initialisation de accesBackend lors 
-	 * de l'initialisation du composant.</p>
-	 */
-	@Create
-	public void init(){
-		accesBackend = accesBackend();
-	}
 	
 	public SessionUtilisateur(Utilisateur utilisateur) {
 		this.utilisateur = utilisateur;
@@ -48,15 +38,6 @@ public class SessionUtilisateur {
 	}
 	
 	
-	public Boolean getAccesBackend() {
-		return accesBackend;
-	}
-
-
-	public void setAccesBackend(Boolean accesBackend) {
-		this.accesBackend = accesBackend;
-	}
-
 	/**
 	 * Verifie les droits d'acces d'un utilisateur
 	 * @return vrai si gestionnaire, redacteur et/ou admin d'au moins un contenu

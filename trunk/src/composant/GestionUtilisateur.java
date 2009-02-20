@@ -3,18 +3,22 @@ package composant;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityExistsException;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Transaction;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Factory;
+import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
 import org.jboss.seam.annotations.datamodel.DataModelSelection;
 import org.jboss.seam.annotations.security.Restrict;
+import org.jboss.seam.faces.FacesMessages;
 
 import entite.Contenu;
 import entite.ContenuException;
@@ -43,7 +47,7 @@ public class GestionUtilisateur{
 	public void setUtilisteur(Utilisateur utilisteur) {
 		this.utilisateur = utilisteur;
 	}
-
+	
 	@Restrict("#{s:hasRole('admin')}")
 	public List<Utilisateur> getListUtilisateur() {		
 		return this.listUtilisateur;
@@ -58,9 +62,47 @@ public class GestionUtilisateur{
 	 * <p>Crée la listUtilisateur lors de l'initialisation du composant 
 	 * à partir du contenu de la base de donnée.</p>
 	 */
+	
 	@Create
+	@Factory("listUtilisateur")
 	public void init(){
 		listUtilisateur = DataUtil.chargeUtilisateurs();
+	}
+	
+	/**
+	 * <p>Inscrit un nouveau utilisateur
+	 * @return vrai si l'inscription s'est effectuée
+	 *         faux sinon</p>
+	 */
+	public Boolean inscription(Utilisateur utilisateur){
+	     if (utilisateur.getConfirmation() == null || !utilisateur.getConfirmation().equals(utilisateur.getMotDePasse())){
+	         FacesMessages.instance().addToControl("confirmation", "les deux mot de passe ne correspondent pas");
+	         return false;
+	      }
+	      Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();	      
+	      int result = HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Utilisateur where login = :login")
+	            .setParameter("login", utilisateur.getLogin())
+	            .list().size();
+	      tx.commit();
+	            if(result > 0){
+	         FacesMessages.instance().addToControl("login", 
+	               "Ce login a déjà été choisi, choisissez-en un différent");
+	         return false; 
+	      }
+	     
+	      try{
+	    	  utilisateur.setAdmin(false);
+	    	  utilisateur.setCompteActive(false);
+	    	  utilisateur.setAccesBackend(false);
+	    	  addUtilisateur(utilisateur);
+	    	  setUtilisteur(null);
+	    	  return true;
+	      }
+	      catch (EntityExistsException ex){
+	         FacesMessages.instance().addToControl("login", 
+	               "Ce login a déjà été choisi, choisissez-en un différent");
+	         return false;  
+	      }
 	}
 	
 	/**
@@ -68,13 +110,13 @@ public class GestionUtilisateur{
 	 * @param u
 	 * @throws HibernateException
 	 */
-	public void addUtilisateur(Utilisateur utilisteur) throws HibernateException {
+	public void addUtilisateur(Utilisateur utilisateur) throws HibernateException {
 		
 	    Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 		
-	    HibernateUtil.getSessionFactory().getCurrentSession().save(utilisteur);
+	    HibernateUtil.getSessionFactory().getCurrentSession().save(utilisateur);
 	    
-	    getListUtilisateur().add(utilisteur);
+	    getListUtilisateur().add(utilisateur);
 	    
 	    tx.commit();
 	    
@@ -109,7 +151,7 @@ public class GestionUtilisateur{
 	public void removeUtilisateur(Utilisateur utilisateur) throws HibernateException, ContenuException {
 		Long id = utilisateur.getId_utilisateur();
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-		Contenu c = (Contenu)HibernateUtil.getSessionFactory().getCurrentSession().load(Contenu.class,id);
+		Utilisateur c = (Utilisateur)HibernateUtil.getSessionFactory().getCurrentSession().load(Utilisateur.class,id);
 		if(utilisateur!=null){
 			Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 			HibernateUtil.getSessionFactory().getCurrentSession().delete(c);

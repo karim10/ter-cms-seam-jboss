@@ -8,7 +8,6 @@ import org.jboss.seam.annotations.Name;
 import entite.EtatContenu;
 import entite.NiveauAccesContenu;
 import entite.Rubrique;
-import entite.TypeContenu;
 import entite.Utilisateur;
 
 import util.HibernateUtil;
@@ -26,9 +25,9 @@ public class Initialisation {
 	 */
 	public void init() {
     	admin = new Utilisateur("administrateur","admin","admin","administrateur","admin@admin.admin",true,true);
+    	admin.setAccesBackend(true);
 		 root = new Rubrique(NiveauAccesContenu.PUBLIC,EtatContenu.PUBLIE,"ROOT",new Date(),admin);
 		root.setParent(root);
-		root.setTypeContenu(TypeContenu.RUBRIQUE);
 		Transaction tx2 = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 		HibernateUtil.getSessionFactory().getCurrentSession().save(admin);
 		HibernateUtil.getSessionFactory().getCurrentSession().save(root);

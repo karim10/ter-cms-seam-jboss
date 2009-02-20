@@ -47,11 +47,25 @@ public abstract class UtilisateurAbstrait implements Serializable{
 	
 	private Boolean admin;
 	
+	private Boolean accesBackend;
+	
 	private List<Contenu> contenuAuteur;
 
 	private List<Rubrique> contenuRedacteur;
 	
 	private List<Rubrique> contenuGestionnaire;
+	
+	private String confirmation;
+	
+	
+
+	public String getConfirmation() {
+		return confirmation;
+	}
+
+	public void setConfirmation(String confirmation) {
+		this.confirmation = confirmation;
+	}
 
 	@Id @Column(name="ID_UTILISATEUR")
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -136,7 +150,7 @@ public abstract class UtilisateurAbstrait implements Serializable{
 		this.compteActive = compteActive;
 	}
 
-	@Column(name="WEBSITE", updatable=true, length=50)
+	@Column(name="WEBSITE", updatable=true, length=50,unique=false)
 	public String getWebsite() {
 		return website;
 	}
@@ -150,6 +164,19 @@ public abstract class UtilisateurAbstrait implements Serializable{
 		return admin;
 	}
 	
+	public void setAdmin(Boolean admin) {
+		this.admin = admin;
+	}
+
+	@Column(name="ACCESS_BACKEND",updatable=true, nullable=false)
+	public Boolean getAccesBackend() {
+		return accesBackend;
+	}
+
+	public void setAccesBackend(Boolean accesBackend) {
+		this.accesBackend = accesBackend;
+	}
+
 	public Boolean isGestionnaire(Rubrique rubrique) {
 		return (rubrique.getListGestionnaire().contains(this));
 	}
@@ -159,10 +186,7 @@ public abstract class UtilisateurAbstrait implements Serializable{
 	}
 
 
-	public void setAdmin(Boolean admin) {
-		this.admin = admin;
-	}
-
+	
 	@OneToMany(targetEntity=Contenu.class,
 			cascade={CascadeType.PERSIST,CascadeType.MERGE})
 	@JoinTable(

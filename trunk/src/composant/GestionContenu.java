@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.Destroy;
+import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
@@ -23,7 +24,6 @@ import entite.ContenuException;
 import entite.EtatContenu;
 import entite.Nouvelle;
 import entite.Rubrique;
-import entite.TypeContenu;
 import entite.Utilisateur;
 
 /**
@@ -54,6 +54,7 @@ public class GestionContenu {
 	 * à partir du contenu de la base de donnée.</p>
 	 */
 	@Create
+	@Factory("listContenu")
 	public void init(){
 		listContenu = DataUtil.chargeContenu();
 	}
@@ -90,10 +91,6 @@ public class GestionContenu {
 	 * @throws HibernateException
 	 */
 	public void addContenu(Contenu contenu)throws HibernateException {
-
-		if(contenu instanceof Rubrique)contenu.setTypeContenu(TypeContenu.RUBRIQUE);
-		else if(contenu instanceof Article)contenu.setTypeContenu(TypeContenu.ARTICLE);
-		else if(contenu instanceof Nouvelle)contenu.setTypeContenu(TypeContenu.NOUVELLE);
 		
 		contenu.setAuteur((Utilisateur) sessionUtilisateur.getUtilisateur());
 		
@@ -266,7 +263,7 @@ public class GestionContenu {
 	 * @return {@link Boolean}
 	 */
 	public boolean estRubrique(Contenu contenu){
-		return contenu.getTypeContenu().equals(TypeContenu.RUBRIQUE);
+		return contenu instanceof Rubrique;
 	}
 	
 	/**
@@ -275,7 +272,7 @@ public class GestionContenu {
 	 * @return {@link Boolean}
 	 */
 	public boolean estNouvelle(Contenu contenu ){
-		return contenu.getTypeContenu().equals(TypeContenu.NOUVELLE);
+		return contenu instanceof Nouvelle;
 	}
 	
 	/**
@@ -284,7 +281,7 @@ public class GestionContenu {
 	 * @return {@link Boolean}
 	 */
 	public boolean estArticle(Contenu contenu){
-		return contenu.getTypeContenu().equals(TypeContenu.ARTICLE);
+		return contenu instanceof Article;
 	}
 
 	@Destroy

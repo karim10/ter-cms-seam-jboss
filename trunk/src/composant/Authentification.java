@@ -45,7 +45,8 @@ public class Authentification {
 			} else {
 				Utilisateur u = (Utilisateur)result.get(0);
 				if(u.isAdmin()){identity.addRole("admin");}
-				sessionUtilisateur = new SessionUtilisateur(u);         
+				sessionUtilisateur = new SessionUtilisateur(u);
+				
 				return true;		
 			}
 		}
