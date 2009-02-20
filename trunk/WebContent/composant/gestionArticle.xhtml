@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:io="http://www.iocean.fr/iotags">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<ui:composition>
+	<rich:panel>
+		<f:facet name="header">
+			<h:outputText value="Gestion des rubriques" />
+		</f:facet>
+		
+
+	<!-- affichage des articles  -->
+
+	<rich:dataTable value="#{listContenu}" 
+				 	var="lc">
+	
+		<h:column>
+			<f:facet name="header">Id</f:facet>
+			<h:outputText value="#{lc.id_contenu}" rendered="#{gestionContenu.estArticle(lc)}"/>
+		</h:column>
+	
+		<h:column>
+			<f:facet name="header">Titre</f:facet>
+			<h:outputText value="#{lc.titreContenu}" rendered="#{gestionContenu.estArticle(lc)}"/>
+		</h:column>
+	
+		<h:column >
+			<f:facet name="header">Texte</f:facet>
+			<h:outputText value="#{lc.texte}" rendered="#{gestionContenu.estArticle(lc)}"/>
+		</h:column>
+	
+		<h:column>
+			<h:selectOneMenu value="#{lc.niveauAcces}" rendered="#{gestionContenu.estArticle(lc)}">
+  				<s:selectItems 	value="#{enum.getListNiveauAcces()}" 
+  							   	var="niveauAcces" 
+  								label="#{niveauAcces.label}" 
+  								noSelectionLabel="Choisir svp" />
+  				<s:convertEnum />
+			</h:selectOneMenu>
+		</h:column>
+	
+		<h:column>
+			<h:selectOneMenu value="#{lc.etatContenu}" rendered="#{gestionContenu.estArticle(lc)}">
+  				<s:selectItems 	value="#{enum.getListEtatContenu()}" 
+  								var="etatContenu" 
+  								label="#{etatContenu.label}" 
+  								noSelectionLabel="Choisir svp" />
+  				<s:convertEnum />
+			</h:selectOneMenu>
+		</h:column>
+	
+    	<h:column>
+      		<s:link value="Modifier" action="#{menu.afficheModifierArticle()}" rendered="#{gestionContenu.estArticle(lc)}"/>
+    	</h:column>
+	
+		<h:column>
+      		<s:link value="Supprimer" action="#{gestionContenu.removeContenu(gestionContenu.contenu)}" rendered="#{gestionContenu.estArticle(lc)}"/>
+    	</h:column>
+		
+	</rich:dataTable>
+	</rich:panel>
+	</ui:composition>
+
+</html>

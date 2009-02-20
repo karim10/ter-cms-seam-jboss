@@ -4,10 +4,13 @@
 <pages xmlns="http://jboss.com/products/seam/pages"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd"
-	no-conversation-view-id="/login.xhtml" login-view-id="/login.xhtml">
+	no-conversation-view-id="/cms.xhtml" login-view-id="/cms.xhtml">
 	
 	
-  <page view-id="/private.xhtml" login-required="true"/>
+  <page view-id="/admin.xhtml" login-required="true">
+  	<restrict>#{sessionUtilisateur.utilisateur.accesBackend}</restrict>
+  	
+  </page>
 
 	<page view-id="*">
         <navigation from-action="#{identity.logout}">
@@ -20,5 +23,12 @@
       <message>authentifiez vous svp</message>
     </redirect>
   </exception>
+  
+  <exception class="org.jboss.seam.security.AuthorizationException">
+        <end-conversation/>
+        <redirect view-id="/index.xhtml">
+            <message>You do not have the necessary security privileges to perform this action.</message>
+        </redirect>
+    </exception>
 	
 </pages>

@@ -1,6 +1,5 @@
 package composant;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityExistsException;
@@ -11,7 +10,6 @@ import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Factory;
-import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
@@ -20,7 +18,6 @@ import org.jboss.seam.annotations.datamodel.DataModelSelection;
 import org.jboss.seam.annotations.security.Restrict;
 import org.jboss.seam.faces.FacesMessages;
 
-import entite.Contenu;
 import entite.ContenuException;
 import entite.Utilisateur;
 

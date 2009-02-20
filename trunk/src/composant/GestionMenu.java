@@ -58,6 +58,10 @@ public class GestionMenu {
 		link = path + "modifierArticle.xhtml";
 	}
 	
+	public void afficheModifierRubrique(){
+		link = path + "modifierRubrique.xhtml";
+	}
+	
 	public void afficheFrontEnd(){
 		link = "/cms.xhtml";
 	}

@@ -1,52 +1,50 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:s="http://jboss.com/products/seam/taglib"
-	  xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:rich="http://richfaces.org/rich"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-	
-	<head>
-		<title>Administration - <ui:insert name="pageTitle">par defaut</ui:insert></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+<head>
+  <title><ui:insert name="title">Default title</ui:insert></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	    <meta http-equiv="Content-Language" content="fr" />
 	    <meta http-equiv="imagetoolbar" content="no" />
 	    <meta name="keywords" content="CMS, cms, TER, Jboss Seam, Keira, Duval, Soulé" />
 	    <meta name="description" content="TER M2 Genie Logiciel, CMS sur Jboss Seam" />
-	    <link href="./css/style.css" rel="stylesheet" type="text/css" />
-	</head>
-	<body>
-		
-			<!-- :::::::::::::::::::::::::::::::::::::::::::: -->	
-			
-			<!--debut header -->
-			
-					<ui:include src="header.xhtml"/>
-			
-			<!--fin header -->
-			
-			<!-- :::::::::::::::::::::::::::::::::::::::::::: -->
-			
-			<!--debut contentMain  -->
-			
-			<div id="contentMain">
-			
-				<!--debut content -->
-				
-					<h2><ui:insert name="contentTitle" >Titre content par defaut</ui:insert></h2>
-				
-				<!--fin contenu -->	
-			
-			</div>
-			
-			<!--fin contentMain -->
-			
-			<!-- :::::::::::::::::::::::::::::::::::::::::::: -->
-			
-			<!--debut footer -->
-			
-					<ui:include src="footer.xhtml"/>
-			
-			<!--fin footer-->	
-	</body>
+	    <link href="./css/site.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<div id="headerMain">
+    <ui:insert name="header">
+    	<ui:include src="header.xhtml"/>
+    </ui:insert>
+</div>
+
+<div id="headerMain">
+    <ui:insert name="header">
+    	<ui:include src="navigation.xhtml"/>
+    </ui:insert>
+</div>
+
+<div id="content">
+<br />
+    <a4j:outputPanel ajaxRendered="true">
+       	<ui:insert name="contenu">
+    	<ui:include src="#{menu.link}"/>
+  		</ui:insert>
+    </a4j:outputPanel>
+    <br />
+</div>
+
+<div id="footerMain">
+  <ui:insert name="footer">
+    <ui:include src="footer.xhtml"/>  
+  </ui:insert>
+</div>
+
+</body>
+
 </html>

@@ -147,7 +147,8 @@ ul{
 	border-left: 1px solid #ccc;
 	border-right: 1px solid #ccc;
 	border-top: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;	
+	border-bottom: 1px solid #ccc;
+	text-align:center;	
 }
 #content h2{
 	font:bold 20px/25px Georgia, "Times New Roman", Times, serif;

@@ -90,7 +90,7 @@ public class GestionContenu {
 	 * @param contenu
 	 * @throws HibernateException
 	 */
-	public void addContenu(Contenu contenu)throws HibernateException {
+	public Boolean addContenu(Contenu contenu)throws HibernateException {
 		
 		contenu.setAuteur((Utilisateur) sessionUtilisateur.getUtilisateur());
 		
@@ -106,6 +106,8 @@ public class GestionContenu {
 		getListContenu().add(contenu);
 
 		tx.commit();
+		
+		return true;
 
 	}
 
@@ -114,7 +116,7 @@ public class GestionContenu {
 	 * @param contenu
 	 * @throws HibernateException, ContenuException</p>
 	 */
-	public void modifierContenu(Contenu contenu) throws HibernateException, ContenuException {
+	public Boolean modifierContenu(Contenu contenu) throws HibernateException, ContenuException {
 		Long id = contenu.getId_contenu();
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 		Contenu c = (Contenu)HibernateUtil.getSessionFactory().getCurrentSession().load(Contenu.class,id);
@@ -128,10 +130,11 @@ public class GestionContenu {
 						getListContenu().remove(i);
 						contenu.setDateMaj(new Date());
 						getListContenu().add(i,contenu);
-						return;
+						return true;
 					}
 				}
 			}
+			return false;
 		} else {
 			throw new ContenuException("L'élément n'exite pas");
 		}   
@@ -282,6 +285,10 @@ public class GestionContenu {
 	 */
 	public boolean estArticle(Contenu contenu){
 		return contenu instanceof Article;
+	}
+	
+	public boolean estRoot(Rubrique rubrique){
+		return (rubrique.getTitreContenu().equals("ROOT"));
 	}
 
 	@Destroy

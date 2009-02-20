@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:io="http://www.iocean.fr/iotags">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<ui:composition>      
+<rich:panel>
+<f:facet name="header">
+	<h:outputText value="Modifier un article" />
+</f:facet>
+   <h:form>
+       <s:validateAll>
+       	<h:panelGrid columns="3">
+           <h:outputText value="Titre" />
+           <h:inputText id="titre" value="#{gestionContenu.contenu.titreContenu}" required="true"/>
+           <h:message  for="titre"/>
+           
+           <h:outputText value="Sous Titre" />
+           <h:inputText id="sousTitre" value="#{gestionContenu.contenu.sousTitre}"/>
+           <h:message  for="sousTitre"/>
+           
+           <h:outputText value="Description" />
+           <h:inputText id="description" value="#{gestionContenu.contenu.description}"/>
+           <h:message  for="description"/>
+           
+           <h:outputText value="Texte" />
+           <h:inputText id="texte" value="#{gestionContenu.contenu.texte}" required="true"/>
+           <h:message  for="texte"/>
+        
+           <h:outputText value="Niveau d'acces" />
+           <h:selectOneMenu value="#{gestionContenu.contenu.niveauAcces}" required="true">
+  				<s:selectItems id="niveauacces"
+  								value="#{enum.getListNiveauAcces()}" 
+  								var="niveauAcces" 
+  								label="#{niveauAcces.label}"/>
+  				<s:convertEnum />
+			</h:selectOneMenu>
+			<h:message  for="niveauacces"/>
+         
+           <h:outputText value="Rubrique Parent" />
+           <h:selectOneMenu value="#{gestionContenu.contenu.parent}" required="true">
+  			<s:selectItems 	id="parent"
+  							value="#{datautil.chargeRubrique()}" 
+  							var="ctn" 
+  							label="#{ctn.titreContenu}"
+  							noSelectionLabel="Choisir svp"
+  							/>
+  							<f:converter converterId="rubriqueConverter"/>		
+			</h:selectOneMenu>
+			<h:message  for="parent"/>
+			
+			
+			<h:outputText value="Lien Web" />
+           	<h:inputText id="web" value="#{gestionContenu.contenu.lienWeb}"/>
+           	<h:message  for="web"/>
+         </h:panelGrid>
+       </s:validateAll>
+       <h:messages />
+     
+     
+     <h:commandButton type="submit" value="valider" action="#{gestionContenu.addContenu(article)}"/>
+     
+   </h:form>
+  </rich:panel>
+</ui:composition>
+</html>

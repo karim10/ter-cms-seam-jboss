@@ -11,41 +11,27 @@
 	<h3 align="center">PAGE DE TESTS</h3>
 	<ul>
 	<s:link value="Init" action="#{initialisation.init()}"/>
+	
 			<li>
-				<h:outputLink value="login.seam">
+				<h:outputLink value="composant/ajoutUtilisateur.seam">
 				<h:outputText value="Inscription" />
 				</h:outputLink>
 			</li>
 			
 			<li>
-				<h:outputLink value="authentification.seam">
-				<h:outputText value="Connexion" />
-				</h:outputLink>
-			</li>
 			
-			<li>
-				<h:outputLink value="cms.seam">
-				<h:outputText value="En Construction..." />
-				</h:outputLink>
-			</li>
 			
+			<div id="headerMain">
+    			<ui:insert name="header">
+    				<ui:include src="composant/authentification.xhtml"/>
+    			</ui:insert>
+			</div>
+				
+			</li>
 			
 			<li>
 				<h:outputLink value="admin.seam">
 				<h:outputText value="Administration" />
-				</h:outputLink>
-			</li>
-			
-			<li>
-				<h:outputLink value="template.seam">
-				<h:outputText value="template" />
-				</h:outputLink>
-			</li>
-			
-		
-			<li>
-				<h:outputLink value="private.seam">
-				<h:outputText value="Back End" />
 				</h:outputLink>
 			</li>
 		

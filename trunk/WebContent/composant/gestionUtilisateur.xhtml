@@ -1,15 +1,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:s="http://jboss.com/products/seam/taglib"
-	  xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:rich="http://richfaces.org/rich"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:io="http://www.iocean.fr/iotags">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
 
-	<h:outputText value="Bonjour #{sessionUtilisateur.utilisateur.prenom} #{sessionUtilisateur.utilisateur.nom}, Bienvenue dans l'espace prive" />
+<ui:composition>
 
-<h:outputText><h3>Gestion des utilisateurs</h3></h:outputText>
-	
+	<h:outputText><h3>Gestion des utilisateurs</h3></h:outputText>
 	
 	<!-- affichage des utilisateurs  -->
 	
@@ -21,6 +26,11 @@
 		<h:column>
 			<f:facet name="header">Id</f:facet>
 			<h:outputText value="#{lu.id_utilisateur}" />
+		</h:column>
+		
+		<h:column>
+	 		<f:facet name="header">Login</f:facet>
+	  		<h:outputText value="#{lu.login}"/>
 		</h:column>
 		
 		<!-- affichage du prenom  -->
@@ -37,7 +47,7 @@
     	
     	<!-- lien pour modifier l'utilisateur  -->
     	<h:column>
-      		<s:link value="Modifier" action="/modifierUtilisateur.seam" />
+      		<s:link value="Modifier" action="#{menu.afficheModifierUtilisateur()}" />
     	</h:column>
 		
 		<!-- lien pour supprimer l'utilisateur  -->
@@ -46,5 +56,6 @@
 		</h:column>
 	</rich:dataTable>
 	
+	</ui:composition>
 
 </html>
