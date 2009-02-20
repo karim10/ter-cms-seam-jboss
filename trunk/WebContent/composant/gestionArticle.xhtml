@@ -40,7 +40,7 @@
 		</h:column>
 	
 		<h:column>
-			<h:selectOneMenu value="#{lc.niveauAcces}" rendered="#{gestionContenu.estArticle(lc)}">
+			<h:selectOneMenu onselect="#{lc.setNiveauAcces(gestionContenu.contenu.niveauAcces)}" value="#{lc.niveauAcces}" rendered="#{gestionContenu.estArticle(lc)}">
   				<s:selectItems 	value="#{enum.getListNiveauAcces()}" 
   							   	var="niveauAcces" 
   								label="#{niveauAcces.label}" 
