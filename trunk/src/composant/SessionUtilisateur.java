@@ -43,7 +43,7 @@ public class SessionUtilisateur {
 	 *         faux sinon
 	 */
 	public Boolean accesBackend(){
-		if(getUtilisateur().isAdmin())return true;
+		if(getUtilisateur().getAdmin())return true;
 		List<Rubrique> l = DataUtil.chargeRubrique();
 		for(Rubrique r : l){
 			if(r.getListGestionnaire().contains(getUtilisateur()))return true;

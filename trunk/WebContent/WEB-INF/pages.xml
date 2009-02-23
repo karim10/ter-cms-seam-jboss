@@ -9,25 +9,68 @@
 	
   <page view-id="/admin.xhtml" login-required="true">
   	<restrict>#{sessionUtilisateur.utilisateur.accesBackend}</restrict>
-  	
+  	<restrict>#{authentification.authentification()}</restrict>
   </page>
+  
 
 	<page view-id="*">
         <navigation from-action="#{identity.logout}">
             <redirect view-id="/cms.xhtml"/>
         </navigation>
     </page>
-
+    
+    <page view-id="*">
+        <navigation from-action="#{identity.login}">
+            <redirect view-id="/admin.xhtml"/>
+        </navigation>
+    </page>
+   
+    <page view-id="/modifierUtilisateur.xhtml" login-required="true">
+        <navigation from-action="#{gestionUtilisateur.inscription(gestionUtilisateur.utilisateur)}">
+            <redirect view-id="/gestionUtilisateur.xhtml"/>
+        </navigation>
+    </page>
+    
+    <page view-id="/ajoutUtilisateur.xhtml" login-required="true">
+        <navigation from-action="#{gestionUtilisateur.inscription(utilisateur)}">
+            <redirect view-id="/gestionUtilisateur.xhtml"/>
+        </navigation>
+    </page>
+     
+      <page view-id="/ajoutRubrique.xhtml" login-required="true">
+        <navigation from-action="#{gestionContenu.addContenu(rubrique)}">
+            <redirect view-id="/gestionRubrique.xhtml"/>
+        </navigation>
+    </page>
+    
+     <page view-id="/modifierRubrique.xhtml" login-required="true">
+        <navigation from-action="#{gestionContenu.modifierContenu(gestionContenu.contenu)}">
+            <redirect view-id="/gestionRubrique.xhtml"/>
+        </navigation>
+    </page>
+    
+    <page view-id="/ajoutArticle.xhtml" login-required="true">
+        <navigation from-action="#{gestionContenu.addContenu(article)}">
+            <redirect view-id="/gestionArticle.xhtml"/>
+        </navigation>
+    </page>
+    
+    <page view-id="/choixGesionnaire.xhtml" login-required="true">
+        <navigation from-action="#{gestionContenu.contenu.addGestionnaire(lu)}">
+            <redirect view-id="/gestionRubrique.xhtml"/>
+        </navigation>
+    </page>     
+    
   <exception class="org.jboss.seam.security.NotLoggedInException">
-    <redirect view-id="/index.xhtml">
+    <redirect view-id="/cms.xhtml">
       <message>authentifiez vous svp</message>
     </redirect>
   </exception>
   
   <exception class="org.jboss.seam.security.AuthorizationException">
         <end-conversation/>
-        <redirect view-id="/index.xhtml">
-            <message>You do not have the necessary security privileges to perform this action.</message>
+        <redirect view-id="/cms.xhtml">
+            <message>Vous n'avez pas les droits nécessaires pour cette action.</message>
         </redirect>
     </exception>
 	

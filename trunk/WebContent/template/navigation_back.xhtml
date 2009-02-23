@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<f:view xmlns:f="http://java.sun.com/jsf/core">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	
+	<p> 
+		<h:outputText value="Vous êtes connecté sous le login de : #{sessionUtilisateur.utilisateur.login}
+			#{gestionContenu.init()} #{gestionUtilisateur.init()}"/>	
+	</p>
+	
+	<ul class="nav">
+		<li><a href="#">Gestion des rubriques</a></li>
+		<li><a href="#">Gestion des articles </a></li>
+		<li><a href="#">Gestion des nouvelles</a></li>
+		<li><a href="#">Mon compte</a></li>
+		<li><a href="#">Gestion page d'accueil</a></li>
+	</ul>
+</f:view>
+</html>

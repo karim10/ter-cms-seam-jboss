@@ -34,7 +34,7 @@ public abstract class Contenu implements  Serializable{
 	private NiveauAccesContenu niveauAcces;
 	
 	// etat courant du contenu (valeur par defaut à la création)
-	private EtatContenu etatContenu = EtatContenu.EN_ATTENTE;
+	private EtatContenu etatContenu;
 	
 	//etat sauvegardé après dépublication du contenu
 	private EtatContenu etatSauve = null;

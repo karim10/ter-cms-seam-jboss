@@ -9,9 +9,9 @@ import org.jboss.seam.annotations.Scope;
 public class GestionMenu {
 
 
-	private final String path  = "../composant/";
+	private final String path  = "/";
 	
-	private String link = "../composant/contenu.xhtml";
+	private String link = " ";
 	
 	
 	public String getLink() {
@@ -39,7 +39,7 @@ public class GestionMenu {
 	}
 	
 	public void afficheAjoutArticle(){
-		link = path + "ajoutArticle.xhtml";
+		link ="/ajoutArticle.xhtml";
 	}
 	
 	public void afficheAjoutRubrique(){

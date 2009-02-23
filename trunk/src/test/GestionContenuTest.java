@@ -55,13 +55,12 @@ public class GestionContenuTest {
 		gc.setSessionUtilisateur(su);
 		//cas 1 : depublication Rubrique PUBLIE par Admin
 		u.setAdmin(true);
-		assertEquals(null, r.getEtatSauve());
 		assertEquals(EtatContenu.EN_ATTENTE, r.getEtatContenu());
 
 		r.setEtatContenu(EtatContenu.CORBEILLE);
 		gc.depublierContenu(r);
 		assertEquals(EtatContenu.NON_PUBLIE, r.getEtatContenu());
-		assertEquals(EtatContenu.CORBEILLE, r.getEtatSauve());
+		
 		//cas 2 : depublication Rubrique PUBLIE par Membre
 		r.setEtatContenu(EtatContenu.PUBLIE);
 		u.setAdmin(false);

@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+	  xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="template/template-admin.xhtml">
+			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+			
+		<ui:define name="pageTitle"> gestion utilisateurs</ui:define>
+	  	<ui:define name="contentTitle">
+	  		
+	  	</ui:define>
+	  	<ui:define name="content">
+	  		<div align="center">	
+	  			<s:fragment rendered="#{s:hasRole('admin')}">
+					<rich:panel style="width:750px;" bodyClass="rich-panel-body-acc">
+						<f:facet name="header">
+							<h:outputText><h2>Gestion des utilisateurs</h2></h:outputText>        
+        				</f:facet>
+        						
+					<!-- affichage des utilisateurs  -->
+					<h:form>
+						<s:link value="Ajouter une nouveau utilisateur " action="/ajoutUtilisateur.seam"/><br /><br />
+						<rich:dataTable value="#{listUtilisateur}" var="lu" rows="10" reRender="scrol">
+						  	
+						  	<!-- affichage de l'identifiant  -->			
+							<rich:column sortBy="#{lu.id_utilisateur}" >
+								<f:facet name="header">Id</f:facet>
+								<h:outputText value="#{lu.id_utilisateur}" />
+							</rich:column>
+							
+							<!-- affichage du login  -->
+							<rich:column sortBy="#{lu.login}" >
+								<f:facet name="header">Login</f:facet>
+								<s:link  action="/modifierUtilisateur.seam">
+								<h:outputText value="#{lu.login}" />
+								</s:link>
+							</rich:column>
+							
+							<!-- affichage du prenom  -->
+							<rich:column sortBy="#{lu.prenom}">
+								<f:facet name="header">Prénom</f:facet>
+								<h:outputText value="#{lu.prenom}" />
+							</rich:column>
+						
+							<!-- affichage du nom  -->
+							<rich:column sortBy="#{lu.nom}">
+						 		<f:facet name="header">Nom</f:facet>
+						  		<h:outputText value="#{lu.nom}"/>
+							</rich:column>
+							
+							<!-- affichage email  -->
+							<rich:column sortBy="#{lu.email}">
+								<f:facet name="header">Email</f:facet>
+								<h:outputText value="#{lu.email}" />
+							</rich:column>
+							
+							<!-- affichage lien web  -->
+							<rich:column sortBy="#{lu.website}">
+								<f:facet name="header">Site web</f:facet>
+								<h:outputText value="#{lu.website}" />
+							</rich:column>
+							
+							<!-- lien pour supprimer l'utilisateur  -->
+							<rich:column rendered="#{sessionUtilisateur.utilisateur.admin}">
+									<f:facet name="header">Action admin</f:facet>
+								<s:link value="Supprimer" action="#{gestionUtilisateur.removeUtilisateur(gestionUtilisateur.utilisateur)}" />
+							</rich:column>
+							 <f:facet name="footer">
+	                			<rich:datascroller id="scrol"></rich:datascroller>
+	            			</f:facet>
+						</rich:dataTable>
+					</h:form>	
+					</rich:panel>
+				</s:fragment>
+		
+		   <s:button value="retour à l'accueil"  styleClass="button" action="/admin.seam"/>
+		 </div>
+		 </ui:define>
+	</ui:composition>
+			
+</html>

@@ -6,7 +6,7 @@ package entite;
 
 public interface IUtilisateur {
 
-	public Boolean isAdmin();
+	public Boolean getAdmin();
 	public Boolean isRedacteur(Rubrique rubrique);
 	public Boolean isGestionnaire(Rubrique rubrique);
 	//public String getInfos();

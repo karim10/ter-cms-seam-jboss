@@ -178,7 +178,7 @@ public class GestionContenu {
 		Boolean resultat = false;
 
 		// si l'utilisateur courant est admin il a le droit
-		if(sessionUtilisateur.getUtilisateur().isAdmin()){
+		if(sessionUtilisateur.getUtilisateur().getAdmin()){
 			resultat = true;
 		}
 		//si le contenu est une rubrique
@@ -191,7 +191,7 @@ public class GestionContenu {
 		} else {
 			//C'est pas une Rubrique, on vérifie que l'utilisateur a le droit sur le parent du contenu en question
 			if(sessionUtilisateur.getUtilisateur().isGestionnaire(contenu.getParent()) ||
-					sessionUtilisateur.getUtilisateur().isAdmin()){
+					sessionUtilisateur.getUtilisateur().getAdmin()){
 				resultat = true;
 			}
 		}

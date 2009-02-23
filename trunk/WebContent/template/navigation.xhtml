@@ -14,13 +14,15 @@
 </head>
 
 <ui:composition>
+	<p> 
 	
+		<h:outputText value="Vous êtes connecté sous le login de : #{sessionUtilisateur.utilisateur.login}
+			#{gestionContenu.init()} #{gestionUtilisateur.init()}"/>
+			<s:link action="#{identity.logout}" styleClass="button" value="Se dÃ©connecter" />	
+	</p>
 	<div id="nav">
 		<h:form>
-			<rich:toolBar>
-
-            
-            
+			<rich:toolBar>        
             <rich:dropDownMenu>
                 <f:facet name="label"> 
                     <h:panelGroup>
@@ -49,7 +51,20 @@
                 </rich:menuItem>            
             </rich:dropDownMenu>
             
-            <rich:dropDownMenu rendered="#{sessionUtilisateur.utilisateur.isAdmin()}">
+             <rich:dropDownMenu>
+                <f:facet name="label"> 
+                    <h:panelGroup>
+                        <h:outputText value="Gestion des nouvelles"/>
+                    </h:panelGroup>
+                </f:facet>
+                <rich:menuItem submitMode="ajax" value="Liste des nouvelles"
+                    action="#">
+                </rich:menuItem>
+                <rich:menuItem submitMode="ajax" value="Ajouter une nouvelle"/>
+            </rich:dropDownMenu>
+            
+            
+            <rich:dropDownMenu rendered="#{s:hasRole('admin')}">
                 <f:facet name="label"> 
                     <h:panelGroup>
                         <h:outputText value="Gestion des Utilisateurs"/>
@@ -65,14 +80,13 @@
             <rich:dropDownMenu>
                 <f:facet name="label"> 
                     <h:panelGroup>
-                        <h:outputText value="Gestion du Front End"/>
+                        <h:outputText value="Site public"/>
                     </h:panelGroup>
                 </f:facet>
-                <rich:menuItem submitMode="ajax" value="Front End"
+                <rich:menuItem submitMode="ajax" value="PrÃ©visualiser"
                     action="/cms.seam">
                 </rich:menuItem>
-                <rich:menuItem submitMode="ajax" value="Publication"
-                     />
+                <rich:menuItem submitMode="ajax" value="Publication"/>
             </rich:dropDownMenu>
 
         </rich:toolBar>

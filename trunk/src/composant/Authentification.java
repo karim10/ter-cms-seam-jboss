@@ -28,13 +28,13 @@ public class Authentification {
 	 * @return vrai si l'authentification est effectué
 	 *         faux sinon 
 	 */
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings({"unchecked", "deprecation"})
 	public boolean authentification() {
 		try{    
 			HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();			
 			
 			List result = HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-	            "from Utilisateur where login = :login and motDePasse = :motdepasse")
+	            "from Utilisateur u where u.login = :login and u.motDePasse = :motdepasse and u.accesBackend=true")
 	            .setParameter("login", identity.getUsername())
 	            .setParameter("motdepasse", identity.getPassword())
 	            .list();
@@ -44,7 +44,7 @@ public class Authentification {
 				return false;
 			} else {
 				Utilisateur u = (Utilisateur)result.get(0);
-				if(u.isAdmin()){identity.addRole("admin");}
+				if(u.getAdmin()){identity.addRole("admin");}
 				sessionUtilisateur = new SessionUtilisateur(u);
 				
 				return true;		

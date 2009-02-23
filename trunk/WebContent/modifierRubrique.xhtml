@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:io="http://www.iocean.fr/iotags">
+
+<ui:composition template="template/template-admin.xhtml">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+		<ui:define name="pageTitle"> modification rubrique</ui:define> 
+		<ui:define name="content">
+			<div align="center">	
+				<rich:panel style="width:450px;" id="majR" headerClass="rich-panel-header-adm" bodyClass="rich-panel-body-acc">
+				<h:messages globalOnly="true" styleClass="erreur"/>
+					<f:facet name="header">
+						<h:outputText value="Modification d'une rubrique" />
+					</f:facet>
+				
+						<s:fragment rendered="#{gestionContenu.estRoot(gestionContenu.contenu)}">
+						
+						<h:outputText value="Vous ne pouvez pas modifier la rubrique Root!" /><br />
+						<s:button value="retour "  styleClass="button" action="/gestionRubrique.seam" />					   
+					   </s:fragment>
+					   
+						<s:fragment rendered="#{!gestionContenu.estRoot(gestionContenu.contenu)}">
+					   <h:form >
+					       <s:validateAll>
+					       	<h:panelGrid columns="3">
+					           <h:outputText value="Titre" />
+					           <h:inputText id="titre" value="#{gestionContenu.contenu.titreContenu}" size="40" required="true"/>
+					           <h:message  for="titre"/>
+					        
+					           <h:outputText value="Niveau d'acces" />
+					           <h:selectOneMenu value="#{gestionContenu.contenu.niveauAcces}" required="true">
+					  				<s:selectItems id="niveauacces"
+					  								value="#{enum.getListNiveauAcces()}" 
+					  								var="niveauAcces" 
+					  								label="#{niveauAcces.label}"/>
+					  				<s:convertEnum />
+								</h:selectOneMenu>
+								<h:message  for="niveauacces"/>
+					         
+					           <h:outputText value="Rubrique Parent" />
+					           <h:selectOneMenu value="#{gestionContenu.contenu.parent}" required="true">
+					  			<s:selectItems 	id="parent"
+					  							value="#{datautil.chargeRubrique()}" 
+					  							var="ctn" 
+					  							label="#{ctn.titreContenu}"
+					  							/>
+					  							<f:converter converterId="rubriqueConverter"/>		
+								</h:selectOneMenu>
+								<h:message  for="parent"/>
+																
+								   <h:outputText value="Etat rubrique" rendered= "#{sessionUtilisateur.utilisateur.admin || sessionUtilisateur.utilisateur.isGestionnaire(gestionContenu.contenu)}"/>
+					          		 <h:selectOneMenu value="#{gestionContenu.contenu.etatContenu}" required="true" rendered= "#{sessionUtilisateur.utilisateur.admin || sessionUtilisateur.utilisateur.isGestionnaire(gestionContenu.contenu)}">
+					  				<s:selectItems id="eta"
+					  								value="#{enum.getListEtatContenu()}" 
+					  								var="et" 
+					  								label="#{et.label}"/>
+					  				<s:convertEnum />
+								</h:selectOneMenu>
+								<h:message  for="eta"/>
+								
+								<h:outputText value="Lien Web" />
+					           	<h:inputText id="web" value="#{gestionContenu.contenu.lienWeb}"/>
+					           	<h:message  for="web"/>
+					         </h:panelGrid>
+					       </s:validateAll>
+					     
+					     <h:messages />
+					     <h:commandButton type="submit" class="button" value="valider" action="#{gestionContenu.modifierContenu(gestionContenu.contenu)}"/>
+					   </h:form>
+					   </s:fragment>
+					  
+					  </rich:panel>
+					  </div>
+					 </ui:define> 
+		</ui:composition>
+</html>
