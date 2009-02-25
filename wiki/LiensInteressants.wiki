@@ -37,7 +37,7 @@ JSF
 RichFaces
 la démo / documentation des composants :
  * http://livedemo.exadel.com/richfaces-demo/richfaces/dataTable.jsf?c=dataTable&tab=usage
-
+ * documentation très intéressante sur le framework RichFaces : http://www.jboss.org/file-access/default/members/jbossrichfaces/freezone/docs/devguide/en/html/index.html
 Facelets
   * la documentation officielle n'est pas très intéressante : https://facelets.dev.java.net/nonav/docs/dev/docbook.html
   * deux articles beaucoup mieux, qui constituent un tutoriel très intéressant :
