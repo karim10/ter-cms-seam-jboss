@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+		<ui:composition>
+	  	<div align="center">	
+			<rich:panel  id="ajA" >
+			<f:facet name="header">
+				<h2>Ajout d'un nouveau article</h2>        
+        	</f:facet>
+		   <a4j:form id="ajoutArticle" ajaxSubmit="true" reRender="titre,sousTitre,description,texte">
+		     <table border="0">
+		       <s:validateAll> 
+		         <tr>
+		           
+		           <td>Titre de l'article<br />
+		           		<h:inputText id="titre" value="#{article.titreContenu}" required="true" size="66">
+		           			<rich:ajaxValidator event="onblur"/>
+		           		</h:inputText>
+		           		<br/>
+		           		<rich:message  errorClass="erreur" for="titre"/>
+		           </td>
+		           <td>Niveau d'accès<br />
+			           <h:selectOneMenu value="#{article.niveauAcces}" required="true">
+			  				<s:selectItems id="niveauacces"
+			  								value="#{enum.getListNiveauAcces()}" 
+			  								var="niveauAcces" 
+			  								label="#{niveauAcces.label}"
+			  								noSelectionLabel="Choisissez svp"/>
+			  								
+			  				<s:convertEnum />
+						</h:selectOneMenu><br />
+						<rich:message  errorClass="erreur" for="niveauacces"/>
+    			   </td>
+		         </tr>
+		         
+		         <tr>
+		           
+		           <td>Sous Titre<br />
+		           		<h:inputTextarea id="sousTitre" value="#{article.sousTitre}" rows="1" cols="50"/><br />
+		           		<rich:message errorClass="erreur" for="sousTitre"/>
+		           	</td>
+		           	<td>Rubrique Parent<br />
+		           
+    				  <h:selectOneMenu value="#{rubrique.parent}" required="true">
+			  			<s:selectItems 	id="parent"
+			  							value="#{datautil.chargeRubrique()}" 
+			  							var="ctn" 
+			  							label="#{ctn.titreContenu}"
+			  							noSelectionLabel="Choisissez svp"
+			  							/>
+			  							<f:converter converterId="rubriqueConverter"/>		
+						</h:selectOneMenu><br />
+    				<rich:message errorClass="erreur" for="parent"/>
+					</td>
+					
+		         </tr>
+		         <tr>
+		          
+		           <td>Description<br />
+		           		<h:inputTextarea id="description" value="#{article.description}" cols="50"/><br />
+		           		<rich:message  errorClass="erreur" for="description"/>
+		           </td>
+		           <td>Lien Web<br />
+		           		<h:inputText value="#{article.lienWeb}"/>
+		           </td>
+		         </tr>
+		         <tr>
+		         	<td>Date de création 
+						<rich:calendar id="dateC" datePattern="dd/M/yy"  value="#{article.dateCreation}" require="true"/>
+						<rich:message errorClass="erreur" for="dateC"/>
+					</td>
+		         </tr>
+		         <tr>
+		           
+		           <td>Texte de l'article
+		           		 <rich:editor value="#{article.texte}" theme="advanced" language="fr"  width="550" height="400" style="p"
+		           		   plugins="save,paste,cut"  useSeamText="true" id="texte" autoResize="true" label="Texte de l'Article">
+          					<f:param name="theme_advanced_toolbar_location" value="top"/>
+          					<f:param name="theme_advanced_buttons1" value="bold,italic,underline, cut,copy,paste,pasteword"/>                               
+          					<f:param name="theme_advanced_toolbar_align" value="left"/>
+						</rich:editor><br />
+						<rich:message errorClass="erreur" for="texte"/>
+		           </td>
+		         </tr>
+		       </s:validateAll>
+		       <tr>
+		       		<td>
+		       			 <rich:messages  errorClass="erreur"/>
+		     			<h:commandButton type="submit" class="button" value="valider" action="#{gestionContenu.addContenu(article)}"/>
+		       		</td>
+		       		<td>
+		       			 <s:button value="retour à l'accueil"  styleClass="button" action="/admin.seam"/>
+		       		</td>
+		       </tr>
+		     </table>    
+		   </a4j:form>
+		   </rich:panel>
+		 </div>
+	</ui:composition>
+</html>

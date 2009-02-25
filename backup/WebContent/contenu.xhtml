@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+	<ui:composition>
+	<div align="center">
+	  		
+	  	<rich:panel style="width:700px;" bodyClass="rich-panel-body-acc" >
+	  		<a4j:form>
+			<f:facet name="header">
+				<h2>Panneau d'administration</h2>        
+        	</f:facet>
+			<table cellspacing="10">
+			  <tr>
+			    <td class="adminPanel"> 
+                	<a4j:commandLink action="#{menu.afficheAjoutArticle()}" id="out1">
+           				<h:graphicImage value="images/accueil-admin/article-add.png" /><br/>
+			    		<span><h:outputText value="Ajouter un article" /></span>
+					</a4j:commandLink>	 
+			    </td>
+			    <td class="adminPanel">
+			    	<a4j:commandLink action="#{menu.afficheAjoutNouvelle()}" id="out2">
+			    		<img src="images/accueil-admin/nouvelle.png" /><br/>
+			    		<span><h:outputText value="Ajouter une Nouvelle" /></span>
+			    	</a4j:commandLink>
+			    </td>
+			    <td class="adminPanel">
+			    	<a4j:commandLink action="#{menu.afficheAjoutRubrique()}" id="out3">
+			    		<img src="images/accueil-admin/rubrique.png" /><br/>
+			    		<span><h:outputText value="Ajouter une Rubrique" /></span>
+			    	</a4j:commandLink>
+			    </td>
+			    <td class="adminPanel">
+			    	<a4j:commandLink action="#{menu.afficheGestionArticle()}" id="out4">
+			    		<h:graphicImage value="images/accueil-admin/article.png" /><br/>
+			    		<span><h:outputText value="Gestion articles" /></span>
+			    	</a4j:commandLink>
+			    </td>
+			  </tr>
+				
+			<tr>
+			 
+			    <td class="adminPanel">
+			    	<a4j:commandLink action="#{menu.afficheGestionRubrique()}" id="out5">
+			    		<img src="images/accueil-admin/rub.png" /><br/>
+			    		<span><h:outputText value="Gestion rubriques" /></span>
+			    	</a4j:commandLink>
+			    </td>
+			    <s:fragment rendered="#{sessionUtilisateur.utilisateur.admin}">
+			    <td class="adminPanel">
+			    	<a4j:commandLink action="#" id="out6">
+			    		<img src="images/accueil-admin/corbeille.png" /><br/>
+			    		<span><h:outputText value="Gestion de la corbeille" /></span>
+			    	</a4j:commandLink>
+			    </td>
+			    <td class="adminPanel">
+			    	<a4j:commandLink action="#{menu.afficheGestionUtilisateur()}" id="out7">
+			    		<img src="images/accueil-admin/user.png" /><br/>
+			    		<span><h:outputText value="Gestion utilisateurs" /></span>
+			    	</a4j:commandLink>
+			    </td>
+			    <td class="adminPanel">
+			    	<a4j:commandLink action="#" id="out8">
+			    		<img src="images/accueil-admin/config.png" /><br/>
+			    		<span><h:outputText value="Configuration globale" /></span>
+			    	</a4j:commandLink>
+			    </td>
+			    </s:fragment>
+			  </tr>
+			 <tr>
+			 <s:fragment rendered="#{sessionUtilisateur.utilisateur.admin}">
+			  <td class="adminPanel">
+			    	<a4j:commandLink action="#" id="out9">
+			    		<img src="images/accueil-admin/frontpage.png" /><br/>
+			    		<span><h:outputText value="Gestion page d'accueil" /></span>
+			    	</a4j:commandLink>
+			    </td>
+			   	<td class="adminPanel">
+			 		<a4j:commandLink action="#{menu.afficheAjoutUtilisateur()}" id="out10">
+			    		<img src="images/accueil-admin/adduser.png" /><br/>
+			    		<span><h:outputText value="Ajouter un utilisateur" /></span>
+			    	</a4j:commandLink>
+			    </td>
+			    </s:fragment>
+			 </tr>			  
+			</table>
+			<br />
+			<p>
+				Cette page vous donne accès à tous les outils vous permettant de configurer et/ou d'ajouter du contenu à votre
+				site web . <cite> Par exempe : </cite>
+				Vous pouvez ajouter des <span>articles</span>, des <span>nouvelles</span> et des <span>rubriques</span>.
+			</p>
+			</a4j:form>
+			</rich:panel>
+	    </div> 
+
+	</ui:composition>
+
+</html>

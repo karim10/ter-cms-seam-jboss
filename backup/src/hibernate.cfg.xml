@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+    	 
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+        <property name="use_sql_comments">true</property>
+        
+        <!-- Connexion H2 -->
+ <!--
+        <property name="dialect">org.hibernate.dialect.H2Dialect</property>
+        <property name="connection.driver_class">org.h2.Driver</property>
+        <property name="connection.url">jdbc:h2:mem:cms</property>
+        <property name="connection.username">sa</property>
+        <property name="hbm2ddl.auto">create-drop</property>
+ -->
+  
+        <!-- Connexion PostGreSQL -->
+ <!--		
+ 		<property name="connection.url">jdbc:postgresql://localhost/cms</property>
+		<property name="connection.username">postgres</property>
+		<property name="connection.driver_class">org.postgresql.Driver</property>
+		<property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+		<property name="connection.password">cms</property>
+		 
+ -->  	   
+
+ <!--
+        <property name="hbm2ddl.auto">create-drop</property>
+  -->      
+        <!-- Connexion MySQL -->
+ 
+        <property name="connection.url">jdbc:mysql://localhost/cms</property>
+		<property name="connection.username">root</property>
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="connection.password"></property>
+ 		<property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+        <property name="hbm2ddl.auto" >update</property>
+  
+  
+       
+       	<property name="current_session_context_class">thread</property>
+       
+		<!-- Batch processing -->
+ 		 <property name="hibernate.default_batch_fetch_size">20</property>
+
+        <!-- Hibernate encoding -->
+        <property name="connection.useUnicode">true</property>
+    	<property name="connection.characterEncoding">utf-8</property>
+        
+		<!-- Cache -->
+		<property name="hibernate.cache.use_query_cache">true</property>
+        <property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+        
+        <!-- Transaction -->
+        <property name="transaction.flush_before_completion">true</property>
+        <property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+    	
+    	<!-- Mapping des entites -->
+  	
+  		<mapping class="entite.UtilisateurAbstrait"/>
+		<mapping class="entite.Utilisateur"/>
+		<mapping class="entite.Contenu"/>
+		<mapping class="entite.Rubrique"/>
+		<mapping class="entite.Article"/>
+		<mapping class="entite.Nouvelle"/>
+ 	
+    </session-factory>
+</hibernate-configuration>
