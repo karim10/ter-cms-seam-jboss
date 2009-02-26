@@ -1,0 +1,353 @@
+/* Document CSS TER CMS Jboss Seam */
+body {
+	padding: 0;
+	margin: 0;
+	background: url(../images/main_bg.gif) 0 0 repeat-x #fff;
+	height: 150px;
+	color: #000;
+}
+
+div,h1,h2,p,form,label,input,textarea,img,span {
+	margin: 0;
+	padding: 0;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	font-size: 0;
+}
+
+.spacer {
+	clear: both;
+	font-size: 0;
+	line-height: 0;
+}
+
+/*------------------------------------------------fin body--------------------*/
+/*------------------------------------------------debut header--------------------*/
+#headerMain {
+	width: 100%;
+}
+
+
+
+#header ul.top {
+	/*background: url(../images/top_nav_bg.gif) 0 0 no-repeat;*/
+	width: 39px;
+	height: 18px;
+	position: absolute;
+	left: 900px;
+	top: 8px;
+	padding: 0 0 0 15px;
+}
+.rich-panel-header-adm {
+	font: bold 18px/ 20px Georgia, "Times New Roman", Times, serif;
+	color: white;
+	text-transform: capitalize;
+	margin: 0 0 0px 0;
+	text-align: center;
+}
+#header ul.top li {
+	float: left;
+	display: block;
+	left: 200px;
+}
+
+#header ul.top li a.accueil {
+	background: url(../images/home_icon.gif) 0 3px no-repeat;
+	padding: 0 0 0 18px;
+	font: bold 10px/ 18px "Trebuchet MS", Arial, Helvetica, sans-serif;
+	color: #000;
+	margin: 0 21px 0 0;
+	text-transform: uppercase;
+	float: left;
+	display: block;
+	background-color: inherit;
+	text-decoration: none;
+}
+
+
+
+#header h1 {
+	font: bold 24px/ 27px Verdana, Arial, Helvetica, sans-serif;
+	color: #fff;
+	background-color: inherit;
+	position: absolute;
+	left: 300px;
+	top: 70px;
+	text-transform: uppercase;
+}
+
+#header p {
+	font: normal 12px Verdana, Arial, Helvetica, sans-serif;
+	color: #FEEDB7;
+	background-color: inherit;
+	position: absolute;
+	left: 280px;
+	top: 110px;
+	text-transform: none;
+	text-align: center;
+	width: 700px;
+}
+#header p a {
+	color:white;
+	}
+
+#nav {
+	width:100%;
+	height:20px;
+	position:absolute;
+	top:139px;
+	margin:0 ;
+	padding:0;	
+}
+
+
+#nav .ref:hover{
+	color:#fff;
+	background-color:#990000;
+	float:left;
+}
+.home {
+	color: white;
+	}
+.homeS {
+	color: black;
+	}
+/*------------------------------------------------fin header--------------------*/
+/*------------------------------------------------debut content--------------------*/
+.erreur {
+	font: normal 12px/ 17px Verdana, Arial, Helvetica, sans-serif;
+	color: red;
+}
+
+.button {
+	margin-top: 10px;
+	color: white;
+	background-color: #990000;
+	border: hidden;
+}
+
+.login {
+	font: bold 12px/ 17px Verdana, Arial, Helvetica, sans-serif;
+	color: #006882;
+}
+
+.rich-panel-body-acc {
+	background-color: white;
+}
+
+.rich-messages-label {
+	font-style: italic;
+	color: red;
+}
+
+#contentMain {
+	width: 100%;
+	padding: 0 0 15px 0;
+	margin-top: 180px;
+}
+
+#content {
+	width: 1050px;
+	margin: 0 auto;
+	padding: 15px 15px 15px 15px;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+}
+
+#content h2 {
+	font: bold 18px/ 20px Georgia, "Times New Roman", Times, serif;
+	color: white;
+	background-color: inherit;
+	text-transform: capitalize;
+	margin: 0 0 0px 0;
+	text-align: center;
+	/*background: url(../images/left_link_bg.gif) 0 0 no-repeat #F0FFFF;*/
+}
+
+#content h2 span {
+	font: normal 30px/ 18px Verdana, Arial, Helvetica, sans-serif;
+	color: #970000;
+	background-color: inherit;
+	display: block;
+}
+
+#content p {
+	font: normal 12px/ 17px Verdana, Arial, Helvetica, sans-serif;
+	color: #251C00;
+	background-color: inherit;
+	margin: 0 0 24px 0;
+	display: block;
+	width: 447px;
+}
+
+#content p span {
+	font: bold 12px/ 17px Verdana, Arial, Helvetica, sans-serif;
+	color: #006882;
+	background-color: #FFFEFA;
+}
+
+#content p a.link {
+	font: normal 12px/ 17px Verdana, Arial, Helvetica, sans-serif;
+	color: #1B7D01;
+	background-color: inherit;
+	text-decoration: underline;
+}
+
+#content p a.link:hover {
+	color: #1B7D01;
+	background-color: #F7F0D9;
+	text-decoration: none;
+}
+
+/*----------------------------------------------debut special admin accueil--------*/
+.adminPanel {
+	border-width: 1px;
+	border-style: solid;
+	border: #DDEEFF 1px solid;
+	text-align: center;
+}
+
+.adminPanel a {
+	color: #006882;
+	background-color: #FFFEFA;
+	text-decoration: none;
+}
+
+.adminPanel a:hover {
+	color: #990000;
+	background-color: #FFFEFA;
+	text-decoration: none;
+}
+
+/*----------------------------------------------fin special admin accueil--------*/
+img {
+	border: 0;
+}
+
+/*------------------------------------------------fin content--------------------*/
+	/*------------------------------------------------debut footer--------------------*/
+#footerMain {
+	width: 100%;
+	height: 130px;
+	background: url(../images/footer_bg.gif) 0 0 repeat-x;
+}
+
+#footer {
+	width: 500px;
+	margin: 0 auto;
+	height: 110px;
+	position: relative;
+}
+
+#footer ul {
+	width: 500px;
+	position: absolute;
+	left: 0px;
+	top: 20px;
+}
+
+#footer ul li {
+	float: left;
+	color: #FFFAE8;
+	background-color: inherit;
+	font: normal 11px/ 18px Verdana, Arial, Helvetica, sans-serif;
+}
+
+#footer ul li a {
+	color: #FFFAE8;
+	background-color: inherit;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	padding: 0 11px;
+	text-decoration: none;
+}
+
+#footer ul li a:hover {
+	color: #FFFAE8;
+	background-color: #C58C00;
+}
+
+#footer p.copyright {
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	color: #fff;
+	background-color: inherit;
+	position: absolute;
+	width: 800px;
+	top: 30px;
+}
+
+#footer a.xht {
+	width: 66px;
+	height: 14px;
+	background: url(../images/xhtml_bg.gif) 0 0 no-repeat;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	color: #C58C00;
+	background-color: inherit;
+	position: absolute;
+	left: 216px;
+	top: 70px;
+	margin: 0;
+	text-align: center;
+	text-decoration: none;
+}
+
+#footer a.xht:hover {
+	background: url(../images/xhtml_bg_hover.gif) 0 0 no-repeat;
+	color: #000;
+	background-color: inherit;
+}
+
+#footer a.cs {
+	width: 66px;
+	height: 14px;
+	background: url(../images/xhtml_bg.gif) 0 0 no-repeat;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	color: #C58C00;
+	background-color: inherit;
+	position: absolute;
+	left: 287px;
+	top: 70px;
+	margin: 0;
+	text-align: center;
+	text-decoration: none;
+}
+
+#footer a.cs:hover {
+	background: url(../images/xhtml_bg_hover.gif) 0 0 no-repeat;
+	color: #000;
+	background-color: inherit;
+}
+
+#footer p.design {
+	text-align: center;
+	display: block;
+	width: 503px;
+	height: 12px;
+	padding: 2px;
+	position: absolute;
+	top: 45px;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	color: #FFFAE8;
+	background-color: inherit;
+	text-transform: none;
+}
+
+#footer p.design a.link {
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	color: #FFFAE8;
+	background-color: inherit;
+	text-transform: none;
+	text-decoration: none;
+	padding: 2px;
+}
+
+#footer p.design a.link:hover {
+	color: #fff;
+	background-color: #090909;
+}
+/*------------------------------------------------fin footer--------------------*/

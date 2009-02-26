@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+		<ui:composition>
+	  		<div align="center">	
+	  			
+					<rich:panel bodyClass="rich-panel-body-acc">
+						<f:facet name="header">
+							<h:outputText><h2>Gestion des rubriques</h2></h:outputText>        
+        				</f:facet>
+        						
+					<!-- affichage des rubriques  -->
+					<h:form>
+					<a4j:commandLink value="Ajouter une nouvelle rubrique " action="#{menu.afficheAjoutRubrique}"></a4j:commandLink>
+					<br /><br />
+						<rich:dataTable value="#{listContenu}" var="lc" rows="15" reRender="scrol" >
+								<rich:column sortBy="#{lc.id_contenu}" >
+								<f:facet name="header">Id</f:facet>
+								<h:outputText value="#{lc.id_contenu}" rendered="#{gestionContenu.estRubrique(lc)}"/>
+								</rich:column>
+								
+								<rich:column sortBy="#{lc.titreContenu}">
+								<f:facet name="header">Titre</f:facet>
+								<s:link  action="/modifierRubrique.seam" rendered="#{gestionContenu.estRubrique(lc)}">
+								<h:outputText value="#{lc.titreContenu}" rendered="#{gestionContenu.estRubrique(lc)}"/>
+								</s:link>
+								</rich:column>
+						
+								<rich:column>
+									<f:facet name="header">Niveau d'accès</f:facet>
+									<h:outputText value="#{lc.niveauAcces}" rendered="#{gestionContenu.estRubrique(lc)}"/>
+								</rich:column>
+								
+								<rich:column>
+									<f:facet name="header">Etat</f:facet>
+									<h:outputText value="#{lc.etatContenu}" rendered="#{gestionContenu.estRubrique(lc)}"/> 
+								</rich:column>
+								
+								<rich:column sortBy="#{lc.parent.titreContenu}">
+									<f:facet name="header">Rubrique parent</f:facet>
+									<h:outputText value="#{lc.parent.titreContenu}" rendered="#{gestionContenu.estRubrique(lc)}"/>
+									</rich:column>
+									
+									<rich:column sortBy="#{lc.dateCreation}">
+									<f:facet name="header">Création</f:facet>
+									<h:outputText value="#{lc.dateCreation}" rendered="#{gestionContenu.estRubrique(lc)}"/>
+									</rich:column>
+									
+									<rich:column sortBy="#{lc.dateMaj}">
+									<f:facet name="header">Date MAJ</f:facet>
+									<h:outputText value="#{lc.dateMaj}" rendered="#{gestionContenu.estRubrique(lc)}"/>
+									</rich:column>
+						
+									<rich:column sortBy="#{lc.auteur}">
+									<f:facet name="header">Auteur</f:facet>
+									<h:outputText value="#{lc.auteur.login}" rendered="#{gestionContenu.estRubrique(lc)}"/>
+									</rich:column>
+									
+									<rich:column rendered="#{sessionUtilisateur.utilisateur.admin}">
+									<f:facet name="header">Action admin</f:facet> 
+							      		<s:link value="Définir gestionnaires" action="/choixGestionnaire.seam" rendered="#{gestionContenu.estRubrique(lc)}"/>
+							    	</rich:column>
+						
+									<rich:column rendered="#{sessionUtilisateur.utilisateur.admin}">
+									<f:facet name="header">Action admin</f:facet> 
+							      		<s:link value="Supprimer" action="#{gestionContenu.removeContenu(gestionContenu.contenu)}" rendered="#{gestionContenu.estRubrique(lc)}"/>
+							    	</rich:column>
+					   	 		<f:facet name="footer">
+	                			<rich:datascroller id="scrol"></rich:datascroller>
+	            				</f:facet>
+						</rich:dataTable>
+					</h:form>	
+					</rich:panel>
+		   <s:button value="retour à l'accueil"  styleClass="button" action="/admin.seam"/>
+		 </div>
+	</ui:composition>
+			
+</html>
