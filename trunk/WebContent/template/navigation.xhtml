@@ -16,8 +16,7 @@
 <ui:composition>
 	<p> 
 	
-		<h:outputText value="Vous êtes connecté sous le login de : #{sessionUtilisateur.utilisateur.login}
-			#{gestionContenu.init()} #{gestionUtilisateur.init()}"/>
+		<h:outputText value="Vous êtes connecté sous le login de : #{identity.username}"/>
 			<s:link action="#{identity.logout}" styleClass="button" value="Se déconnecter" />	
 	</p>
 	<div id="nav">

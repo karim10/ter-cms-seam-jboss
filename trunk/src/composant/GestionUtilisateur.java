@@ -74,6 +74,7 @@ public class GestionUtilisateur{
 	public Boolean inscription(Utilisateur utilisateur){
 	     if (utilisateur.getConfirmation() == null || !utilisateur.getConfirmation().equals(utilisateur.getMotDePasse())){
 	         FacesMessages.instance().addToControl("confirmation", "les deux mot de passe ne correspondent pas");
+	         setUtilisteur(null);
 	         return false;
 	      }
 	      Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();	      
@@ -84,6 +85,7 @@ public class GestionUtilisateur{
 	            if(result > 0){
 	         FacesMessages.instance().addToControl("login", 
 	               "Ce login a déjà été choisi, choisissez-en un différent");
+	         setUtilisteur(null);
 	         return false; 
 	      }
 	     
@@ -98,6 +100,7 @@ public class GestionUtilisateur{
 	      catch (EntityExistsException ex){
 	         FacesMessages.instance().addToControl("login", 
 	               "Ce login a déjà été choisi, choisissez-en un différent");
+	         setUtilisteur(null);
 	         return false;  
 	      }
 	}
@@ -114,6 +117,8 @@ public class GestionUtilisateur{
 	    HibernateUtil.getSessionFactory().getCurrentSession().save(utilisateur);
 	    
 	    getListUtilisateur().add(utilisateur);
+	    
+	    setUtilisteur(null);
 	    
 	    tx.commit();
 	    
@@ -156,9 +161,11 @@ public class GestionUtilisateur{
 			for(Utilisateur u : getListUtilisateur()){
 				if(u.getId_utilisateur() == id){
 					getListUtilisateur().remove(utilisateur);
+					setUtilisteur(null);
 					return;
 				}
-			}			
+			}
+			setUtilisteur(null);
 		}    
 	}
 	
