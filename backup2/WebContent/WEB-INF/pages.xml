@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<pages xmlns="http://jboss.com/products/seam/pages"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd"
+	no-conversation-view-id="/cms.xhtml" login-view-id="/cms.xhtml">
+	
+	
+  <page view-id="/admin.xhtml" login-required="true">
+  	<restrict>#{sessionUtilisateur.utilisateur.accesBackend}</restrict>
+  	<restrict>#{authentification.authentification()}</restrict>
+  </page>
+  
+
+	<page view-id="*">
+        <navigation from-action="#{identity.logout}">
+            <redirect view-id="/cms.xhtml"/>
+        </navigation>
+    </page>
+    
+    <page view-id="*">
+        <navigation from-action="#{identity.login}">
+            <redirect view-id="/admin.xhtml"/>
+        </navigation>
+    </page>
+   
+    <page view-id="/modifierUtilisateur.xhtml" login-required="true">
+    	<navigation from-action="#{gestionUtilisateur.inscription(gestionUtilisateur.utilisateur)}">
+            <redirect view-id="/gestionUtilisateur.xhtml"/>
+        </navigation>
+    </page>
+    
+    <page view-id="/ajoutUtilisateur.xhtml" login-required="true">
+        <navigation from-action="#{gestionUtilisateur.inscription(utilisateur)}">
+            <redirect view-id="/gestionUtilisateur.xhtml"/>
+        </navigation>
+    </page>
+     
+      <page view-id="/ajoutRubrique.xhtml" login-required="true">
+        <navigation from-action="#{gestionContenu.addContenu(rubrique)}">
+            <redirect view-id="/gestionRubrique.xhtml"/>
+        </navigation>
+    </page>
+    
+     <page view-id="/modifierRubrique.xhtml" login-required="true">
+        <navigation from-action="#{gestionContenu.modifierContenu(gestionContenu.contenu)}">
+            <redirect view-id="/gestionRubrique.xhtml"/>
+        </navigation>
+    </page>
+    
+    <page view-id="/ajoutArticle.xhtml" login-required="true">
+        <navigation from-action="#{gestionContenu.addContenu(article)}">
+            <redirect view-id="/gestionArticle.xhtml"/>
+        </navigation>
+    </page>
+    
+     <page view-id="/modifierArticle.xhtml" login-required="true">
+        <navigation from-action="#{gestionContenu.modifierContenu(gestionContenu.contenu)}">
+            <redirect view-id="/gestionArticle.xhtml"/>
+        </navigation>
+    </page>
+    
+    
+    <page view-id="/newUser.xhtml" login-required="false">
+        <navigation from-action="#{gestionUtilisateur.inscription(utilisateur)}">
+            <redirect view-id="/cms.xhtml"/>
+        </navigation>
+    </page>          
+    
+    <page view-id="/template/navigation.xhtml" login-required="true">
+    	<navigation from-action="*" >
+            <redirect view-id="/cms.xhtml"/>
+        </navigation>
+    </page>
+    
+    <exception class="javax.persistence.EntityNotFoundException">
+      <http-error error-code="404"/>
+   </exception>
+   
+	<exception class="org.jboss.seam.framework.EntityNotFoundException">
+	   <redirect view-id="/error.xhtml">
+	      <message>Ressource non trouvée</message>
+	   </redirect>
+	</exception>
+   
+   
+	<exception class="javax.persistence.OptimisticLockException">
+	   <end-conversation/>
+	   <redirect view-id="/error.xhtml">
+	      <message>D'autres personnes modifient les mêmes données que vous, réessayer svp!</message>
+	   </redirect>
+	</exception>
+	
+	<exception class="javax.faces.application.ViewExpiredException">
+  	 <redirect view-id="/error.xhtml">
+      <message>Votre session a expiré, merci de la renouveller!</message>
+   	</redirect>
+	</exception>
+
+   
+   <exception class="javax.persistence.PersistenceException">
+      <end-conversation/>
+      <redirect view-id="/error.xhtml">
+          <message>Impossible d'accéder à la base de données !</message>
+      </redirect>
+   </exception>
+   
+   <exception class="org.hibernate.ObjectNotFoundException">
+      <end-conversation/>
+      <redirect view-id="/error.xhtml">
+          <message>Aucune ligne dans notre base de données ne correspond à l'objet que vous 
+          			 essayez de modifier!
+          </message>
+      </redirect>
+   </exception>
+   
+   <exception>
+      <end-conversation/>
+      <redirect view-id="/error.xhtml">
+          <message>Une erreur intene est survenue !</message>
+      </redirect>
+   </exception>
+    
+    <exception class="java.lang.Exception">
+    <redirect view-id="/error.xhtml">
+      <message>Erreur Java (traitement metier)!</message>
+    </redirect>
+  </exception>
+  
+  <exception class="exception.ContenuException">
+    <redirect view-id="/error.xhtml">
+      <message>Erreur liée au contenu (Rubrique, Article et/ou Nouvelle)!</message>
+    </redirect>
+  </exception>
+    
+       
+  <exception class="org.jboss.seam.security.NotLoggedInException">
+    <redirect view-id="/cms.xhtml">
+      <message>authentifiez vous svp</message>
+    </redirect>
+  </exception>
+  
+  <exception class="org.jboss.seam.security.AuthorizationException">
+        <end-conversation/>
+        <redirect view-id="/cms.xhtml">
+            <message>Vous n'avez pas les droits nécessaires pour cette action.</message>
+        </redirect>
+    </exception>
+	
+</pages>
