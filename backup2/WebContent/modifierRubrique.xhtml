@@ -29,8 +29,8 @@
 						<s:button value="retour "  styleClass="button" action="#{menu.afficheGestionRubrique()}" />					   
 					   </s:fragment>
 					   
-						<s:fragment rendered="#{!gestionContenu.estRoot(gestionContenu.contenu) 
-							or empty gestionContenu.chargeRubrique(gestionContenu.contenu,sessionUtilisateur.utilisateur)}">
+						<s:fragment rendered="#{not gestionContenu.estRoot(gestionContenu.contenu) 
+							or empty gestionContenu.chargeParent(gestionContenu.contenu,sessionUtilisateur.utilisateur)}">
 					   <h:form >
 					       <s:validateAll>
 					       	<h:panelGrid columns="3">

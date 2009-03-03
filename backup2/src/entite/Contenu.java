@@ -44,7 +44,7 @@ public abstract class Contenu implements  Serializable{
 	
 	private Date dateMaj;
 	
-	private String logo;
+	private File logo;
 	
 	private Utilisateur auteur = null;
 
@@ -132,12 +132,13 @@ public abstract class Contenu implements  Serializable{
 		this.auteur = auteur;
 	}
 
-	@Column(name="LOGO", updatable=true, length=30)
-	public String getLogo() {
+	@OneToOne
+	@JoinColumn(name="LOGO", updatable=true)
+	public File getLogo() {
 		return logo;
 	}
 
-	public void setLogo(String logo) {
+	public void setLogo(File logo) {
 		this.logo = logo;
 	}
 	

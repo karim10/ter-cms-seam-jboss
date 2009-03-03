@@ -20,10 +20,11 @@ import org.jboss.seam.annotations.datamodel.DataModelSelection;
 
 import util.DataUtil;
 import util.HibernateUtil;
-import entite.Article;
 import entite.Contenu;
 import exception.ContenuException;
+import entite.Article;
 import entite.EtatContenu;
+import entite.File;
 import entite.Nouvelle;
 import entite.Rubrique;
 import entite.Utilisateur;
@@ -34,7 +35,7 @@ import entite.Utilisateur;
  *
  */
 @Name("gestionContenu")
-@Scope(ScopeType.SESSION)
+@Scope(ScopeType.CONVERSATION)
 public class GestionContenu{
 
 	/**
@@ -42,7 +43,6 @@ public class GestionContenu{
 	 */
 	@In @Out(scope=ScopeType.SESSION)
 	private SessionUtilisateur sessionUtilisateur;
-	
 	
 	@DataModel
 	private List<Contenu> listContenu;
@@ -92,25 +92,58 @@ public class GestionContenu{
 	 * @param contenu
 	 * @throws HibernateException
 	 */
-	public Boolean addContenu(Contenu contenu)throws HibernateException {
-		
+	public Boolean addContenu(Contenu contenu,File logo)throws HibernateException {
 		contenu.setAuteur((Utilisateur) sessionUtilisateur.getUtilisateur());
 		
 		contenu.setDateCreation(new Date());
 		contenu.setDateMaj(new Date());
-		
 		contenu.setEtatContenu(EtatContenu.EN_ATTENTE);
-		
+		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		if(logo!=null){
+			contenu.setLogo(logo);
+			HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(logo);
+		}
 		getListContenu().add(contenu);
 		contenu.getParent().getListEnfant().add(contenu);
-		
-		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-		
+				
 		HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(contenu);
-
+		
 		HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(contenu.getParent());
 		
 		tx.commit();
+		
+		return true;
+
+	}
+	
+	/**
+	 * Crée un nouveau Contenu 
+	 * @param contenu
+	 * @throws HibernateException
+	 */
+	public Boolean addContenu(Article article,File logo,List<File> files)throws HibernateException {
+		article.setAuteur((Utilisateur) sessionUtilisateur.getUtilisateur());
+		article.setDateCreation(new Date());
+		article.setDateMaj(new Date());
+		article.setEtatContenu(EtatContenu.EN_ATTENTE);
+		getListContenu().add(article);
+		if(files!= null){
+			article.setFiles(files);
+			for(File f : files){
+				HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(f);
+			}
+		}
+		article.getParent().getListEnfant().add(article);
+		
+		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		
+				
+		HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(article);
+		
+		HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(article.getParent());
+		
+		tx.commit();
+		
 		
 		return true;
 
@@ -333,6 +366,8 @@ public class GestionContenu{
 		contenu = (Contenu)HibernateUtil.getSessionFactory().getCurrentSession().get(Contenu.class,contenu.getId_contenu());
 	}
 	
+	
+	
 	/**
 	 * <p>sauve la liste de contenu redacteur</p>
 	 * @param utilisateur
@@ -340,17 +375,18 @@ public class GestionContenu{
 	public void saveListContenuRedacteur(Utilisateur utilisateur){
 		//on ajoute et supprime les redacteurs des rubriques si modification
 		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		Utilisateur u = (Utilisateur)HibernateUtil.getSessionFactory().getCurrentSession().load(Utilisateur.class, utilisateur.getId_utilisateur());
 		for(Rubrique r : DataUtil.chargeRubrique()){
-			if(r.getListRedacteur().contains(utilisateur) && !utilisateur.getContenuRedacteur().contains(r)){
-				r.getListRedacteur().remove(utilisateur);
+			if(r.getListRedacteur().contains(u) && !utilisateur.getContenuRedacteur().contains(r)){
+				r.getListRedacteur().remove(u);
 				HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(r);
 			} else
-			if(!r.getListRedacteur().contains(utilisateur) && utilisateur.getContenuRedacteur().contains(r)){
-				r.getListRedacteur().add(utilisateur);
+			if(!r.getListRedacteur().contains(u) && utilisateur.getContenuRedacteur().contains(r)){
+				r.getListRedacteur().add(u);
 				HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(r);
 			}	
 		}
-		HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(utilisateur);
+		HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(u);
 		tx.commit();
 	}
 	
@@ -361,17 +397,62 @@ public class GestionContenu{
 	public void saveListContenuGestionnaire(Utilisateur utilisateur){
 		//on ajoute et supprime les redacteurs des rubriques si modification
 		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		Utilisateur u = (Utilisateur)HibernateUtil.getSessionFactory().getCurrentSession().load(Utilisateur.class, utilisateur.getId_utilisateur());
 		for(Rubrique r : DataUtil.chargeRubrique()){
-			if(r.getListGestionnaire().contains(utilisateur) && !utilisateur.getContenuGestionnaire().contains(r)){
-				r.getListGestionnaire().remove(utilisateur);
+			if(r.getListGestionnaire().contains(u) && !utilisateur.getContenuGestionnaire().contains(r)){
+				r.getListGestionnaire().remove(u);
 				HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(r);
 			} else
-			if(!r.getListGestionnaire().contains(utilisateur) && utilisateur.getContenuGestionnaire().contains(r)){
-				r.getListGestionnaire().add(utilisateur);
+			if(!r.getListGestionnaire().contains(u) && utilisateur.getContenuGestionnaire().contains(r)){
+				r.getListGestionnaire().add(u);
 				HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(r);
 			}	
 		}
-		HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(utilisateur);
+		HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(u);
+		tx.commit();
+	}
+	
+	/**
+	 * <p>sauve la liste de contenu redacteur</p>
+	 * @param utilisateur
+	 */
+	public void saveListContenuGestionnaire(Rubrique rubrique){
+		//on ajoute et supprime les redacteurs des rubriques si modification
+		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		Rubrique r = (Rubrique)HibernateUtil.getSessionFactory().getCurrentSession().load(Rubrique.class, contenu.getId_contenu());
+		for(Utilisateur u : DataUtil.chargeUtilisateurs()){
+			if(u.getContenuGestionnaire().contains(u) && !r.getListGestionnaire().contains(u)){
+				r.getListGestionnaire().remove(u);
+				HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(u);
+			} else
+			if(!u.getContenuGestionnaire().contains(r) && r.getListGestionnaire().contains(u)){
+				u.getContenuGestionnaire().add(r);
+				HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(u);
+			}	
+		}
+		HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(r);
+		tx.commit();
+	}
+	
+	/**
+	 * <p>sauve la liste de contenu redacteur</p>
+	 * @param utilisateur
+	 */
+	public void saveListContenuRedacteur(Rubrique rubrique){
+		//on ajoute et supprime les redacteurs des rubriques si modification
+		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		Rubrique r = (Rubrique)HibernateUtil.getSessionFactory().getCurrentSession().load(Rubrique.class, contenu.getId_contenu());
+		for(Utilisateur u : DataUtil.chargeUtilisateurs()){
+			if(u.getContenuRedacteur().contains(u) && !r.getListRedacteur().contains(u)){
+				r.getListRedacteur().remove(u);
+				HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(u);
+			} else
+			if(!u.getContenuRedacteur().contains(r) && r.getListRedacteur().contains(u)){
+				u.getContenuRedacteur().add(r);
+				HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(u);
+			}	
+		}
+		HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(r);
 		tx.commit();
 	}
 	

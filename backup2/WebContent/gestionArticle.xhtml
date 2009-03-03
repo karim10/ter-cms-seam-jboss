@@ -35,6 +35,19 @@
 								<h:outputText value="#{lc.id_contenu}"/>
 								</rich:column>
 								
+								<rich:column>
+									<f:facet name="header">Logo</f:facet> 
+							      	<rich:dataGrid columns="1" value="#{lc.logo}"
+                        					var="file" rowKeyVar="row">
+							      		<a4j:mediaOutput element="img" mimeType="#{lc.logo.mime}"
+                                    	createContent="#{fileUploadBean.paintBd}" value="#{row}"
+                                    	style="width:100px; height:100px;" cacheable="false"
+                                    	session="true" 
+      									 rendered="#{not lc.logo}"/>
+      									 <h:outputText value="file.name" />	
+      									 </rich:dataGrid>	
+							    </rich:column>
+								
 								<rich:column sortBy="#{lc.titreContenu}">
 								<f:facet name="header">Titre</f:facet>
 								<s:link  action="#{menu.afficheModifierArticle()}"
@@ -92,7 +105,7 @@
 									<f:facet name="header">Auteur</f:facet>
 									<h:outputText value="#{lc.auteur.login}"/>
 									</rich:column>
-						
+									
 									<rich:column rendered="#{sessionUtilisateur.utilisateur.admin}">
 									<f:facet name="header">Action admin</f:facet> 
 							      		<s:link value="Supprimer" action="#{gestionContenu.removeContenu(gestionContenu.contenu)}"/>

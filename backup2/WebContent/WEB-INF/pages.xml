@@ -148,4 +148,9 @@
         </redirect>
     </exception>
 	
+	<exception class="org.jboss.seam.web.FileUploadException">
+  		<redirect view-id="/error.xhtml">
+    	<message>#{org.jboss.seam.handledException.message}</message>
+  		</redirect>
+	</exception>
 </pages>

@@ -92,7 +92,7 @@ public class Rubrique extends Contenu{
 	public void setListGestionnaire(List<Utilisateur> listGestionnaire) {
 		this.listGestionnaire = listGestionnaire;
 	}
-
+	
 	/**
 	 * @param contenu
 	 * ajout un contenu dans la liste des enfants

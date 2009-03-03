@@ -63,6 +63,7 @@
     	
     	<!-- Mapping des entites -->
   	
+  		<mapping class="entite.File"/>
   		<mapping class="entite.UtilisateurAbstrait"/>
 		<mapping class="entite.Utilisateur"/>
 		<mapping class="entite.Contenu"/>

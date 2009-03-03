@@ -30,6 +30,12 @@
 								<h:outputText value="#{lc.id_contenu}"/>
 								</rich:column>
 								
+								<rich:column>
+									<f:facet name="header">Logo</f:facet>
+							      		<h:outputText value="oui" rendered="#{not empty lc.logo}"/>
+							      		<h:outputText value="non" rendered="#{empty lc.logo}"/>
+							    </rich:column>
+								
 								<rich:column sortBy="#{lc.titreContenu}">
 								<f:facet name="header">Titre</f:facet>
 								
@@ -93,6 +99,13 @@
 									<rich:column rendered="#{sessionUtilisateur.utilisateur.admin}">
 									<f:facet name="header">Action Gestionnaire</f:facet> 
 							      		<s:link value="Définir gestionnaires" action="#{menu.afficheChoixGestionnaire()}" 
+							      				rendered="#{sessionUtilisateur.utilisateur.admin or sessionUtilisateur.utilisateur.isGestionnaire(lc)}"/>
+							    		<h:outputText value="Définir gestionnaires" rendered="#{not sessionUtilisateur.utilisateur.droitModifierContenu(lc)}"/>
+							    	</rich:column>
+							    	
+							    	<rich:column rendered="#{sessionUtilisateur.utilisateur.admin}">
+									<f:facet name="header">Action Gestionnaire</f:facet> 
+							      		<s:link value="Définir gestionnaires" action="#{menu.afficheChoixStatutRubrique()}" 
 							      				rendered="#{sessionUtilisateur.utilisateur.admin or sessionUtilisateur.utilisateur.isGestionnaire(lc)}"/>
 							    		<h:outputText value="Définir gestionnaires" rendered="#{not sessionUtilisateur.utilisateur.droitModifierContenu(lc)}"/>
 							    	</rich:column>

@@ -1,10 +1,20 @@
 package entite;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.jboss.seam.annotations.Name;
+
+
+
+
 
 @Entity
 @Name("article")
@@ -16,6 +26,8 @@ public class Article extends ContenuText{
 	private String description;
 	
 	private String sousTitre;
+	
+	private List<File> files; 
 	
 	public Article(){}
 
@@ -37,5 +49,22 @@ public class Article extends ContenuText{
 		this.sousTitre = sousTitre;
 	}
 	
+	@OneToMany(
+	        targetEntity=File.class,
+	        cascade={CascadeType.PERSIST, CascadeType.MERGE}
+	    )
+	    @JoinTable(
+	        name="ARTICLE_FILE",
+	        joinColumns=@JoinColumn(name="ID_ARTICLE"),
+	        inverseJoinColumns=@JoinColumn(name="ID_FILE")
+	    )
+	public List<File> getFiles() {
+		return files;
+	}
 
+	public void setFiles(List<File> files) {
+		this.files = files;
+	}
+
+	
 }

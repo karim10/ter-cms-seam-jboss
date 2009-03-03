@@ -66,7 +66,9 @@ public class GestionMenu {
 		link = path + "gestionStatutUtilisateur.xhtml";
 	}
 	
-	
+	public void afficheChoixStatutRubrique(){
+		link = path + "choixStatutRubrique.xhtml";
+	}
 	public void afficheFrontEnd(){
 		link = "/cms.xhtml";
 	}
