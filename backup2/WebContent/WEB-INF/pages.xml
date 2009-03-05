@@ -17,21 +17,16 @@
         <navigation from-action="#{identity.logout}">
             <redirect view-id="/cms.xhtml"/>
         </navigation>
-    </page>
-    
-    <page view-id="*">
         <navigation from-action="#{identity.login}">
             <redirect view-id="/admin.xhtml"/>
         </navigation>
     </page>
    
-    <page view-id="/modifierUtilisateur.xhtml" login-required="true">
+    <page view-id="/admin.xhtml" login-required="true">
     	<navigation from-action="#{gestionUtilisateur.inscription(gestionUtilisateur.utilisateur)}">
             <redirect view-id="/gestionUtilisateur.xhtml"/>
         </navigation>
-    </page>
     
-    <page view-id="/ajoutUtilisateur.xhtml" login-required="true">
         <navigation from-action="#{gestionUtilisateur.inscription(utilisateur)}">
             <redirect view-id="/gestionUtilisateur.xhtml"/>
         </navigation>

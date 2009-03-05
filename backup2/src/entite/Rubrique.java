@@ -1,11 +1,11 @@
 package entite;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -22,27 +22,15 @@ public class Rubrique extends Contenu{
 
 	private List<Contenu> listEnfant = new ArrayList<Contenu>();
 	
-	private List<Utilisateur> listRedacteur = new ArrayList<Utilisateur>();
+	private List<IUtilisateur> listRedacteur = new ArrayList<IUtilisateur>();
 	
-	private List<Utilisateur> listGestionnaire = new ArrayList<Utilisateur>();
+	private List<IUtilisateur> listGestionnaire = new ArrayList<IUtilisateur>();
 	
 	public Rubrique(){}
 	
-	public Rubrique(String titre){
-		this.setTitreContenu(titre);
-	}
-	
-	public Rubrique(NiveauAccesContenu niveauAcces, EtatContenu etatContenu,
-			String titreContenu, Date dateCreation, Utilisateur auteur) {
-		this.setNiveauAcces(NiveauAccesContenu.PUBLIC);
-		this.setEtatContenu(etatContenu);
-		this.setTitreContenu(titreContenu);
-		this.setDateCreation(dateCreation);
-		this.setAuteur(auteur);
-	}
-	
 	
 	@OneToMany(
+			fetch=FetchType.EAGER,
 	        targetEntity=Contenu.class,
 	        cascade={CascadeType.PERSIST, CascadeType.MERGE}
 	    )
@@ -68,11 +56,11 @@ public class Rubrique extends Contenu{
 	        joinColumns=@JoinColumn(name="ID_RUBRIQUE"),
 	        inverseJoinColumns=@JoinColumn(name="ID_REDACTEUR")
 	    )
-	public List<Utilisateur> getListRedacteur() {
+	public List<IUtilisateur> getListRedacteur() {
 		return listRedacteur;
 	}
 
-	public void setListRedacteur(List<Utilisateur> listRedacteur) {
+	public void setListRedacteur(List<IUtilisateur> listRedacteur) {
 		this.listRedacteur = listRedacteur;
 	}
 	
@@ -85,11 +73,11 @@ public class Rubrique extends Contenu{
 	        joinColumns=@JoinColumn(name="ID_RUBRIQUE"),
 	        inverseJoinColumns=@JoinColumn(name="ID_GESTIONNAIRE")
 	    )
-	public List<Utilisateur> getListGestionnaire() {
+	public List<IUtilisateur> getListGestionnaire() {
 		return listGestionnaire;
 	}
 
-	public void setListGestionnaire(List<Utilisateur> listGestionnaire) {
+	public void setListGestionnaire(List<IUtilisateur> listGestionnaire) {
 		this.listGestionnaire = listGestionnaire;
 	}
 	
@@ -105,19 +93,19 @@ public class Rubrique extends Contenu{
 		getListEnfant().remove(contenu);
 	}
 	
-	public void addRedacteur(Utilisateur u){
-		getListRedacteur().add(u);
+	public void addRedacteur(IUtilisateur utilisateur){
+		getListRedacteur().add(utilisateur);
 	}
 
-	public void removeRedacteur(Utilisateur u){
+	public void removeRedacteur(IUtilisateur u){
 		getListRedacteur().remove(u);
 	}
 
-	public void addGestionnaire(Utilisateur u){
+	public void addGestionnaire(IUtilisateur u){
 		getListGestionnaire().add(u);
 	}
 
-	public void removeGestionnaire(Utilisateur u){
+	public void removeGestionnaire(IUtilisateur u){
 		getListGestionnaire().remove(u);
 	}
 }

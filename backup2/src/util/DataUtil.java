@@ -7,9 +7,10 @@ import org.jboss.seam.annotations.Name;
 
 import entite.Article;
 import entite.Contenu;
+import entite.File;
+import entite.IUtilisateur;
 import entite.Nouvelle;
 import entite.Rubrique;
-import entite.Utilisateur;
 
 @Name("datautil")
 @SuppressWarnings("unchecked")
@@ -48,11 +49,11 @@ public class DataUtil {
 	    	    
 	}
 
-	public static List<Utilisateur> chargeUtilisateurs() throws HibernateException {
+	public static List<IUtilisateur> chargeUtilisateurs() throws HibernateException {
 		
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 		
-	    return (List<Utilisateur>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from UtilisateurAbstrait u").list();
+	    return (List<IUtilisateur>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Utilisateur u").list();
 	    	    
 	}
 	
@@ -69,6 +70,14 @@ public class DataUtil {
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 		
 	    return (List<Contenu>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Contenu u where u.").list();
+	    	    
+	}
+	
+	public static List<File> chargeFile(Contenu contenu) throws HibernateException {
+		
+		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		
+	    return (List<File>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Article a,File f where a.files.Id_File = f.Id_File").list();
 	    	    
 	}
 }

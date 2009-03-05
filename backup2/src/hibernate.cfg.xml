@@ -62,14 +62,16 @@
         <property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
     	
     	<!-- Mapping des entites -->
-  	
   		<mapping class="entite.File"/>
-  		<mapping class="entite.UtilisateurAbstrait"/>
-		<mapping class="entite.Utilisateur"/>
 		<mapping class="entite.Contenu"/>
 		<mapping class="entite.Rubrique"/>
 		<mapping class="entite.Article"/>
 		<mapping class="entite.Nouvelle"/>
- 	
+ 		<!-- Mapping de la classe concrête devant implémenter l'interface IUtilisateur -->
+ 		<mapping class="entite.Utilisateur"/>
+ 		
+ 		<!-- Mapping par interface
+ 		<mapping resource="entite.IUtilisateur.hbm.xml"/>
+ 		-->
     </session-factory>
 </hibernate-configuration>

@@ -1,27 +1,20 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
       xmlns:s="http://jboss.com/products/seam/taglib"
-	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:rich="http://richfaces.org/rich"
-      
       xmlns:a4j="http://richfaces.org/a4j"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-<head>
+	
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
-
-<ui:composition>
-			
-			
-	  		<div align="center">
+			<div align="center">
 	  		<h:outputText value="#{gestionContenu.setListContenu(datautil.chargeArticle())}" />
 					<rich:panel bodyClass="rich-panel-body-acc">
 						<f:facet name="header">
 							<h:outputText><h2>Gestion des articles</h2></h:outputText>        
         				</f:facet>
         						
-					<!-- affichage des rubriques  -->
+					<!-- affichage des articles  -->
 					<h:form id="art">
 					        	<s:link  action="#{menu.afficheAjoutArticle()}">
 								<h:outputText value="Ajouter un nouveau article"/>
@@ -36,33 +29,28 @@
 								</rich:column>
 								
 								<rich:column>
-									<f:facet name="header">Logo</f:facet> 
-							      	<rich:dataGrid columns="1" value="#{lc.logo}"
-                        					var="file" rowKeyVar="row">
-							      		<a4j:mediaOutput element="img" mimeType="#{lc.logo.mime}"
-                                    	createContent="#{fileUploadBean.paintBd}" value="#{row}"
-                                    	style="width:100px; height:100px;" cacheable="false"
-                                    	session="true" 
-      									 rendered="#{not lc.logo}"/>
-      									 <h:outputText value="file.name" />	
-      									 </rich:dataGrid>	
+									<f:facet name="header">Logo</f:facet>
+							      		<h:outputText value="oui" rendered="#{not empty lc.logo}"/>
+							      		<h:outputText value="non" rendered="#{empty lc.logo}"/>
 							    </rich:column>
 								
 								<rich:column sortBy="#{lc.titreContenu}">
 								<f:facet name="header">Titre</f:facet>
-								<s:link  action="#{menu.afficheModifierArticle()}"
-											rendered="#{sessionUtilisateur.utilisateur.droitModifierContenu(lc)}">
+								
+								<s:link  action="#{menu.afficheModifierRubrique()}"
+										rendered="#{gestionContenu.droitModifierContenu(lc)}">
 								<h:outputText value="#{lc.titreContenu}"/>
 								</s:link>
-								<h:outputText value="#{lc.titreContenu}"
-											rendered="#{not sessionUtilisateur.utilisateur.droitModifierContenu(lc)}"/>
+									<h:outputText value="#{lc.titreContenu}" 
+										rendered="#{not gestionContenu.droitModifierContenu(lc)}"/>
+								
 								</rich:column>
 						
 								<rich:column>
 									<f:facet name="header">Niveau d'accès</f:facet>
-									<h:outputText value="#{lc.niveauAcces}" rendered="#{not sessionUtilisateur.utilisateur.admin and not sessionUtilisateur.utilisateur.isGestionnaire(lc)}"/>
+									<h:outputText value="#{lc.niveauAcces}" rendered="#{not gestionContenu.droitModifierContenu(lc)}"/>
 									<h:selectOneMenu value="#{lc.niveauAcces}"
-														rendered="#{sessionUtilisateur.utilisateur.admin or sessionUtilisateur.utilisateur.isGestionnaire(lc)}">
+														rendered="#{gestionContenu.droitModifierContenu(lc)}">
 														<a4j:support event="onchange" action="#{gestionContenu.modifierContenu(lc)}"/>
 										<s:selectItems  id="na"
 					  								value="#{enum.getListNiveauAcces()}" 
@@ -75,8 +63,8 @@
 								
 								<rich:column>
 									<f:facet name="header">Etat</f:facet>
-									<h:outputText value="#{lc.etatContenu}" rendered="#{not sessionUtilisateur.utilisateur.admin and not sessionUtilisateur.utilisateur.isGestionnaire(lc)}"/>
-									<h:selectOneMenu value="#{lc.etatContenu}" rendered="#{sessionUtilisateur.utilisateur.admin or sessionUtilisateur.utilisateur.isGestionnaire(lc)}">
+									<h:outputText value="#{lc.etatContenu}" rendered="#{not gestionContenu.droitPublicationContenu(lc)}"/>
+									<h:selectOneMenu value="#{lc.etatContenu}" rendered="#{gestionContenu.droitPublicationContenu(lc)}">
 										<a4j:support event="onchange" action="#{gestionContenu.modifierContenu(lc)}"/>
 										<s:selectItems  id="etat"
 					  								value="#{enum.getListEtatContenu()}" 
@@ -106,9 +94,16 @@
 									<h:outputText value="#{lc.auteur.login}"/>
 									</rich:column>
 									
-									<rich:column rendered="#{sessionUtilisateur.utilisateur.admin}">
+									<rich:column rendered="#{gestionContenu.estAdmin()}">
+									<f:facet name="header">Action Gestion</f:facet> 
+							      		<s:link value="Définir gestionnaires" action="#{menu.afficheChoixStatutRubrique()}" 
+							      				rendered="#{gestionContenu.droitDefinirGestionnaire(lc) or gestionContenu.droitDefinirRedacteur(lc)}"/>
+							    		<h:outputText value="Définir statut" rendered="#{not gestionContenu.droitDefinirGestionnaire(lc) and not gestionContenu.droitDefinirRedacteur(lc)}"/>
+							    	</rich:column>
+							    	
+							    	<rich:column rendered="#{gestionContenu.estAdmin()}">
 									<f:facet name="header">Action admin</f:facet> 
-							      		<s:link value="Supprimer" action="#{gestionContenu.removeContenu(gestionContenu.contenu)}"/>
+							      		<h:commandLink value="Supprimer" action="#{gestionContenu.removeContenu(gestionContenu.contenu)}"/>
 							    	</rich:column>
 							    	
 					   	 		<f:facet name="footer">
@@ -120,4 +115,3 @@
 		 </div>
 	</ui:composition>
 			
-</html>

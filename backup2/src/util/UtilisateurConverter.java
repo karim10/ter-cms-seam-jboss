@@ -10,7 +10,6 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.faces.Converter;
 import org.jboss.seam.annotations.intercept.BypassInterceptors;
 
-import entite.Rubrique;
 import entite.Utilisateur;
 
 @Name("utilisateurConverter")

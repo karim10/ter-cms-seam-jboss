@@ -10,7 +10,7 @@ import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.log.Log;
 
 
-import entite.Utilisateur;
+import entite.IUtilisateur;
 
 import util.HibernateUtil;
 
@@ -19,7 +19,7 @@ import util.HibernateUtil;
 public class Inscription {
 
 	@In
-	private Utilisateur utilisateur;
+	IUtilisateur utilisateur;
 	
 	@Logger
 	private Log log;

@@ -1,14 +1,10 @@
 package composant;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityExistsException;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Create;
@@ -17,16 +13,12 @@ import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
-import org.jboss.seam.annotations.Transactional;
 import org.jboss.seam.annotations.datamodel.DataModel;
 import org.jboss.seam.annotations.datamodel.DataModelSelection;
 import org.jboss.seam.annotations.security.Restrict;
 import org.jboss.seam.faces.FacesMessages;
 
-import entite.ActionEnum;
-import entite.Contenu;
-import entite.Rubrique;
-import entite.Utilisateur;
+import entite.IUtilisateur;
 import exception.ContenuException;
 
 import util.DataUtil;
@@ -37,30 +29,15 @@ import util.HibernateUtil;
 public class GestionUtilisateur{
 
 	@DataModel
-	private List<Utilisateur> listUtilisateur;
+	private List<IUtilisateur> listUtilisateur;
 	
 	@DataModelSelection
 	@Out(required=false)
-	private Utilisateur utilisateur;
+	private IUtilisateur utilisateur;
 	
 	public GestionUtilisateur(){}
 	
-	public Utilisateur getUtilisateur() {
-		return utilisateur;
-	}
-
-	public void setUtilisteur(Utilisateur utilisteur) {
-		this.utilisateur = utilisteur;
-	}
 	
-	@Restrict("#{s:hasRole('admin')}")
-	public List<Utilisateur> getListUtilisateur() {		
-		return this.listUtilisateur;
-	}
-	
-	public void setListUtilisateur(List<Utilisateur> listUtilisateur) {
-		this.listUtilisateur = listUtilisateur;
-	}
 	
 	/**
 	 * <p>Initialise listUtilisateur lors de l'initialisation du composant 
@@ -77,7 +54,7 @@ public class GestionUtilisateur{
 	 * @return vrai si l'inscription s'est effectuée
 	 *         faux sinon</p>
 	 */
-	public Boolean inscription(Utilisateur utilisateur){
+	public Boolean inscription(IUtilisateur utilisateur){
 	     if (utilisateur.getConfirmation() == null || !utilisateur.getConfirmation().equals(utilisateur.getMotDePasse())){
 	         FacesMessages.instance().addToControl("confirmation", "les deux mot de passe ne correspondent pas");
 	         setUtilisteur(null);
@@ -116,7 +93,7 @@ public class GestionUtilisateur{
 	 * @param utilisateur
 	 * @throws HibernateException
 	 */
-	public void addUtilisateur(Utilisateur utilisateur) throws HibernateException {
+	public void addUtilisateur(IUtilisateur utilisateur) throws HibernateException {
 		
 	    Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 		
@@ -135,13 +112,13 @@ public class GestionUtilisateur{
 	 * @param utilisateur
 	 * @throws HibernateException
 	 */
-	public void modifierUtilisateur(Utilisateur utilisateur) throws HibernateException {
+	public void modifierUtilisateur(IUtilisateur utilisateur) throws HibernateException {
 		Long id = utilisateur.getId_utilisateur();
 		if(utilisateur!=null){
 			Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-			Utilisateur u = (Utilisateur)HibernateUtil.getSessionFactory().getCurrentSession().load(Utilisateur.class,id);
-			u.setAccesBackend(utilisateur.getAccesBackend());
-			u.setAdmin(utilisateur.getAdmin());
+			IUtilisateur u = (IUtilisateur)HibernateUtil.getSessionFactory().getCurrentSession().load(IUtilisateur.class,id);
+			u.setAccesBackend(utilisateur.isAccesBackend());
+			u.setAdmin(utilisateur.isAdmin());
 			u.setWebsite(utilisateur.getWebsite());
 			setUtilisteur(u);
 			HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(u);
@@ -161,15 +138,15 @@ public class GestionUtilisateur{
 	 * @param utilisateur
 	 * @throws HibernateException
 	 */
-	public void removeUtilisateur(Utilisateur utilisateur) throws HibernateException, ContenuException {
+	public void removeUtilisateur(IUtilisateur utilisateur) throws HibernateException, ContenuException {
 		Long id = utilisateur.getId_utilisateur();
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-		Utilisateur c = (Utilisateur)HibernateUtil.getSessionFactory().getCurrentSession().load(Utilisateur.class,id);
+		IUtilisateur c = (IUtilisateur)HibernateUtil.getSessionFactory().getCurrentSession().load(IUtilisateur.class,id);
 		if(utilisateur!=null){
 			Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 			HibernateUtil.getSessionFactory().getCurrentSession().delete(c);
 			tx.commit();
-			for(Utilisateur u : getListUtilisateur()){
+			for(IUtilisateur u : listUtilisateur){
 				if(u.getId_utilisateur() == id){
 					getListUtilisateur().remove(utilisateur);
 					setUtilisteur(null);
@@ -180,219 +157,26 @@ public class GestionUtilisateur{
 		}    
 	}
 	
-	
-	
-	/*****************************************
-	 * gestion des gestionnaires et rédacteurs
-	 */
-	
-	private Map<Long, Boolean> selectGestionnaire = new HashMap<Long, Boolean>();
-	private Map<Long, Boolean> selectRedacteur = new HashMap<Long, Boolean>();
-    private List<Utilisateur> selectGestionnaireDataList;
-    private List<Utilisateur> selectNonGestionnaireDataList;
-    private List<Utilisateur> selectRedacteurDataList;
-    private List<Utilisateur> selectNonRedacteurDataList;
-    
-	/**
-	 * <p> modifie le statut de gestionnaire des utilisateurs d'un contenu</p>
-	 * @param listUtilisateur
-	 * @param contenu
-	 * @param actionEnum
-	 * @throws Exception
-	 */
-	@Transactional
-	public void modifierStatutGestionnaire(List<Utilisateur> listUtilisateur,Contenu contenu,ActionEnum actionEnum) throws Exception{
-		if(listUtilisateur!=null && !listUtilisateur.isEmpty()){
-			if(contenu instanceof Rubrique){
-				Session sess = HibernateUtil.getSessionFactory().getCurrentSession();
-				Transaction tx = null;
-				try {
-				     tx = sess.beginTransaction();
-				     Long idc = contenu.getId_contenu();
-				     Rubrique rubrique = (Rubrique)sess.get(Rubrique.class,idc);
-				     for(Utilisateur u : listUtilisateur){
-				    	 Long idu = u.getId_utilisateur();
-				    	 Utilisateur utilisateur = (Utilisateur)sess.get(Utilisateur.class,idu);
-				    	 switch(actionEnum){
-							case ADD :
-								if(!utilisateur.getContenuGestionnaire().contains(rubrique))utilisateur.getContenuGestionnaire().add(rubrique);
-								if(!rubrique.getListGestionnaire().contains(utilisateur))rubrique.getListGestionnaire().add(utilisateur);
-								break;
-							case DELETE :
-								utilisateur.getContenuGestionnaire().remove(rubrique);
-								rubrique.getListGestionnaire().remove(utilisateur);
-								break;
-								default : break;	
-				    	 }
-				    	 sess.saveOrUpdate(utilisateur);
-				     }
-				     sess.saveOrUpdate(rubrique);
-				     tx.commit();
-				 }
-				 catch (Exception e) {
-				     if (tx!=null) tx.rollback();
-				     throw e;
-				 }
-			} else {
-				new ContenuException("Vous ne pouvez ajoutez un gestionnaire à un contenu autre qu'une rubrique");
-			}
-		}
-	}
-	
-	/**
-	 * /**
-	 * <p> modifie le statut de rédacteur des utilisateurs d'un contenu</p>
-	 * @param listUtilisateur
-	 * @param contenu
-	 * @param actionEnum
-	 * @throws Exception
-	 */
-	@Transactional
-	public void modifierStatutRedacteur(List<Utilisateur> listUtilisateur,Contenu contenu,ActionEnum actionEnum) throws Exception{
-		if(listUtilisateur!=null && !listUtilisateur.isEmpty()){
-			if(contenu instanceof Rubrique){
-				Session sess = HibernateUtil.getSessionFactory().getCurrentSession();
-				Transaction tx = null;
-				try {
-				     tx = sess.beginTransaction();
-				     Long idc = contenu.getId_contenu();
-				     Rubrique rubrique = (Rubrique)sess.get(Rubrique.class,idc);
-				     for(Utilisateur u : listUtilisateur){
-				    	 Long idu = u.getId_utilisateur();
-				    	 Utilisateur utilisateur = (Utilisateur)sess.get(Utilisateur.class,idu);
-				    	 switch(actionEnum){
-							case ADD :
-								if(!utilisateur.getContenuRedacteur().contains(rubrique))utilisateur.getContenuRedacteur().add(rubrique);
-								if(!rubrique.getListRedacteur().contains(utilisateur))rubrique.getListRedacteur().add(utilisateur);
-								break;
-							case DELETE :
-								utilisateur.getContenuRedacteur().remove(rubrique);
-								rubrique.getListRedacteur().remove(utilisateur);
-								break;
-								default : break;	
-				    	 }
-				    	 sess.saveOrUpdate(utilisateur);
-				     }
-				     sess.saveOrUpdate(rubrique);
-				     tx.commit();
-				 }
-				 catch (Exception e) {
-				     if (tx!=null) tx.rollback();
-				     throw e;
-				 }
-			} else {
-				new ContenuException("Vous ne pouvez ajoutez un redacteur à un contenu autre qu'une rubrique");
-			}
-		}
-	}
-	
-	
-	
-    /**
-     * <p>initialisation des HashMap {@link selectGestionnaire} et {@link selectRedacteur} avec la BD</p>
-     * @param contenu
-     */
-	public void initHashMap(Contenu contenu) {
-		listUtilisateur = DataUtil.chargeUtilisateurs();
-		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-		Contenu c =(Contenu)HibernateUtil.getSessionFactory().getCurrentSession().get(Contenu.class, contenu.getId_contenu());
-    	selectGestionnaire.clear();
-		selectRedacteur.clear();
-		for (Utilisateur u : getListUtilisateur()) {
-			selectGestionnaire.put(u.getId_utilisateur(),u.isGestionnaire(c));
-			selectRedacteur.put(u.getId_utilisateur(), u.isRedacteur(c));
-		}
-	}
-    
-    /**
-     * <p>Modifie les gestionnaires et les rédacteurs d'une rubrique donnée</p>
-     * @param contenu
-     * @throws Exception 
-     */
-    public void getSelectUtilisateur(Contenu contenu) throws Exception {
-    	
-        // Réinitialisation des dataLists
-    	selectGestionnaireDataList = new ArrayList<Utilisateur>();
-    	selectNonGestionnaireDataList = new ArrayList<Utilisateur>();
-    	selectRedacteurDataList = new ArrayList<Utilisateur>();
-    	selectNonRedacteurDataList = new ArrayList<Utilisateur>();
-    	
-        for (Utilisateur u : getListUtilisateur()) {
-            // rempli la liste des gestionnaires et la liste des non gesitonnaires 
-        	if (selectGestionnaire.get(u.getId_utilisateur()).booleanValue()) {
-            	selectGestionnaireDataList.add(u);
-            	selectRedacteur.get(u.getId_utilisateur());
-            } else {
-            	selectNonGestionnaireDataList.add(u);
-            }
-        	// rempli la liste des rédacteurs et la liste des non rédacteurs
-            if (selectRedacteur.get(u.getId_utilisateur()).booleanValue()) {
-            	selectRedacteurDataList.add(u);
-            } else {
-            	selectNonRedacteurDataList.add(u);
-            }  
-        }
-        //modification
-        modifierStatutGestionnaire(selectGestionnaireDataList,contenu,ActionEnum.ADD);
-        modifierStatutGestionnaire(selectNonGestionnaireDataList,contenu,ActionEnum.DELETE);
-        modifierStatutRedacteur(selectRedacteurDataList, contenu, ActionEnum.ADD);
-        modifierStatutRedacteur(selectNonRedacteurDataList, contenu, ActionEnum.DELETE);
-    }
-
-
-	public Map<Long, Boolean> getSelectGestionnaire() {
-		return selectGestionnaire;
-	}
-
-	public Map<Long, Boolean> getSelectRedacteur() {
-		return selectRedacteur;
-	}
-
-	public List<Utilisateur> getSelectGestionnaireDataList() {
-		return selectGestionnaireDataList;
-	}
-
-	public List<Utilisateur> getSelectNonGestionnaireDataList() {
-		return selectNonGestionnaireDataList;
-	}
-
-	public List<Utilisateur> getSelectRedacteurDataList() {
-		return selectRedacteurDataList;
-	}
-
-	public List<Utilisateur> getSelectNonRedacteurDataList() {
-		return selectNonRedacteurDataList;
-	}
-
-	public void setSelectGestionnaire(Map<Long, Boolean> selectGestionnaire) {
-		this.selectGestionnaire = selectGestionnaire;
-	}
-
-	public void setSelectRedacteur(Map<Long, Boolean> selectRedacteur) {
-		this.selectRedacteur = selectRedacteur;
-	}
-
-	public void setSelectGestionnaireDataList(
-			List<Utilisateur> selectGestionnaireDataList) {
-		this.selectGestionnaireDataList = selectGestionnaireDataList;
-	}
-
-	public void setSelectNonGestionnaireDataList(
-			List<Utilisateur> selectNonGestionnaireDataList) {
-		this.selectNonGestionnaireDataList = selectNonGestionnaireDataList;
-	}
-
-	public void setSelectRedacteurDataList(List<Utilisateur> selectRedacteurDataList) {
-		this.selectRedacteurDataList = selectRedacteurDataList;
-	}
-
-	public void setSelectNonRedacteurDataList(
-			List<Utilisateur> selectNonRedacteurDataList) {
-		this.selectNonRedacteurDataList = selectNonRedacteurDataList;
-	}
-
 	@Destroy
 	public void destroy() {}
 
+	// GETTER SETTER
+	
+	public IUtilisateur getUtilisateur() {
+		return utilisateur;
+	}
+
+	public void setUtilisteur(IUtilisateur utilisteur) {
+		this.utilisateur = utilisteur;
+	}
+	
+	@Restrict("#{s:hasRole('admin')}")
+	public List<IUtilisateur> getListUtilisateur() {		
+		return this.listUtilisateur;
+	}
+	
+	public void setListUtilisateur(List<IUtilisateur> listUtilisateur) {
+		this.listUtilisateur = listUtilisateur;
+	}
 
 }

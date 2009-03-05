@@ -46,7 +46,7 @@ public abstract class Contenu implements  Serializable{
 	
 	private File logo;
 	
-	private Utilisateur auteur = null;
+	private IUtilisateur auteur = null;
 
 	private Rubrique parent = null;
 
@@ -122,13 +122,13 @@ public abstract class Contenu implements  Serializable{
 		this.dateMaj = dateMaj;
 	}
 	
-	@OneToOne
-	@JoinColumn(name="AUTEUR", nullable=false)
-	public Utilisateur getAuteur() {
+	@OneToOne(targetEntity=Utilisateur.class)
+	@JoinColumn(name="AUTEUR", nullable=true)
+	public IUtilisateur getAuteur() {
 		return auteur;
 	}
 
-	public void setAuteur(Utilisateur auteur) {
+	public void setAuteur(IUtilisateur auteur) {
 		this.auteur = auteur;
 	}
 

@@ -11,7 +11,6 @@ import util.DataUtil;
 
 import entite.IUtilisateur;
 import entite.Rubrique;
-import entite.Utilisateur;
 
 @Name("sessionUtilisateur")
 @Scope(ScopeType.SESSION)
@@ -23,7 +22,7 @@ public class SessionUtilisateur {
 	public SessionUtilisateur() {}
 
 	
-	public SessionUtilisateur(Utilisateur utilisateur) {
+	public SessionUtilisateur(IUtilisateur utilisateur) {
 		this.utilisateur = utilisateur;
 	}
 
@@ -32,7 +31,7 @@ public class SessionUtilisateur {
 		return utilisateur;
 	}
 	
-	public void setUtilisateur(Utilisateur utilisateur) {
+	public void setUtilisateur(IUtilisateur utilisateur) {
 		this.utilisateur = utilisateur;
 	}
 	
@@ -43,7 +42,7 @@ public class SessionUtilisateur {
 	 *         faux sinon
 	 */
 	public Boolean accesBackend(){
-		if(getUtilisateur().getAdmin())return true;
+		if(getUtilisateur().isAdmin())return true;
 		List<Rubrique> l = DataUtil.chargeRubrique();
 		for(Rubrique r : l){
 			if(r.getListGestionnaire().contains(getUtilisateur()))return true;

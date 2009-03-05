@@ -15,23 +15,42 @@ import util.HibernateUtil;
 @Name("initialisation")
 public class Initialisation {
 	
+	
 	private Utilisateur admin;
 	
-	private Rubrique root; 
+	private Rubrique root;
     
+	public Initialisation(){
+		admin = new Utilisateur();
+		root = new Rubrique();
+	}
 	/**
 	 * <p>initialise le CMS<br/>
-	 * crée la rubrique racine et l'utilicateur administrateur</p>
+	 * crée la rubrique racine et l'utilisateur administrateur</p>
 	 */
 	public void init() {
-    	admin = new Utilisateur("administrateur","admin","admin","administrateur","admin@admin.admin",true,true);
+    	// creation de l'utilisateur administrateur
+		admin.setLogin("administrateur");
+    	admin.setNom("admin");
+    	admin.setPrenom("admin");
+    	admin.setMotDePasse("administrateur");
+    	admin.setEmail("admin@admin.fr");
+    	admin.setAdmin(true);
+    	admin.setCompteActive(true);
     	admin.setAccesBackend(true);
-		 root = new Rubrique(NiveauAccesContenu.PUBLIC,EtatContenu.PUBLIE,"ROOT",new Date(),admin);
+    	// creation de la rubrique racine
+		root.setNiveauAcces(NiveauAccesContenu.PUBLIC);
+		root.setEtatContenu(EtatContenu.PUBLIE);
+		root.setTitreContenu("ROOT");
+		root.setDateCreation(new Date());
+		root.setDateMaj(new Date());
+		root.setAuteur(admin);
 		root.setParent(root);
-		Transaction tx2 = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		// sauvegarde de l'utilisateur et la rubrique dans la bd
+		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 		HibernateUtil.getSessionFactory().getCurrentSession().save(admin);
 		HibernateUtil.getSessionFactory().getCurrentSession().save(root);
-  	  	tx2.commit();
+  	  	tx.commit();
 	}
 	/**
 	 * @return the admin

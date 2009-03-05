@@ -20,18 +20,68 @@
 					<f:facet name="header">
 						<h:outputText value="Modification de la rubrique #{gestionContenu.contenu.titreContenu}" />
 					</f:facet>
-						<s:fragment rendered="#{empty gestionContenu.chargeParent(gestionContenu.contenu,sessionUtilisateur.utilisateur)}">
-								<h:outputText value="Vous n'avez pas les droits nécessaire pour ajouter une rubrique" />
-						</s:fragment>
-						<s:fragment rendered="#{gestionContenu.estRoot(gestionContenu.contenu)}">
-						
-						<h:outputText value="Vous ne pouvez pas modifier la rubrique Root!" /><br />
-						<s:button value="retour "  styleClass="button" action="#{menu.afficheGestionRubrique()}" />					   
+						<s:fragment rendered="#{gestionContenu.estRoot(gestionContenu.contenu) }">
+								<h:outputText value="Vous ne pouvez pas modifier la rubrique Root!" /><br />
+								<s:button value="retour" styleClass="button" action="#{menu.afficheGestionRubrique()}" />					   
 					   </s:fragment>
+						
+						<s:fragment rendered="#{not gestionContenu.droitModifierContenu(gestionContenu.contenu) and not gestionContenu.estRoot(gestionContenu.contenu)}">
+								<h:outputText value="Vous n'avez pas les droits nécessaire pour modifier cette rubrique" />
+								<s:button value="retour "  styleClass="button" action="#{menu.afficheGestionRubrique()}" />
+						</s:fragment>
 					   
-						<s:fragment rendered="#{not gestionContenu.estRoot(gestionContenu.contenu) 
-							or empty gestionContenu.chargeParent(gestionContenu.contenu,sessionUtilisateur.utilisateur)}">
-					   <h:form >
+						<s:fragment rendered="#{gestionContenu.droitModifierContenu(gestionContenu.contenu) 
+												and not gestionContenu.estRoot(gestionContenu.contenu)
+												}">
+					   <h:form>
+					<h:panelGrid columns="2" columnClasses="top,top">
+            <rich:fileUpload fileUploadListener="#{fileUploadBean.listenerLogo}"
+                			maxFilesQuantity="#{fileUploadBean.uploadsAvailableLogo}"
+                			uploadData="#{file.data}"
+                			id="upload"
+                			addControlLabel="Ajouter un fichier..." 
+                			clearAllControlLabel="Supprimer Tout" 
+                			clearControlLabel="Supprimer"
+							stopEntryControlLabel="Arêter" 
+							uploadControlLabel="Joindre"
+							immediateUpload="#{fileUploadBean.autoUpload}"
+                			acceptedTypes="jpg, gif, png, bmp"
+                			noDuplicate="true"
+                			allowFlash="true"
+                			listHeight="50"  
+                       		listWidth="200"  
+                     		style="height:100;">
+                <a4j:support event="onuploadcomplete" reRender="info" />
+                
+                
+            </rich:fileUpload>
+            <h:panelGroup id="info">
+                <rich:panel bodyClass="info">
+                    <f:facet name="header">
+                        <h:outputText value="Information du logo joint" />
+                    </f:facet>
+                   
+                    <h:outputText value="Aucun Fichier Joint"
+                        rendered="#{gestionContenu.contenu.logo.data==null}" />
+                    
+                                <a4j:mediaOutput element="img" mimeType="#{file.mime}"
+                                    createContent="#{fileUploadBean.paintLogoContenu}" value="#{gestionContenu.contenu.logo}"
+                                    style="width:100px; height:100px;" cacheable="false"
+                                    rendered="#{gestionContenu.contenu.logo.data!=null}">
+                                    <f:param value="#{fileUploadBean.timeStamp}" name="time"/>  
+                                </a4j:mediaOutput>
+                   
+                </rich:panel>
+                
+                <rich:spacer height="3"/>
+                <br />
+                <a4j:commandButton styleClass="button" action="#{fileUploadBean.clearUploadData}"
+                    reRender="info, upload" value="Clear Uploaded Data"
+                    rendered="#{fileUploadBean.logo.data!=null}" />
+            </h:panelGroup>
+        </h:panelGrid>
+        </h:form>
+        <h:form >
 					       <s:validateAll>
 					       	<h:panelGrid columns="3">
 					           <h:outputText value="Titre" />
@@ -51,7 +101,7 @@
 					           <h:outputText value="Rubrique Parent" />
 					           <h:selectOneMenu value="#{gestionContenu.contenu.parent}" required="true">
 					  			<s:selectItems 	id="parent"
-					  							value="#{gestionContenu.chargeParent(gestionContenu.contenu,sessionUtilisateur.utilisateur)}" 
+					  							value="#{gestionContenu.rubriquesDroitAjout(gestionContenu.contenu)}" 
 					  							var="ctn" 
 					  							label="#{ctn.titreContenu}"
 					  							/>
@@ -59,8 +109,8 @@
 								</h:selectOneMenu>
 								<h:message  for="parent"/>
 																
-								   <h:outputText value="Etat rubrique" rendered= "#{sessionUtilisateur.utilisateur.admin || sessionUtilisateur.utilisateur.isGestionnaire(gestionContenu.contenu)}"/>
-					          		 <h:selectOneMenu value="#{gestionContenu.contenu.etatContenu}" required="true" rendered= "#{sessionUtilisateur.utilisateur.admin || sessionUtilisateur.utilisateur.isGestionnaire(gestionContenu.contenu)}">
+								   <h:outputText value="Etat rubrique" rendered= "#{gestionContenu.droitPublicationContenu(gestionContenu.contenu)}"/>
+					          		 <h:selectOneMenu value="#{gestionContenu.contenu.etatContenu}" required="true" rendered= "#{gestionContenu.droitPublicationContenu(gestionContenu.contenu)}">
 					  				<s:selectItems id="eta"
 					  								value="#{enum.getListEtatContenu()}" 
 					  								var="et" 

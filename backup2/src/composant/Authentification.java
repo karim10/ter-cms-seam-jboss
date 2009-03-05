@@ -11,7 +11,7 @@ import org.jboss.seam.security.Identity;
 
 import util.HibernateUtil;
 
-import entite.Utilisateur;
+import entite.IUtilisateur;
 
 @Name("authentification")
 public class Authentification {
@@ -43,8 +43,8 @@ public class Authentification {
 				sessionUtilisateur = null;
 				return false;
 			} else {
-				Utilisateur u = (Utilisateur)result.get(0);
-				if(u.getAdmin()){identity.addRole("admin");}
+				IUtilisateur u = (IUtilisateur)result.get(0);
+				if(u.isAdmin()){identity.addRole("admin");}
 				sessionUtilisateur = new SessionUtilisateur(u);
 				
 				return true;		
