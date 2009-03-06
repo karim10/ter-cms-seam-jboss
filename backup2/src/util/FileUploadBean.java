@@ -1,5 +1,6 @@
 package util;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Transaction;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;
@@ -16,8 +18,9 @@ import org.jboss.seam.annotations.Scope;
 import org.richfaces.event.UploadEvent;
 import org.richfaces.model.UploadItem;
 
+import composant.GestionContenu;
+
 import entite.Article;
-import entite.Contenu;
 import entite.File;
 import exception.ContenuException;
 
@@ -27,7 +30,7 @@ import exception.ContenuException;
 public class FileUploadBean implements Serializable{
 
 	@In(required=false)
-	private Contenu contenu;
+	private GestionContenu gestionContenu;
 	private List<File> files = new ArrayList<File>();
 	private File logo;
 	private int uploadsAvailableFiles = 5;
@@ -44,6 +47,51 @@ public class FileUploadBean implements Serializable{
 
 	public FileUploadBean() {
 	}
+	
+//	public void drawImage (OutputStream output, Object emblemTemplateId) throws IOException{
+//
+//		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+//		File logo = (File)HibernateUtil.getSessionFactory().getCurrentSession().load(File.class,gestionContenu.getContenu().getLogo().getId_File());
+//		
+//		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(logo.getData());
+//
+//		write(byteArrayInputStream, output, 1024);
+//
+//	}
+//	
+//	public static void write(InputStream input, OutputStream output, int bufferSize) throws IOException {
+//		byte[] buffer = new byte[bufferSize] ;
+//		int readSize = -1 ;
+//		while ( (readSize = input.read(buffer)) != -1) {
+//			output.write(buffer, 0, readSize);
+//			output.flush();
+//		}
+//		try {
+//			input.close();
+//		} finally {
+//			output.close();
+//		}
+//	}
+	
+//	public void drawImageFromDB(OutputStream output, Object object) throws IOException{
+//		@SuppressWarnings("unused")
+//		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+//		File logo = (File)HibernateUtil.getSessionFactory().getCurrentSession().load(File.class,gestionContenu.getContenu().getLogo().getId_File());
+//		
+//		java.io.File file = new java.io.File(logo.getName());
+//		byte byteArray[] = logo.getData();
+//		FileInputStream inputStream = new FileInputStream(file);
+//		while(true){
+//			try{
+//				int bytesRead = inputStream.read(byteArray);
+//				output.write(byteArray, 0, bytesRead);
+//			}finally{
+//				if (inputStream != null){
+//					inputStream.close();
+//				}
+//			}
+//		}
+//	}
 
 //	public synchronized void paint(OutputStream stream, Object object) throws IOException {
 //		if(getFiles()!=null || !getFiles().isEmpty())
@@ -52,18 +100,19 @@ public class FileUploadBean implements Serializable{
 	
 	public synchronized void paintBd(OutputStream stream, Object object) throws IOException {
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-		File logo = (File)HibernateUtil.getSessionFactory().getCurrentSession().load(File.class,contenu.getLogo().getId_File());
+		File logo = (File)HibernateUtil.getSessionFactory().getCurrentSession().load(File.class,gestionContenu.getContenu().getLogo().getId_File());
 		if(logo!=null)
 		stream.write(logo.getData());
 	}
 	
 	public synchronized void paintLogoContenu(OutputStream stream, Object object) throws IOException {
-		stream.write(contenu.getLogo().getData());
+		stream.write(gestionContenu.getContenu().getLogo().getData());
 		setUploadsAvailableLogo(0);
 	}
 	
 	public synchronized void paintLogo(OutputStream stream, Object object) throws IOException {
 		stream.write(logo.getData());
+		setUploadsAvailableLogo(0);
 	}
 	
 	public synchronized void paintFilesContenu(OutputStream stream, Object object) throws IOException {
@@ -71,8 +120,8 @@ public class FileUploadBean implements Serializable{
 	}
 	
 	public synchronized void paintFiles(OutputStream stream, Object object) throws IOException {
-		if(!(contenu instanceof Article))throw new ContenuException("Il n'est pas possible d'afficher les fichiers d'un contenu autre qu'un article");
-		stream.write(((Article)contenu).getFiles().get((Integer)object).getData());
+		if(!(gestionContenu.getContenu() instanceof Article))throw new ContenuException("Il n'est pas possible d'afficher les fichiers d'un contenu autre qu'un article");
+		stream.write(((Article)gestionContenu.getContenu()).getFiles().get((Integer)object).getData());
 	}
 	
 	public synchronized void listenerFiles(UploadEvent event) throws Exception {
@@ -168,20 +217,12 @@ public class FileUploadBean implements Serializable{
 		return logo;
 	}
 
-	public void setContenu(Contenu contenu) {
-		this.contenu = contenu;
-	}
-
 	public void setUploadsAvailableFiles(int uploadsAvailableFiles) {
 		this.uploadsAvailableFiles = uploadsAvailableFiles;
 	}
 
 	public int getUploadsAvailableFiles() {
 		return uploadsAvailableFiles;
-	}
-
-	public Contenu getContenu() {
-		return contenu;
 	}
 	
 	public void setUploadsAvailableLogo(int uploadsAvailableLogo) {

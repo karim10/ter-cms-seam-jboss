@@ -37,7 +37,7 @@
 								<rich:column sortBy="#{lc.titreContenu}">
 								<f:facet name="header">Titre</f:facet>
 								
-								<s:link  action="#{menu.afficheModifierRubrique()}"
+								<s:link  action="#{menu.afficheModifierArticle()}"
 										rendered="#{gestionContenu.droitModifierContenu(lc)}">
 								<h:outputText value="#{lc.titreContenu}"/>
 								</s:link>
@@ -93,13 +93,6 @@
 									<f:facet name="header">Auteur</f:facet>
 									<h:outputText value="#{lc.auteur.login}"/>
 									</rich:column>
-									
-									<rich:column rendered="#{gestionContenu.estAdmin()}">
-									<f:facet name="header">Action Gestion</f:facet> 
-							      		<s:link value="Définir gestionnaires" action="#{menu.afficheChoixStatutRubrique()}" 
-							      				rendered="#{gestionContenu.droitDefinirGestionnaire(lc) or gestionContenu.droitDefinirRedacteur(lc)}"/>
-							    		<h:outputText value="Définir statut" rendered="#{not gestionContenu.droitDefinirGestionnaire(lc) and not gestionContenu.droitDefinirRedacteur(lc)}"/>
-							    	</rich:column>
 							    	
 							    	<rich:column rendered="#{gestionContenu.estAdmin()}">
 									<f:facet name="header">Action admin</f:facet> 

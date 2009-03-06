@@ -74,7 +74,7 @@ public class GestionContenu{
 	 * @param contenu
 	 * @throws HibernateException
 	 */
-	public Boolean addContenu(Contenu contenu)throws HibernateException {
+	public void addContenu(Contenu contenu)throws HibernateException {
 		// set le contenu
 		contenu.setAuteur((IUtilisateur) sessionUtilisateur.getUtilisateur());
 		contenu.setDateCreation(new Date());
@@ -113,7 +113,6 @@ public class GestionContenu{
 		tx.commit();
 		// remise à null car fileUploadBean est de scope Session
 		fileUploadBean = null;
-		return true;
 	}
 
 	/**
@@ -121,7 +120,7 @@ public class GestionContenu{
 	 * @param contenu
 	 * @throws HibernateException, ContenuException</p>
 	 */
-	public Boolean modifierContenu(Contenu contenu) throws HibernateException, ContenuException {
+	public void modifierContenu(Contenu contenu) throws HibernateException, ContenuException {
 		if(contenu==null)throw new ContenuException("Le contenu est null");
 		// Transaction 
 		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
@@ -131,41 +130,35 @@ public class GestionContenu{
 			File l = contenu.getLogo();
 			HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(l);
 		}
-		// set si article et si fichiers à joindre 
-//		if(estArticle(contenu)){
-//			if(((Article)contenu).getFiles()!= null){
-//				if(((Article)contenu).getFiles().isEmpty()){
-//					
-//				}
-//				List<File> lf = ((Article)contenu).getFiles();
-//				
-//				for(File f : lf){
-//					// sauvegarde les fichiers dans la bd
-//					if(f.)
-//					HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(f);
-//				}
-//				((Article)contenu).setFiles(lf);
-//			}
-//		}
-		// update listContenu 
+		//set si article et si fichiers à joindre, set 
+		if(estArticle(contenu) && ((Article)contenu).getFiles()!= null){
+			// récupération des éventuelles fichiers joints à l'article 
+			List<File> lf = DataUtil.chargeFiles(((Article)contenu));
+			// suppression d'un fichier de la BD si il n'est plus joint à l'article aprés modification
+			for(File f : lf){
+				if(!((Article)contenu).getFiles().contains(f)){
+					HibernateUtil.getSessionFactory().getCurrentSession().delete(f);
+				}
+			}
+			// ajout ou mise à jour des fichiers à ajouter
+			for(File f : ((Article)contenu).getFiles()){
+				HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(f);
+			}
+		}
+		// mise à jour de la liste de contenu 
 		for(int i=0 ;i<getListContenu().size(); i++){
 			if(getListContenu().get(i).getId_contenu() == contenu.getId_contenu()){
+				// mise à jour de listContenu
 				getListContenu().remove(i);
 				contenu.setDateMaj(new Date());
 				getListContenu().add(i,contenu);
-				// update du contenu dans la bd
+				// mise à jour de contenu dans la bd
 				HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(contenu);
-				// commit si element existe déjà dans la listContenu
-				tx.commit();
-				return true;
 			}
 		}
-		// rollback si element n'existe pas dans la listContenu
-		tx.rollback();
-		
-		// destruction du composant
+		tx.commit();
+		// remise à null car fileUploadBean est de scope Session
 		fileUploadBean = null;
-		return false;
 	}
 
 	public void modifierGestionnaireRedacteur(Rubrique contenu) throws Exception{

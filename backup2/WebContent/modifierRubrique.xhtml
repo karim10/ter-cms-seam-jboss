@@ -1,7 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
       xmlns:s="http://jboss.com/products/seam/taglib"
 	  xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
@@ -9,11 +6,8 @@
       xmlns:a4j="http://richfaces.org/a4j"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 	
-<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
-		<ui:composition>
-			<div align="center">	
+			<div align="center">
 				<rich:panel style="width:450px;" id="majR" headerClass="rich-panel-header-adm" bodyClass="rich-panel-body-acc">
 				
 				<h:messages globalOnly="true" styleClass="erreur"/>
@@ -39,6 +33,8 @@
                 			maxFilesQuantity="#{fileUploadBean.uploadsAvailableLogo}"
                 			uploadData="#{file.data}"
                 			id="upload"
+                			doneLabel="Terminé"
+                			transferErrorLabel="Erreur Lors du transfert"
                 			addControlLabel="Ajouter un fichier..." 
                 			clearAllControlLabel="Supprimer Tout" 
                 			clearControlLabel="Supprimer"
@@ -64,8 +60,8 @@
                     <h:outputText value="Aucun Fichier Joint"
                         rendered="#{gestionContenu.contenu.logo.data==null}" />
                     
-                                <a4j:mediaOutput element="img" mimeType="#{file.mime}"
-                                    createContent="#{fileUploadBean.paintLogoContenu}" value="#{gestionContenu.contenu.logo}"
+                                <a4j:mediaOutput element="img" mimeType="#{gestionContenu.contenu.logo.mime}"
+                                    createContent="#{fileUploadBean.paintLogoContenu}"
                                     style="width:100px; height:100px;" cacheable="false"
                                     rendered="#{gestionContenu.contenu.logo.data!=null}">
                                     <f:param value="#{fileUploadBean.timeStamp}" name="time"/>  
@@ -137,4 +133,3 @@
 					  </rich:panel>
 					  </div>
 		</ui:composition>
-</html>

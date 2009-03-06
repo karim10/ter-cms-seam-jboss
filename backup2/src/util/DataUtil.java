@@ -73,11 +73,13 @@ public class DataUtil {
 	    	    
 	}
 	
-	public static List<File> chargeFile(Contenu contenu) throws HibernateException {
+	public static List<File> chargeFiles(Article article) throws HibernateException {
 		
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 		
-	    return (List<File>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Article a,File f where a.files.Id_File = f.Id_File").list();
+	    return (List<File>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from File f where :article.files.Id_File = f.Id_File")
+	    .setParameter("article", article)
+	    .list();
 	    	    
 	}
 }

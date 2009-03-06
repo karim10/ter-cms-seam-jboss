@@ -32,6 +32,9 @@
                 			maxFilesQuantity="#{fileUploadBean.uploadsAvailableLogo}"
                 			uploadData="#{file.data}"
                 			id="upload"
+                			sizeErrorLabel="Le taille de l'image ne doit pas exeder 100KB"
+                			doneLabel="Terminé"
+                			transferErrorLabel="Erreur Lors du transfert"
                 			addControlLabel="Ajouter un fichier..." 
                 			clearAllControlLabel="Supprimer Tout" 
                 			clearControlLabel="Supprimer"
@@ -42,7 +45,7 @@
                 			noDuplicate="true"
                 			allowFlash="true"
                 			listHeight="50"  
-                       		listWidth="200"  
+                       		listWidth="200"
                      		style="height:100;">
                 <a4j:support event="onuploadcomplete" reRender="info" />
                 
@@ -166,6 +169,66 @@
 		       </tr>
 		     </table>    
 		   </a4j:form>
+		   <h:form>
+					<h:panelGrid columns="2" columnClasses="top,top">
+            <rich:fileUpload fileUploadListener="#{fileUploadBean.listenerFiles}"
+                			maxFilesQuantity="#{fileUploadBean.uploadsAvailableFiles}"
+                			uploadData="#{file.data}"
+                			id="upload"
+                			sizeErrorLabel="Le taille de l'image ne doit pas exeder 100KB"
+                			doneLabel="Terminé"
+                			transferErrorLabel="Erreur Lors du transfert"
+                			addControlLabel="Ajouter un fichier..." 
+                			clearAllControlLabel="Supprimer Tout" 
+                			clearControlLabel="Supprimer"
+							stopEntryControlLabel="Arêter" 
+							uploadControlLabel="Joindre"
+							immediateUpload="#{fileUploadBean.autoUpload}"
+                			acceptedTypes="pdf, doc, docx"
+                			noDuplicate="true"
+                			allowFlash="true"
+                			listHeight="150"  
+                       		listWidth="200"
+                     		style="height:100;">
+                <a4j:support event="onuploadcomplete" reRender="info" />
+                
+                
+            </rich:fileUpload>
+            <h:panelGroup id="info">
+                <rich:panel bodyClass="info">
+                    <f:facet name="header">
+                        <h:outputText value="Information du logo joint" />
+                    </f:facet>
+                   
+                    <h:outputText value="Aucun Fichier Joint"
+                            rendered="#{fileUploadBean.size==0}" />
+                    <rich:dataGrid columns="1" value="#{fileUploadBean.files}"
+                        var="file" rowKeyVar="row">
+                        <rich:panel bodyClass="rich-laguna-panel-no-header">
+                            <h:panelGrid columns="2">
+                                <a4j:mediaOutput element="img" mimeType="#{file.mime}"
+                                    createContent="#{fileUploadBean.paintFiles}" value="#{row}"
+                                    style="width:100px; height:100px;" cacheable="false">
+                                    <f:param value="#{fileUploadBean.timeStamp}" name="time"/>  
+                                </a4j:mediaOutput>
+                                <h:panelGrid columns="2">
+                                    <h:outputText value="File Name:" />
+                                    <h:outputText value="#{file.name}" />
+                                    <h:outputText value="File Length(bytes):" />
+                                    <h:outputText value="#{file.size}" />
+                                </h:panelGrid>
+                            </h:panelGrid>
+                        </rich:panel>
+                    </rich:dataGrid>
+                </rich:panel>
+                <rich:spacer height="3"/>
+                <br />
+                <a4j:commandButton styleClass="button" action="#{fileUploadBean.clearUploadData}"
+                    reRender="info, upload" value="Clear Uploaded Data"
+                    rendered="#{fileUploadBean.logo.data!=null}" />
+            </h:panelGroup>
+        </h:panelGrid>
+        </h:form>
 		   
 		   </s:fragment>
 		   </rich:panel>
