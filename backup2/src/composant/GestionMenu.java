@@ -70,7 +70,7 @@ public class GestionMenu {
 		link = path + "choixStatutRubrique.xhtml";
 	}
 	public void afficheFrontEnd(){
-		link = "/cms.xhtml";
+		link = "/front.xhtml";
 	}
 	
 	public void afficheContenu(){

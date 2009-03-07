@@ -38,11 +38,12 @@
 			<h:panelGrid columns="4">
        			<h:selectBooleanCheckbox id="rememberMe" value="#{identity.rememberMe}"/>
        			<h:outputLabel value="Se souvenir de moi" for="" /><br class="spacer" /><br class="spacer" />
-       			<s:link value="S'inscrire" action="/newUser.xhtml"/>
+       			<s:link value="S'inscrire" action="/newUser.xhtml"/><br class="spacer" />
+       			<s:link value="Aller au site public" action="/front.xhtml"/>
        			
   			</h:panelGrid>
   			<h:panelGrid columns="2">
-  			<s:link value="Init" action="#{initialisation.init()}" rendered="#{empty datautil.chargeContenu()}"/>
+  			<s:link value="Init" action="#{initialisation.init()}" rendered="#{1 != 1}"/>
   			</h:panelGrid>
   		
   			<h:panelGrid columns="2">

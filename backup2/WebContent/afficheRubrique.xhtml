@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich">
+      
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      	 <h:outputText value="#{gestionFrontEnd.setListContenuFront(datautil.chargeRubriquePublie())}" />
+      	 <h2>Liste de nos rubriques publiées</h2>
+        <h:form>
+        <rich:dataGrid footerClass="rich-panel-header" border="0"   value="#{listContenuFront}" var="new" columns="2" elements="9" width="600px">
+        
+       			<h4>
+       				<h:graphicImage value="images/logo_hp.gif" /><br /> 
+                	<h:commandLink action="#{menuFrontEnd.afficheNew()}" value="#{new.titreContenu}" />
+                </h4>
+                    <h:outputText value="Rubrique :  #{new.parent.titreContenu}" /><br/>
+                    <i>
+					 <h:outputText value="Auteur: #{new.auteur.login} , " />	
+					  <h:outputText value="  #{new.etatContenu} le : #{new.dateCreation}" />
+					  
+					 </i>          
+            <f:facet name="footer">
+                <rich:datascroller ></rich:datascroller>
+            </f:facet>
+        </rich:dataGrid>
+        </h:form>       
+</ui:composition>

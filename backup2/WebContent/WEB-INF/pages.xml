@@ -4,7 +4,7 @@
 <pages xmlns="http://jboss.com/products/seam/pages"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd"
-	no-conversation-view-id="/cms.xhtml" login-view-id="/cms.xhtml">
+	no-conversation-view-id="/front.xhtml" login-view-id="/cms.xhtml">
 	
 	
   <page view-id="/admin.xhtml" login-required="true">
@@ -15,44 +15,49 @@
 
 	<page view-id="*">
         <navigation from-action="#{identity.logout}">
-            <redirect view-id="/cms.xhtml"/>
+            <redirect view-id="/front.xhtml"/>
         </navigation>
+    </page>
+    
+    <page view-id="*">
         <navigation from-action="#{identity.login}">
             <redirect view-id="/admin.xhtml"/>
         </navigation>
     </page>
    
-    <page view-id="/admin.xhtml" login-required="true">
+    <page view-id="#{menu.afficheModifierUtilisateur()}" login-required="true">
     	<navigation from-action="#{gestionUtilisateur.inscription(gestionUtilisateur.utilisateur)}">
-            <redirect view-id="/gestionUtilisateur.xhtml"/>
+            <redirect view-id="#{menu.afficheGestionUtilisateur()}"/>
         </navigation>
+    </page>
     
+    <page view-id="#{menu.afficheAjoutUtilisateur()}" login-required="true">
         <navigation from-action="#{gestionUtilisateur.inscription(utilisateur)}">
-            <redirect view-id="/gestionUtilisateur.xhtml"/>
+            <redirect view-id="#{menu.afficheGestionUtilisateur()}"/>
         </navigation>
     </page>
      
-      <page view-id="/ajoutRubrique.xhtml" login-required="true">
+      <page view-id="#{menu.afficheAjoutRubrique()}" login-required="true">
         <navigation from-action="#{gestionContenu.addContenu(rubrique)}">
-            <redirect view-id="/gestionRubrique.xhtml"/>
+            <redirect view-id="#{menu.afficheGestionRubrique()}"/>
         </navigation>
     </page>
     
-     <page view-id="/modifierRubrique.xhtml" login-required="true">
+     <page view-id="#{menu.afficheModifierRubrique()}" login-required="true">
         <navigation from-action="#{gestionContenu.modifierContenu(gestionContenu.contenu)}">
-            <redirect view-id="/gestionRubrique.xhtml"/>
+            <redirect view-id="#{menu.afficheGestionRubrique()}"/>
         </navigation>
     </page>
     
-    <page view-id="/ajoutArticle.xhtml" login-required="true">
+    <page view-id="#{menu.afficheAjoutArticle()}" login-required="true">
         <navigation from-action="#{gestionContenu.addContenu(article)}">
-            <redirect view-id="/gestionArticle.xhtml"/>
+            <redirect view-id="#{menu.afficheGestionArticle()}"/>
         </navigation>
     </page>
     
-     <page view-id="/modifierArticle.xhtml" login-required="true">
+     <page view-id="#{menu.afficheModifierArticle()}" login-required="true">
         <navigation from-action="#{gestionContenu.modifierContenu(gestionContenu.contenu)}">
-            <redirect view-id="/gestionArticle.xhtml"/>
+            <redirect view-id="#{menu.afficheGestionArticle()}"/>
         </navigation>
     </page>
     
@@ -65,7 +70,7 @@
     
     <page view-id="/template/navigation.xhtml" login-required="true">
     	<navigation from-action="*" >
-            <redirect view-id="/cms.xhtml"/>
+            <redirect view-id="/front.xhtml"/>
         </navigation>
     </page>
     
@@ -143,9 +148,4 @@
         </redirect>
     </exception>
 	
-	<exception class="org.jboss.seam.web.FileUploadException">
-  		<redirect view-id="/error.xhtml">
-    	<message>#{org.jboss.seam.handledException.message}</message>
-  		</redirect>
-	</exception>
 </pages>

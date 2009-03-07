@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+     
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		
+				<h2 class="solution">Nouvelles récentes</h2>
+				<h:outputText value="#{gestionFrontEnd.setListContenuFront(datautil.chargeDernierePublication())}" />
+				<rich:dataList var="new" value="#{listContenuFront}" rows="5">
+        			<s:link action="#{menuFrontEnd.afficheNew()}">
+        				 <h:outputText value="#{new.titreContenu}"/>
+        			</s:link>
+				</rich:dataList>
+				<br class="spacer" />
+				<s:link action="#{menuFrontEnd.afficheArchive()}">					
+				<h4>Archive de publications</h4> 
+				</s:link>
+</ui:composition>
