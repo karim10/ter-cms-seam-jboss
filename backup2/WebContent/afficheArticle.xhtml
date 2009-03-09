@@ -3,27 +3,30 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:a4j="http://richfaces.org/a4j"
-      xmlns:rich="http://richfaces.org/rich">
-   
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:s="http://jboss.com/products/seam/taglib">
+   	  
    <head>   
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
       </head>
-      	 <h:outputText value="#{gestionFrontEnd.setListContenuFront(datautil.chargeArticlePublie())}" />
       	 <h2>Liste de nos articles publiés</h2>
         <h:form>
-        <rich:dataGrid footerClass="rich-panel-header" border="0"   value="#{listContenuFront}" var="new" columns="2" elements="9" width="600px">
+         <h:outputText value="#{gestionFrontEnd.setListContenuFront(datautil.chargeArticlePublie())}" />
+        <rich:dataGrid footerClass="rich-panel-header" border="0"   value="#{listContenuFront}" var="new" columns="2" elements="8" width="725px" rowKeyVar="row">
         
        			<h4>
-       				<h:graphicImage value="images/logo_hp.gif" rendered="#{gestionFrontEnd.contenu.logo.data==null}"/>
-       				 <a4j:mediaOutput element="img" mimeType="#{gestionFrontEnd.contenu.logo.mime}"
-                                    createContent="#{fileUploadBean.paintLogoContenu}"
-                                    style="width:100px; height:100px;" cacheable="false"
-                                    rendered="#{gestionFrontEnd.contenu.logo.data!=null}">
+       				<h:graphicImage value="images/logo_hp.gif" rendered="#{new.logo.data==null}"/>
+       				 <a4j:mediaOutput element="img" mimeType="#{new.logo.mime}"
+                                    createContent="#{fileUploadBean.paintLogo}"
+                                    style="width:50px; height:50px;" cacheable="false" value="#{row}"
+                                    rendered="#{new.logo.data!=null}">
                                     <f:param value="#{fileUploadBean.timeStamp}" name="time"/>  
                                 </a4j:mediaOutput>
        				
        				<br /> 
-                	<h:commandLink action="#{menuFrontEnd.afficheNew()}" value="#{new.titreContenu}" />
+                	<s:link action="#{menuFrontEnd.afficheSelection()}">
+                	 <h:outputText value="#{new.titreContenu}"/>
+                	</s:link>
                 </h4>
                 <p class="lftText"><h:outputText value="#{new.description}" /></p>   <br /> 
                 <h:outputText value="Rubrique :  #{new.parent.titreContenu}" /><br/>

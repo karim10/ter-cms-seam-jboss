@@ -15,7 +15,9 @@
 					<li class="navLink">
 					<s:link styleClass="testimonial" action="#{menuFrontEnd.afficheRubrique()}" value="Rubriques"/>
 					</li>
-					<li class="navLink"><a href="cms.seam" class="privee">administration</a></li>
-					
-					</ul>
+					<li class="navLink">
+					<s:link action="/admin.xhtml" styleClass="privee" value="administration" rendered="#{not empty sessionUtilisateur}"/>
+					<s:link action="cms.seam" styleClass="privee" value="administration" rendered="#{empty sessionUtilisateur}"/>
+					</li>
+		</ul>
 </ui:composition>				

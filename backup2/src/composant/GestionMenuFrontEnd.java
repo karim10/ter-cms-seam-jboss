@@ -44,6 +44,10 @@ public class GestionMenuFrontEnd {
 		setLien("afficheRubrique.xhtml");
 	}
 	
+	public void afficheSelection(){
+		setLien("afficheSelection.xhtml");
+	}
+	
 	public boolean homeF(){
 		return (lien.equals("contenu-front.xhtml"));
 	}

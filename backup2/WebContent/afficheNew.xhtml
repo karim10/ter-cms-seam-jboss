@@ -7,17 +7,36 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
       
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<h:panelGrid columns="3">
+	
+		<h:graphicImage value="images/logo_hp.gif" rendered="#{gestionNews.news.logo.data==null}"/>
+       				 <a4j:mediaOutput element="img" mimeType="#{gestionNews.news.logo.mime}"
+                                    createContent="#{fileUploadBean.paintLogoContenuGN}"
+                                    style="width:50px; height:50px;" cacheable="false"
+                                    rendered="#{gestionNews.news.logo.data!=null}">
+                                    <f:param value="#{fileUploadBean.timeStamp}" name="time"/>  
+                                </a4j:mediaOutput>
+		<h2>
+			<h:outputText value="#{gestionNews.news.titreContenu}" />
+		</h2>
+		</h:panelGrid>
+			
 		
-		<h2><h:outputText value="#{gestionFrontEnd.contenu.titreContenu}" /></h2>	
 		 <p class="lftText">
-		 <span> 
-		 	<h:outputText value="#{gestionFrontEnd.contenu.parent.titreContenu}" />
-		 </span>
+		 <span>
+		 	 	<h:outputText value="#{gestionNews.news.description}" 
+		 			 		rendered="#{gestionNews.estArticle(gestionNews.news)}"/><br /><br />
+		 </span>			 		
 		 </p>
 		 <p class="lftText">
-		 
-		 	<i>Date de création :  <h:outputText value="#{gestionFrontEnd.contenu.dateCreation}" /> 
-		 	<span>Auteur :  <h:outputText value="#{gestionFrontEnd.contenu.auteur.login}" /></span>
+		 <h:outputText value="#{gestionNews.news.texte}"
+		 		 rendered="#{gestionNews.estArticle(News.news)}"/><br /><br />
+		 	
+		 <span> 
+		 	<h:outputText value="Rubrique : #{gestionNews.news.parent.titreContenu}" /><br />
+		 </span>	 
+		 	<i>Date de création :  <h:outputText value="#{gestionNews.news.dateCreation}" /> 
+		 	Auteur :  <h:outputText value="#{gestionNews.news.auteur.login}" />
 		 	</i>
 		 </p>
 </ui:composition>

@@ -19,8 +19,11 @@ import org.richfaces.event.UploadEvent;
 import org.richfaces.model.UploadItem;
 
 import composant.GestionContenu;
+import composant.GestionFrontEnd;
+import composant.GestionNews;
 
 import entite.Article;
+import entite.Contenu;
 import entite.File;
 import exception.ContenuException;
 
@@ -29,6 +32,10 @@ import exception.ContenuException;
 @Name("fileUploadBean")
 public class FileUploadBean implements Serializable{
 
+	@In(required=false)
+	private GestionNews gestionNews;
+	@In(required=false)
+	private GestionFrontEnd gestionFrontEnd;
 	@In(required=false)
 	private GestionContenu gestionContenu;
 	private List<File> files = new ArrayList<File>();
@@ -98,31 +105,41 @@ public class FileUploadBean implements Serializable{
 //		stream.write(getFiles().get((Integer)object).getData());
 //	}
 	
-	public synchronized void paintBd(OutputStream stream, Object object) throws IOException {
-		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-		File logo = (File)HibernateUtil.getSessionFactory().getCurrentSession().load(File.class,gestionContenu.getContenu().getLogo().getId_File());
-		if(logo!=null)
-		stream.write(logo.getData());
-	}
+//	public synchronized void paintBd(OutputStream stream, Object object) throws IOException {
+//		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+//		File logo = (File)HibernateUtil.getSessionFactory().getCurrentSession().load(File.class,contenu.getLogo().getId_File());
+//		if(logo!=null)
+//		stream.write(logo.getData());
+//	}
 	
 	public synchronized void paintLogoContenu(OutputStream stream, Object object) throws IOException {
 		stream.write(gestionContenu.getContenu().getLogo().getData());
 		setUploadsAvailableLogo(0);
 	}
 	
-	public synchronized void paintLogo(OutputStream stream, Object object) throws IOException {
-		stream.write(logo.getData());
+	public synchronized void paintLogoContenuGF(OutputStream stream, Object object) throws IOException {
+		stream.write(gestionFrontEnd.getContenu().getLogo().getData());
 		setUploadsAvailableLogo(0);
 	}
 	
-	public synchronized void paintFilesContenu(OutputStream stream, Object object) throws IOException {
-		stream.write(getFiles().get((Integer)object).getData());
+	public synchronized void paintLogoContenuGN(OutputStream stream, Object object) throws IOException {
+		stream.write(gestionNews.getNews().getLogo().getData());
+		setUploadsAvailableLogo(0);
 	}
 	
-	public synchronized void paintFiles(OutputStream stream, Object object) throws IOException {
-		if(!(gestionContenu.getContenu() instanceof Article))throw new ContenuException("Il n'est pas possible d'afficher les fichiers d'un contenu autre qu'un article");
-		stream.write(((Article)gestionContenu.getContenu()).getFiles().get((Integer)object).getData());
+	public synchronized void paintLogo(OutputStream stream, Object object) throws IOException {
+		stream.write(gestionFrontEnd.getListContenuFront().get(((Integer)object)).getLogo().getData());
+		setUploadsAvailableLogo(0);
 	}
+	
+//	public synchronized void paintFilesContenu(OutputStream stream, Object object) throws IOException {
+//		stream.write(getFiles().get((Integer)object).getData());
+//	}
+//	
+//	public synchronized void paintFiles(OutputStream stream, Object object) throws IOException {
+//		if(!(contenu instanceof Article))throw new ContenuException("Il n'est pas possible d'afficher les fichiers d'un contenu autre qu'un article");
+//		stream.write(((Article)contenu).getFiles().get((Integer)object).getData());
+//	}
 	
 	public synchronized void listenerFiles(UploadEvent event) throws Exception {
 		UploadItem item = event.getUploadItem();

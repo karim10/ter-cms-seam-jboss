@@ -26,7 +26,7 @@ ul{
 /*------------------------------------------------partie top --------------------*/
 #top{
 	
-	width:968px;
+	width:1190px;
 	height:68px;
 	margin:0 auto;
 	position:relative;
@@ -42,7 +42,7 @@ ul{
 
 /*------------------------------------------------debut header--------------------*/
 #header{
-	width:920px;
+	width:1090px;
 	border-left:#ffffff solid 7px;
 	border-right:#ffffff solid 7px;
 	background:url(../images/front-img/top_green_bg.gif) 0 0 repeat-x;
@@ -78,8 +78,8 @@ ul{
 
 /*------------------------------------------------debut body--------------------*/
 #body{
-	width:968px;
-	margin:0 auto;
+	width:1090px;
+	margin:0 0 0 80px;
 	padding:0;
 	background-color:#fff;
 	color:#000;
@@ -88,7 +88,7 @@ ul{
 	width:822px;
 	height:46px;
 	border-bottom:#EEEEEE solid 4px;
-	padding:0px 0 6px 146px;
+	padding:0px 0 6px 256px;
 	margin:0 0 24px 0;
 	background-color:#fff;
 	color:#000;
@@ -174,7 +174,7 @@ ul{
 }
 /*------------------------------------------------contenu left--------------------*/
 #left{
-	width:618px;
+	width:750px;
 	padding:5px 15px 0 5px;
 	float:left;
 	border: #497C00 1px solid;
@@ -323,8 +323,7 @@ h4 a{
 	display:block;
 	background:url(../images/front-img/solution_div.gif) left bottom repeat-x;
 	height:20px;
-	width:238px;
-	padding:0 0 1px 0;
+	padding:0 0 10px 0;
 }
 #right ul li a{
 	background:url(../images/front-img/arrow.gif) 0 7px no-repeat;

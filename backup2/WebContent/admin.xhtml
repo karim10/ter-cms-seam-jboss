@@ -17,7 +17,8 @@
 	  		<div align="center">
 
 				<ui:include src="#{menu.link}" />
-				<s:button value="retour à l'accueil"  styleClass="button" action="#{menu.afficheContenu()}"/>
+				<s:button value="retour à l'accueil"  styleClass="button" action="#{menu.afficheContenu()}" 
+				rendered="#{!menu.home()}"/>
 	  		</div> 
 	  	</ui:define>
 	</ui:composition>

@@ -76,5 +76,10 @@ public class GestionMenu {
 	public void afficheContenu(){
 		link = path + "contenu.xhtml";
 	}
+	
+	public boolean home() {
+		return (link.equals("contenu.xhtml"));
+	}
+	
 
 }

@@ -13,10 +13,11 @@ import org.jboss.seam.annotations.datamodel.DataModelSelection;
 
 import util.DataUtil;
 
+import entite.Article;
 import entite.Contenu;
 
 @Name("gestionFrontEnd")
-@Scope(ScopeType.PAGE)
+@Scope(ScopeType.SESSION)
 public class GestionFrontEnd {
 	
 	public GestionFrontEnd(){ 
@@ -56,6 +57,15 @@ public class GestionFrontEnd {
 	 */
 	public List<Contenu> getListContenuFront() {
 		return listContenuFront;
+	}
+	
+	/**
+	 * <p>Vérifie si le contenu est un article</p>
+	 * @param contenu
+	 * @return {@link Boolean}
+	 */
+	public boolean estArticle(Contenu contenu){
+		return contenu instanceof Article;
 	}
 
 	/**

@@ -1,19 +1,32 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:s="http://jboss.com/products/seam/taglib"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:a4j="http://richfaces.org/a4j"
       xmlns:rich="http://richfaces.org/rich">
       
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-      	 <h:outputText value="#{gestionFrontEnd.setListContenuFront(datautil.chargeRubriquePublie())}" />
       	 <h2>Liste de nos rubriques publiées</h2>
         <h:form>
-        <rich:dataGrid footerClass="rich-panel-header" border="0"   value="#{listContenuFront}" var="new" columns="2" elements="9" width="600px">
+                		<h:outputText value="#{gestionFrontEnd.setListContenuFront(datautil.chargeRubriquePublie())}" />
         
+        <rich:dataGrid footerClass="rich-panel-header" border="0"  reRender="scrolF" 
+        	 value="#{listContenuFront}" var="new" columns="2" elements="8" width="725px" rowKeyVar="row">
+      	 
        			<h4>
-       				<h:graphicImage value="images/logo_hp.gif" /><br /> 
-                	<h:commandLink action="#{menuFrontEnd.afficheNew()}" value="#{new.titreContenu}" />
+       				<h:graphicImage value="images/logo_hp.gif" rendered="#{new.logo.data==null}"/>
+       				 <a4j:mediaOutput element="img" mimeType="#{new.logo.mime}"
+                                    createContent="#{fileUploadBean.paintLogo}" value="#{row}"
+                                    style="width:50px; height:50px;" cacheable="false"
+                                    rendered="#{new.logo.data!=null}">
+                                    <f:param value="#{fileUploadBean.timeStamp}" name="time"/>  
+                                </a4j:mediaOutput>
+       				
+       				<br /> 
+                	<s:link action="#{menuFrontEnd.afficheSelection()}">
+                	 <h:outputText value="#{new.titreContenu}"/>
+                	</s:link>
                 </h4>
                     <h:outputText value="Rubrique :  #{new.parent.titreContenu}" /><br/>
                     <i>
@@ -22,8 +35,9 @@
 					  
 					 </i>          
             <f:facet name="footer">
-                <rich:datascroller ></rich:datascroller>
+                <rich:datascroller id="scrolF" ></rich:datascroller>
             </f:facet>
+            
         </rich:dataGrid>
         </h:form>       
 </ui:composition>

@@ -15,8 +15,10 @@
 	  	<ui:define name="contentTitle" />
 	  	<ui:define name="content">
 	  	 <ui:include src="#{menuFrontEnd.lien}" />
-	  	 <span><s:link value="retour à l'accueil"  action="#{menuFrontEnd.afficheAccueil()}" 
-				rendered="#{!menuFrontEnd.homeF()}"/></span>
+	  	 <center>
+	  	 <h4><s:link value="Retour à l'accueil"  action="#{menuFrontEnd.afficheAccueil()}" 
+				rendered="#{!menuFrontEnd.homeF()}"/></h4>
+		</center>		
 	  	</ui:define>
 	</ui:composition>
 </html>

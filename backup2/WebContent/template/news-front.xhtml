@@ -9,14 +9,13 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		
 				<h2 class="solution">Nouvelles récentes</h2>
-				<h:outputText value="#{gestionFrontEnd.setListContenuFront(datautil.chargeDernierePublication())}" />
-				<rich:dataList var="new" value="#{listContenuFront}" rows="5">
-        			<s:link action="#{menuFrontEnd.afficheNew()}">
-        				 <h:outputText value="#{new.titreContenu}"/>
-        			</s:link>
+				<rich:dataList var="new" value="#{listNews}" rows="5">
+        			<s:link action="#{menuFrontEnd.afficheNew()}" value="#{new.titreContenu}" />
+        			<i><h:outputText value="Date : #{new.dateCreation}"/></i>
 				</rich:dataList>
 				<br class="spacer" />
 				<s:link action="#{menuFrontEnd.afficheArchive()}">					
-				<h4>Archive de publications</h4> 
+				<h4>Consulter nos archives de publications</h4> 
 				</s:link>
+				
 </ui:composition>
