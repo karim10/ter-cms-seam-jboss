@@ -31,7 +31,7 @@
 									<h:panelGrid columns="2">
 			    	       			<rich:pickList value="#{gestionContenu.contenu.listRedacteur}">
 			    	       				<s:selectItems 	id="pick1"
-					  							value="#{datautil.chargeUtilisateurs()}" 
+					  							value="#{datautil.chargeUtilisateursSansAdmin()}" 
 					  							var="ctn" 
 					  							label="#{ctn.login}"
 					  							/>
@@ -48,7 +48,7 @@
 			    	       			<h:panelGrid columns="2">
 			    	       			<rich:pickList value="#{gestionContenu.contenu.listGestionnaire}">
 			    	       				<s:selectItems 	id="pick2"
-					  							value="#{datautil.chargeUtilisateurs()}" 
+					  							value="#{datautil.chargeUtilisateursSansAdmin()}" 
 					  							var="ctn" 
 					  							label="#{ctn.login}"
 					  							/>

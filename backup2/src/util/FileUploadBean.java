@@ -117,6 +117,11 @@ public class FileUploadBean implements Serializable{
 		setUploadsAvailableLogo(0);
 	}
 	
+	public synchronized void paintUploadLogo(OutputStream stream, Object object) throws IOException {
+		stream.write(getLogo().getData());
+		setUploadsAvailableLogo(0);
+	}
+	
 	public synchronized void paintLogoContenuGF(OutputStream stream, Object object) throws IOException {
 		stream.write(gestionFrontEnd.getContenu().getLogo().getData());
 		setUploadsAvailableLogo(0);

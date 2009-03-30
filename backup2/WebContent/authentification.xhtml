@@ -43,7 +43,7 @@
        			
   			</h:panelGrid>
   			<h:panelGrid columns="2">
-  			<s:link value="Init" action="#{initialisation.init()}" rendered="#{1 != 1}"/>
+  			<s:link value="Init" action="#{initialisation.init()}" rendered="#{ empty datautil.chargeContenu()}"/>
   			</h:panelGrid>
   		
   			<h:panelGrid columns="2">

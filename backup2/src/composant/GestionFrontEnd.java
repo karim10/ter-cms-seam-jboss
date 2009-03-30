@@ -1,5 +1,6 @@
 package composant;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.seam.ScopeType;
@@ -31,6 +32,26 @@ public class GestionFrontEnd {
 	@Out(required=false)
 	private Contenu contenu;
 	
+	public List<Contenu> maxClic(){
+		List<Contenu> listClic = new ArrayList<Contenu>();
+		List<Contenu> listTemp = listContenuFront;
+		Contenu contenuClicMax1 =listContenuFront.get(0);
+		int i=0;
+		int nbmax = 0;
+		while( i<listTemp.size()&& nbmax<=5){
+			if(listTemp.get(i).getClic()> listTemp.get(i+1).getClic()){
+				contenuClicMax1 = listTemp.get(i);
+				nbmax++;
+				listClic.add(contenuClicMax1);
+			}
+			i++;
+		}
+		return listClic;
+	}
+	
+	public void incrClic(Contenu contenu){
+		contenu.setClic(contenu.getClic()+1);
+	}
 	/**
 	 * @param contenu the contenu to set
 	 */

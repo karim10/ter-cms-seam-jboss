@@ -55,12 +55,7 @@
 							<rich:column sortBy="#{lu.website}">
 								<f:facet name="header">Site web</f:facet>
 								<h:outputText value="#{lu.website}" />
-							</rich:column>
-							
-							<rich:column rendered="#{sessionUtilisateur.utilisateur.admin}">
-								<f:facet name="header">Action admin</f:facet> 
-							    <s:link id="out1" value="Définir contenu" action="#{menu.afficheGestionStatutUtilisateur()}"/>
-							</rich:column>				
+							</rich:column>			
 							
 							<!-- lien pour supprimer l'utilisateur  -->
 							<rich:column rendered="#{sessionUtilisateur.utilisateur.admin}">

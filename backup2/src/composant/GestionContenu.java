@@ -88,6 +88,7 @@ public class GestionContenu{
 			HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(fileUploadBean.getLogo());
 			contenu.setLogo(fileUploadBean.getLogo());
 		}
+		/*
 		// si article et si fichiers à joindre, ajoute fichiers joints  
 		if(estArticle(contenu)){
 			if(fileUploadBean.getFiles()!= null){
@@ -98,6 +99,7 @@ public class GestionContenu{
 				((Article)contenu).setFiles(fileUploadBean.getFiles());
 			}
 		}
+		*/
 		// si Rubrique, ajoute le createur de la rubrique en tant que redacteur de celle-ci
 		if(estRubrique(contenu)){
 			((Rubrique)contenu).addRedacteur(sessionUtilisateur.getUtilisateur());
@@ -105,11 +107,11 @@ public class GestionContenu{
 		// ajoute le contenu
 		getListContenu().add(contenu);
 		// mise à jour la liste du contenu enfant de la rubrique parent
-		Contenu contenuParent = contenu.getParent();
-		((Rubrique)contenuParent).getListEnfant().add(contenu);	
+		Rubrique contenuParent = contenu.getParent();
+		contenuParent.addEnfant(contenu);	
 		// sauvegarde dans la BD
-		HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(contenu);
 		HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(contenuParent);
+		HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(contenu);
 		tx.commit();
 		// remise à null car fileUploadBean est de scope Session
 		fileUploadBean = null;
@@ -130,6 +132,7 @@ public class GestionContenu{
 			File l = contenu.getLogo();
 			HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(l);
 		}
+		/*
 		//set si article et si fichiers à joindre, set 
 		if(estArticle(contenu) && ((Article)contenu).getFiles()!= null){
 			// récupération des éventuelles fichiers joints à l'article 
@@ -145,6 +148,7 @@ public class GestionContenu{
 				HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(f);
 			}
 		}
+		*/
 		// mise à jour de la liste de contenu 
 		for(int i=0 ;i<getListContenu().size(); i++){
 			if(getListContenu().get(i).getId_contenu() == contenu.getId_contenu()){
@@ -296,6 +300,7 @@ public class GestionContenu{
 				HibernateUtil.getSessionFactory().getCurrentSession().delete(f);
 				contenuAsupprimer.setLogo(null);
 			}
+			/*
 			// si le contenu est un article, suppression des eventuelles fichiers joints
 			if(estArticle(contenuAsupprimer)){
 				if(((Article)contenuAsupprimer).getFiles()!= null){
@@ -306,6 +311,7 @@ public class GestionContenu{
 					((Article)contenuAsupprimer).setFiles(null);
 				}
 			}
+			*/
 			// si le contenu est une rubrique, la rubrique parent du contenu à supprimer
 			// devient la rubrique parent de tous les contenus enfants de la rubrique à supprimer
 			if(estRubrique(contenuAsupprimer)){

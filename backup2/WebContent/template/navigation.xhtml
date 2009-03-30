@@ -16,13 +16,14 @@
 <ui:composition>
 	<p> 
 	
-		<h:outputText value="Vous êtes connecté sous le login de : #{identity.username}"/>
-			<s:link action="#{identity.logout}" styleClass="button" value="Se déconnecter" />	
+		<h:outputText value="Vous êtes connecté sous le login de : #{identity.username}  "/>
+			<s:link action="#{identity.logout}" styleClass="button" value="  Se déconnecter" />	
 	</p>
 	<div id="nav">
 		<h:form>
 			<rich:toolBar>
 			<rich:menuItem id="out1"  value="Accueil" labelClass="button" action="#{menu.afficheContenu()}" />
+            
             <rich:dropDownMenu>
                 <f:facet name="label"> 
                     <h:panelGroup>
@@ -88,7 +89,7 @@
                 </rich:menuItem>
                 <rich:menuItem  value="Publication"/>
             </rich:dropDownMenu>
-
+		<rich:menuItem id="compte"  value="Mon Compte" labelClass="button" action="#{menu.afficheCompte()}" />
         </rich:toolBar>
     	</h:form>
 		</div>

@@ -42,7 +42,7 @@
 		max-request-size="10000000" />
 
 	<web:character-encoding-filter encoding="UTF-8"
-		override-client="false" url-pattern="*.seam" />
+		override-client="true" url-pattern="*.seam" />
 
 	<web:ajax4jsf-filter force-parser="false" enable-cache="true" />
 	

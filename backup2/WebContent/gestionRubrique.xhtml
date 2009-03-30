@@ -98,7 +98,10 @@
 						
 									<rich:column rendered="#{gestionContenu.estAdmin()}">
 									<f:facet name="header">Action admin</f:facet> 
-							      		<h:commandLink value="Supprimer" action="#{gestionContenu.removeContenu(gestionContenu.contenu)}"/>
+							      		<h:commandLink value="Supprimer" action="#{gestionContenu.removeContenu(gestionContenu.contenu)}" 
+							      			rendered="#{lc.titreContenu != 'ROOT'}"/>
+							      		<h:outputText value="Non Supprimable" 
+							      			rendered="#{lc.titreContenu == 'ROOT'}"/>
 							    	</rich:column>
 					   	 		<f:facet name="footer">
 	                			<rich:datascroller id="scrol"></rich:datascroller>

@@ -19,6 +19,7 @@ import org.jboss.seam.annotations.security.Restrict;
 import org.jboss.seam.faces.FacesMessages;
 
 import entite.IUtilisateur;
+import entite.Utilisateur;
 import exception.ContenuException;
 
 import util.DataUtil;
@@ -116,7 +117,7 @@ public class GestionUtilisateur{
 		Long id = utilisateur.getId_utilisateur();
 		if(utilisateur!=null){
 			Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-			IUtilisateur u = (IUtilisateur)HibernateUtil.getSessionFactory().getCurrentSession().load(IUtilisateur.class,id);
+			IUtilisateur u = (Utilisateur)HibernateUtil.getSessionFactory().getCurrentSession().load(Utilisateur.class,id);
 			u.setAccesBackend(utilisateur.isAccesBackend());
 			u.setAdmin(utilisateur.isAdmin());
 			u.setWebsite(utilisateur.getWebsite());

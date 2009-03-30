@@ -31,6 +31,8 @@ public abstract class Contenu implements  Serializable{
 	
 	private long id_contenu;
 	
+	private int clic =0;
+	
 	private NiveauAccesContenu niveauAcces;
 	
 	// etat courant du contenu (valeur par defaut à la création)
@@ -83,7 +85,7 @@ public abstract class Contenu implements  Serializable{
 		this.etatContenu = etatContenu;
 	}
 
-	@Column(name="TITRE", updatable=true, nullable=false, length=50)
+	@Column(name="TITRE", updatable=true, nullable=false, length=150)
 	@NotNull
 	public String getTitreContenu() {
 		return titreContenu;
@@ -150,5 +152,20 @@ public abstract class Contenu implements  Serializable{
 
 	public void setParent(Rubrique parent) {
 		this.parent = parent;
+	}
+
+	/**
+	 * @param clic the clic to set
+	 */
+	public void setClic(int clic) {
+		this.clic = clic;
+	}
+
+	/**
+	 * @return the clic
+	 */
+	@Column(name="CLIC", updatable=true, length=50)
+	public int getClic() {
+		return clic;
 	}
 }

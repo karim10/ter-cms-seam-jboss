@@ -14,7 +14,7 @@ public abstract class ContenuText extends Contenu{
 	
 	private String texte;
 	
-	public ContenuText(){}
+	//public ContenuText(){}
 	
 	@Column(name="TEXTE", updatable=true)
 	@Lob

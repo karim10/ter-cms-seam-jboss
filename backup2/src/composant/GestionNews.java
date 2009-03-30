@@ -16,7 +16,7 @@ import entite.Article;
 import entite.Contenu;
 
 @Name("gestionNews")
-@Scope(ScopeType.PAGE)
+@Scope(ScopeType.SESSION)
 public class GestionNews {
 
 	@DataModel

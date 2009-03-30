@@ -180,7 +180,7 @@ ul{
 	border: #497C00 1px solid;
 }
 #left h2{
-	font:bold 24px/16px Arial, Helvetica, sans-serif;
+	font:bold 18px Arial, Helvetica, sans-serif;
 	color:#497C00;
 	background-color:#fff;
 	margin:0 0 12px 0;
@@ -193,6 +193,11 @@ ul{
 	margin:0;
 	padding:0;
 }
+
+.displayFils{
+	background:url(../images/front-img/solution_div.gif) left bottom repeat-x;
+	
+	}
 #left p.lftText span{
 	color:#497C00;
 	font:bold 12px/19px Arial, Helvetica, sans-serif;
@@ -287,10 +292,10 @@ form{
 	margin:0 0 5px 0;
 }
 #right h2.solution {
-	font:bold 24px/39px Arial, Helvetica, sans-serif;
+	font:bold 18px Arial, Helvetica, sans-serif;
 	color:#497C00;
 	background-color:#fff;
-	padding:0 0 0 17px;
+	padding:0 0 0 15px;
 }
 #right h4 {
 	font:bold 12px Arial, Helvetica, sans-serif;
@@ -322,7 +327,6 @@ h4 a{
 #right ul li{
 	display:block;
 	background:url(../images/front-img/solution_div.gif) left bottom repeat-x;
-	height:20px;
 	padding:0 0 10px 0;
 }
 #right ul li a{
@@ -335,6 +339,11 @@ h4 a{
 	margin:0;
 	display:block;
 }
+#right ul li a i {
+	font:bold;
+	text-decoration:inherit;
+	color:blue;	
+}
 #right ul li a:hover{
 	color:#A60303;
 	background-color:#ECECEC;
@@ -344,7 +353,7 @@ h4 a{
 	background-image:none;
 	height:20px;
 }
-/*------------------------------------------------right panel--------------------*/
+/*------------------------------------------------fin right--------------------*/
 
 /*------------------------------------------------fin body--------------------*/
 
@@ -421,4 +430,4 @@ h4 a{
 	color:#FDFF35;
 	background-color:#03373B;
 }
-/*------------------------------------------------footer--------------------*/
+/*------------------------------------------------fin footer--------------------*/

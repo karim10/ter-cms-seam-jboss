@@ -77,6 +77,9 @@ public class GestionMenu {
 		link = path + "contenu.xhtml";
 	}
 	
+	public void afficheCompte(){
+		link = path + "compte.xhtml";
+	}
 	public boolean home() {
 		return (link.equals("contenu.xhtml"));
 	}

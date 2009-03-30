@@ -7,21 +7,18 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
       
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<h:panelGrid columns="3">
 	
-		<h:graphicImage value="images/logo_hp.gif" rendered="#{gestionNews.news.logo.data==null}"/>
+		<h2>
+		<h:graphicImage value="images/defaut.jpg" rendered="#{gestionNews.news.logo.data==null}"/>
        				 <a4j:mediaOutput element="img" mimeType="#{gestionNews.news.logo.mime}"
                                     createContent="#{fileUploadBean.paintLogoContenuGN}"
                                     style="width:50px; height:50px;" cacheable="false"
                                     rendered="#{gestionNews.news.logo.data!=null}">
                                     <f:param value="#{fileUploadBean.timeStamp}" name="time"/>  
                                 </a4j:mediaOutput>
-		<h2>
+		
 			<h:outputText value="#{gestionNews.news.titreContenu}" />
 		</h2>
-		</h:panelGrid>
-			
-		
 		 <p class="lftText">
 		 <span>
 		 	 	<h:outputText value="#{gestionNews.news.description}" 
@@ -34,7 +31,7 @@
 		 	
 		 <span> 
 		 	<h:outputText value="Rubrique : #{gestionNews.news.parent.titreContenu}" /><br />
-		 </span>	 
+		 </span>Clics : <h:outputText value="#{gestionNews.news.clic}" /><br />	 
 		 	<i>Date de création :  <h:outputText value="#{gestionNews.news.dateCreation}" /> 
 		 	Auteur :  <h:outputText value="#{gestionNews.news.auteur.login}" />
 		 	</i>

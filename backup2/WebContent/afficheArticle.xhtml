@@ -15,7 +15,7 @@
         <rich:dataGrid footerClass="rich-panel-header" border="0"   value="#{listContenuFront}" var="new" columns="2" elements="8" width="725px" rowKeyVar="row">
         
        			<h4>
-       				<h:graphicImage value="images/logo_hp.gif" rendered="#{new.logo.data==null}"/>
+       				<h:graphicImage value="images/defaut.jpg" rendered="#{new.logo.data==null}"/>
        				 <a4j:mediaOutput element="img" mimeType="#{new.logo.mime}"
                                     createContent="#{fileUploadBean.paintLogo}"
                                     style="width:50px; height:50px;" cacheable="false" value="#{row}"
@@ -23,8 +23,8 @@
                                     <f:param value="#{fileUploadBean.timeStamp}" name="time"/>  
                                 </a4j:mediaOutput>
        				
-       				<br /> 
-                	<s:link action="#{menuFrontEnd.afficheSelection()}">
+       				
+                	<s:link action="#{menuFrontEnd.afficheSelection()}" onclick="#{gestionFrontEnd.incrClic(new)}">
                 	 <h:outputText value="#{new.titreContenu}"/>
                 	</s:link>
                 </h4>

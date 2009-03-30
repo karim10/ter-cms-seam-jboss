@@ -21,7 +21,7 @@ public class DataUtil {
 
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 
-		return (List<Contenu>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Contenu c where c.titreContenu != 'ROOT'").list();
+		return (List<Contenu>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Contenu c").list();
 
 	}
 
@@ -37,7 +37,7 @@ public class DataUtil {
 
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 
-		return (List<Rubrique>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Rubrique r where r.titreContenu != 'ROOT'").list();
+		return (List<Rubrique>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Rubrique r ").list();
 
 	}
 
@@ -54,6 +54,13 @@ public class DataUtil {
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 
 		return (List<IUtilisateur>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Utilisateur u").list();
+	}
+	
+	public static List<IUtilisateur> chargeUtilisateursSansAdmin() throws HibernateException {
+
+		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+
+		return (List<IUtilisateur>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Utilisateur u where u.admin = false").list();
 	}
 
 
@@ -90,7 +97,7 @@ public class DataUtil {
 	 */
 	public static List<Contenu> chargeContenuPublie() throws HibernateException {
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-		return (List<Contenu>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(" from Contenu c where c.titreContenu != 'ROOT' and c.etatContenu = 'publie'").list();
+		return (List<Contenu>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(" from Contenu c where c.titreContenu != 'ROOT' and c.etatContenu = 'publie' order by c.id_contenu desc").list();
 	}
 	
 	/**
@@ -100,7 +107,7 @@ public class DataUtil {
 	 */
 	public static List<Contenu> chargeArticlePublie() throws HibernateException {
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-		return (List<Contenu>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(" from Article a where a.etatContenu = 'publie'").list();
+		return (List<Contenu>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(" from Article a where a.etatContenu = 'publie' order by a.id_contenu desc").list();
 	}
 	/**
 	 * Methode qui charge que les rubriques publiées
@@ -109,7 +116,7 @@ public class DataUtil {
 	 */
 	public static List<Contenu> chargeRubriquePublie() throws HibernateException {
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-		return (List<Contenu>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(" from Rubrique r where r.titreContenu != 'ROOT' and r.etatContenu = 'publie'").list();
+		return (List<Contenu>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(" from Rubrique r where r.titreContenu != 'ROOT' and r.etatContenu = 'publie' order by r.id_contenu desc").list();
 	}
 	
 	

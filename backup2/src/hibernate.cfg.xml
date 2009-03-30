@@ -64,6 +64,7 @@
     	<!-- Mapping des entites -->
   		<mapping class="entite.File"/>
 		<mapping class="entite.Contenu"/>
+		<mapping class="entite.ContenuText"/>
 		<mapping class="entite.Rubrique"/>
 		<mapping class="entite.Article"/>
 		<mapping class="entite.Nouvelle"/>
