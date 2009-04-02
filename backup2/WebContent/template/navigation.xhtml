@@ -22,8 +22,9 @@
 	<div id="nav">
 		<h:form>
 			<rich:toolBar>
+			<f:facet name="label">
 			<rich:menuItem id="out1"  value="Accueil" labelClass="button" action="#{menu.afficheContenu()}" />
-            
+            </f:facet>
             <rich:dropDownMenu>
                 <f:facet name="label"> 
                     <h:panelGroup>
@@ -51,7 +52,7 @@
                     action="#{menu.afficheAjoutArticle()}">
                 </rich:menuItem>            
             </rich:dropDownMenu>
-            
+            <!--
              <rich:dropDownMenu>
                 <f:facet name="label"> 
                     <h:panelGroup>
@@ -63,7 +64,7 @@
                 </rich:menuItem>
                 <rich:menuItem  value="Ajouter une nouvelle"/>
             </rich:dropDownMenu>
-            
+            -->
             
             <rich:dropDownMenu rendered="#{s:hasRole('admin')}">
                 <f:facet name="label"> 
@@ -84,12 +85,21 @@
                         <h:outputText value="Site public"/>
                     </h:panelGroup>
                 </f:facet>
-                <rich:menuItem  value="Prévisualiser"
+                <rich:menuItem  value="Accès Front-End"
                     action="/front.seam">
                 </rich:menuItem>
-                <rich:menuItem  value="Publication"/>
+                <rich:menuItem  value="Publication"
+                	action="#{menu.affichePublication()}"/>
             </rich:dropDownMenu>
-		<rich:menuItem id="compte"  value="Mon Compte" labelClass="button" action="#{menu.afficheCompte()}" />
+            <rich:dropDownMenu>
+                <f:facet name="label"> 
+                    <h:panelGroup>
+                        <h:outputText value="Mon Compte"/>
+                    </h:panelGroup>
+                </f:facet>
+                <rich:menuItem id="compte"  value="Informations personelles" action="#{menu.afficheCompte()}" />
+            </rich:dropDownMenu>
+		
         </rich:toolBar>
     	</h:form>
 		</div>

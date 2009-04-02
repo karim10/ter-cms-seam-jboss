@@ -2,7 +2,10 @@ package composant;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.event.ValueChangeEvent;
 
@@ -31,6 +34,7 @@ import entite.File;
 import entite.IUtilisateur;
 import entite.Nouvelle;
 import entite.Rubrique;
+import entite.Utilisateur;
 
 /**
  * 
@@ -42,23 +46,23 @@ import entite.Rubrique;
 public class GestionContenu{
 
 	public GestionContenu() {}
-	
+
 	/**
 	 * Injection du composant {@link SessionUtilisateur}<br />
 	 */
 	@In
 	private SessionUtilisateur sessionUtilisateur;
-	
+
 	@DataModel
 	private List<Contenu> listContenu;
-	
+
 	@In(required=false)@Out(required=false)
 	public FileUploadBean fileUploadBean;
-	
+
 	@DataModelSelection
 	@Out(required=false)
 	private Contenu contenu;
-	
+
 	/**
 	 * <p>Crée la listContenu lors de l'initialisation du composant 
 	 * à partir du contenu de la base de donnée.</p>
@@ -66,7 +70,7 @@ public class GestionContenu{
 	@Create
 	@Factory("listContenu")
 	public void init(){
-		listContenu = DataUtil.chargeContenu();
+		listContenu = new LinkedList<Contenu>();
 	}
 
 	/**
@@ -76,7 +80,7 @@ public class GestionContenu{
 	 */
 	public void addContenu(Contenu contenu)throws HibernateException {
 		// set le contenu
-		contenu.setAuteur((IUtilisateur) sessionUtilisateur.getUtilisateur());
+		contenu.setAuteur(sessionUtilisateur.getUtilisateur());
 		contenu.setDateCreation(new Date());
 		contenu.setDateMaj(new Date());
 		contenu.setEtatContenu(EtatContenu.EN_ATTENTE);		
@@ -99,11 +103,12 @@ public class GestionContenu{
 				((Article)contenu).setFiles(fileUploadBean.getFiles());
 			}
 		}
-		*/
+		 */
 		// si Rubrique, ajoute le createur de la rubrique en tant que redacteur de celle-ci
 		if(estRubrique(contenu)){
-			((Rubrique)contenu).addRedacteur(sessionUtilisateur.getUtilisateur());
-		}//
+			((Rubrique)contenu).addGestionnaire(sessionUtilisateur.getUtilisateur());
+		}
+		//
 		// ajoute le contenu
 		getListContenu().add(contenu);
 		// mise à jour la liste du contenu enfant de la rubrique parent
@@ -148,7 +153,7 @@ public class GestionContenu{
 				HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(f);
 			}
 		}
-		*/
+		 */
 		// mise à jour de la liste de contenu 
 		for(int i=0 ;i<getListContenu().size(); i++){
 			if(getListContenu().get(i).getId_contenu() == contenu.getId_contenu()){
@@ -167,9 +172,15 @@ public class GestionContenu{
 
 	public void modifierGestionnaireRedacteur(Rubrique contenu) throws Exception{
 		modifierRedacteur(contenu);
+		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		reorganiserDroitsRedacteur(DataUtil.chargeRoot());
+		tx.commit();
 		modifierGestionnaire(contenu);
+		Transaction tx2 = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		reorganiserDroitsGestionnaire(DataUtil.chargeRoot());
+		tx2.commit();
 	}
-	
+
 	/**
 	 * 
 	 * @param contenu
@@ -190,13 +201,15 @@ public class GestionContenu{
 			tx.commit();
 		}
 		catch (Exception e) { 
-	           if (tx != null) {
-	             tx.rollback();
-	           }
-	             throw e;
-	    }
+			if (tx != null) {
+				tx.rollback();
+			}
+			throw e;
+		}
 	}
-	
+
+
+
 	/**
 	 * 
 	 * @param contenu
@@ -217,14 +230,14 @@ public class GestionContenu{
 			tx.commit();
 		}
 		catch (Exception e) { 
-	           if (tx != null) {
-	             tx.rollback();
-	           }
-	             throw e;
-	    }
+			if (tx != null) {
+				tx.rollback();
+			}
+			throw e;
+		}
 	}
-	
-	
+
+
 	/**
 	 * <p>fonction qui ajoute une liste de gestionnaire à un Contenu et tous ces enfants de facon recursive.
 	 * ATTENTION : une transaction doit etre ouverte pour avant d'appeler cette methode recursive
@@ -233,24 +246,56 @@ public class GestionContenu{
 	 * @param lu
 	 * @param contenu
 	 */
+	@SuppressWarnings("unchecked")
 	public void recursiveModifierGestionnaire(List<IUtilisateur> lu, Contenu contenu){
 		// exeption si contenu n'est pas une rubrique
 		if(!estRubrique(contenu))throw new ContenuException("Le contenu doit etre une rubrique");
 		// appel recursif si la liste des enfants du contenu contient des rubriques
+		// suppression des gestionnaires , puis sauvegarde dans la BD
+		// suppression des doublons
+		HashSet h = new HashSet(lu);
+		lu.clear();
+		lu.addAll(h);
 		for(Contenu c : ((Rubrique)contenu).getListEnfant()){
 			if(estRubrique(c)){
 				recursiveModifierGestionnaire(lu, c);
 			}
 		}
-		// ajout des gestionnaires si l'utilisateur ne l'est pas déjà, puis sauvegarde dans la BD
+		List<IUtilisateur> l = DataUtil.chargeUtilisateurs();
+		l.removeAll(lu);
+		for(IUtilisateur u : l){
+			if(((Rubrique)contenu).getListGestionnaire().contains(u)){
+				((Rubrique)contenu).getListGestionnaire().remove(u);
+			}
+			HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(contenu);
+		}
+		// ajout des rédacteurss si l'utilisateur ne l'est pas déjà, puis sauvegarde dans la BD
 		for(IUtilisateur u : lu){
-			if(!(((Rubrique)contenu).getListGestionnaire()).contains(u)){
+			if(!(((Rubrique)contenu).getListGestionnaire().contains(u))){
 				((Rubrique)contenu).getListGestionnaire().add(u);
 			}
 			HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(contenu);
 		}
 	}
-	
+
+	public void reorganiserDroitsGestionnaire(Contenu contenu) throws Exception{
+		if(!estRubrique(contenu))throw new ContenuException("Le contenu doit etre une rubrique");
+
+
+		for(Contenu c : ((Rubrique)contenu).getListEnfant()){
+			if(estRubrique(c)){
+				for(IUtilisateur u : ((Rubrique)c).getParent().getListGestionnaire()){
+					if(!(((Rubrique)c).getListGestionnaire().contains(u))){
+						((Rubrique)c).getListGestionnaire().add(u);
+					}
+				}
+				HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(c);
+				reorganiserDroitsGestionnaire(c);
+			}
+		}
+
+	}
+
 	/**
 	 * <p>fonction qui ajoute une liste de gestionnaire à un Contenu et tous ces enfants de facon recursive.
 	 * ATTENTION : une transaction doit etre ouverte pour avant d'appeler cette methode recursive
@@ -259,24 +304,55 @@ public class GestionContenu{
 	 * @param lu
 	 * @param contenu
 	 */
+	@SuppressWarnings("unchecked")
 	public void recursiveModifierRedacteur(List<IUtilisateur> lu, Contenu contenu){
 		// exeption si contenu n'est pas une rubrique
 		if(!estRubrique(contenu))throw new ContenuException("Le contenu doit etre une rubrique");
 		// appel recursif si la liste des enfants du contenu contient des rubriques
+		// suppression des gestionnaires , puis sauvegarde dans la BD
+		// suppression des doublons
+		HashSet h = new HashSet(lu);
+		lu.clear();
+		lu.addAll(h);
 		for(Contenu c : ((Rubrique)contenu).getListEnfant()){
 			if(estRubrique(c)){
 				recursiveModifierRedacteur(lu, c);
 			}
 		}
-		// ajout des gestionnaires si l'utilisateur ne l'est pas déjà, puis sauvegarde dans la BD
+		List<IUtilisateur> l = DataUtil.chargeUtilisateurs();
+		l.removeAll(lu);
+		for(IUtilisateur u : l){
+			if(((Rubrique)contenu).getListRedacteur().contains(u)){
+				((Rubrique)contenu).getListRedacteur().remove(u);
+			}
+			HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(contenu);
+		}
+		// ajout des rédacteurss si l'utilisateur ne l'est pas déjà, puis sauvegarde dans la BD
 		for(IUtilisateur u : lu){
-			if(!(((Rubrique)contenu).getListRedacteur()).contains(u)){
+			if(!(((Rubrique)contenu).getListRedacteur().contains(u))){
 				((Rubrique)contenu).getListRedacteur().add(u);
 			}
 			HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(contenu);
 		}
 	}
-	
+
+	public void reorganiserDroitsRedacteur(Contenu contenu) throws Exception{
+		if(!estRubrique(contenu))throw new ContenuException("Le contenu doit etre une rubrique");
+
+
+		for(Contenu c : ((Rubrique)contenu).getListEnfant()){
+			if(estRubrique(c)){
+				for(IUtilisateur u : ((Rubrique)c).getParent().getListRedacteur()){
+					if(!(((Rubrique)c).getListRedacteur().contains(u))){
+						((Rubrique)c).getListRedacteur().add(u);
+					}
+				}
+				HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(c);
+				reorganiserDroitsRedacteur(c);
+			}
+		}
+
+	}
 
 	/**
 	 *<p> Supprime un contenu
@@ -311,7 +387,7 @@ public class GestionContenu{
 					((Article)contenuAsupprimer).setFiles(null);
 				}
 			}
-			*/
+			 */
 			// si le contenu est une rubrique, la rubrique parent du contenu à supprimer
 			// devient la rubrique parent de tous les contenus enfants de la rubrique à supprimer
 			if(estRubrique(contenuAsupprimer)){
@@ -349,11 +425,11 @@ public class GestionContenu{
 		fileUploadBean = null;
 		return true;
 	}
-	
+
 	public void saveChange(ValueChangeEvent e){
 		modifierContenu(contenu);
 	}
-	
+
 	/**
 	 * <p>retourne la liste des rubriques dont
 	 * l'utilisateur a pas le droit d'ajout.<br />
@@ -364,13 +440,15 @@ public class GestionContenu{
 	 */
 	public List<Rubrique> rubriquesDroitAjout() throws Exception{
 		List<Rubrique> lu = new ArrayList<Rubrique>();
+		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		List<Rubrique> lr = (List<Rubrique>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Rubrique r").list();
 		// suppression des rubrique si l'utilisateur n'a pas les droits nécessaire pour l'ajout de contenu
-		for(Rubrique r : DataUtil.chargeRubrique()){
+		for(Rubrique r : lr){
 			if(droitAjouterContenu(r))lu.add(r);
 		}
 		return lu;
 	}
-	
+
 	/**
 	 * 
 	 * @param utilisateur
@@ -382,9 +460,9 @@ public class GestionContenu{
 		return (sessionUtilisateur.getUtilisateur().isAdmin() 
 				|| estGestionnaire(rubrique) 
 				|| estRedacteur(rubrique)
-				);
+		);
 	}
-	
+
 	/**
 	 * 
 	 * @param utilisateur
@@ -396,9 +474,9 @@ public class GestionContenu{
 		return (sessionUtilisateur.getUtilisateur().isAdmin() 
 				|| estGestionnaire(contenu) 
 				|| (estRedacteur(contenu) && estAuteur(contenu))
-				);
+		);
 	}
-	
+
 	/**
 	 * 
 	 * @param utilisateur
@@ -409,7 +487,7 @@ public class GestionContenu{
 	public Boolean droitSupprimerContenu(Contenu contenu) throws Exception{
 		return sessionUtilisateur.getUtilisateur().isAdmin();
 	}
-	
+
 	/**
 	 * 
 	 * @param utilisateur
@@ -420,9 +498,9 @@ public class GestionContenu{
 	public Boolean droitPublicationContenu(Contenu contenu) throws Exception{
 		return (sessionUtilisateur.getUtilisateur().isAdmin() 
 				|| estGestionnaire(contenu)
-				);
+		);
 	}
-	
+
 	/**
 	 * 
 	 * @param contenu
@@ -432,9 +510,9 @@ public class GestionContenu{
 	public Boolean droitDefinirGestionnaire(Contenu contenu) throws Exception{
 		return (sessionUtilisateur.getUtilisateur().isAdmin() 
 				|| estGestionnaire(contenu.getParent())
-				);
+		);
 	}
-	
+
 	/**
 	 * 
 	 * @param contenu
@@ -444,13 +522,13 @@ public class GestionContenu{
 	public Boolean droitDefinirRedacteur(Contenu contenu) throws Exception{
 		return (sessionUtilisateur.getUtilisateur().isAdmin() 
 				|| estGestionnaire(contenu)
-				);
+		);
 	}
-	
+
 	public Boolean estAdmin(){
 		return sessionUtilisateur.getUtilisateur().isAdmin();
 	}
-	
+
 	/**
 	 * 
 	 * @param utilisateur
@@ -459,32 +537,16 @@ public class GestionContenu{
 	 * 		   faux sinon
 	 * @throws Exception
 	 */
-	public boolean estGestionnaire(Contenu contenu) throws Exception{
-		boolean b = false;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		Transaction tx = null; 
-		try{
-			tx = session.beginTransaction();
-			if(sessionUtilisateur.getUtilisateur()==null || contenu==null)throw new Exception("");
-			if(estRubrique(contenu)){
-				if(((Rubrique)contenu).getListGestionnaire()==null)throw new Exception("");
-				b = ((Rubrique)contenu).getListGestionnaire().contains(sessionUtilisateur.getUtilisateur());
-				return b;
-			}
-			b = contenu.getParent().getListGestionnaire().contains(sessionUtilisateur.getUtilisateur());
+	public boolean estGestionnaire(Contenu contenu){ 
+		if(estRubrique(contenu)){
+			return (((Rubrique)contenu).getListGestionnaire().contains(sessionUtilisateur.getUtilisateur()));
 		}
-		catch (Exception e) { 
-	           if (tx != null) {
-	             tx.rollback();
-	             throw e;
-	           }
-	      } 
-		finally{
-			HibernateUtil.closeSession();
-		} 
-		return b;
+		if(estArticle(contenu)){
+			return contenu.getParent().getListGestionnaire().contains(sessionUtilisateur.getUtilisateur());
+		}
+		return false;
 	}
-	
+
 	/**
 	 * 
 	 * @param utilisateur
@@ -494,31 +556,12 @@ public class GestionContenu{
 	 * @throws Exception
 	 */
 	public boolean estRedacteur(Contenu contenu) throws Exception{
-		boolean b = false;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		Transaction tx = null; 
-		try{
-			tx = session.beginTransaction();
-			if(sessionUtilisateur.getUtilisateur()==null || contenu==null)throw new Exception("");
-			if(estRubrique(contenu)){
-				if(((Rubrique)contenu).getListRedacteur()==null)throw new Exception("");
-					b = ((Rubrique)contenu).getListRedacteur().contains(sessionUtilisateur.getUtilisateur());
-					return b;
-				}
-			b = contenu.getParent().getListRedacteur().contains(sessionUtilisateur.getUtilisateur());
+		if(estRubrique(contenu)){
+			return ((Rubrique)contenu).getListRedacteur().contains(sessionUtilisateur.getUtilisateur());
 		}
-		catch (Exception e) { 
-	           if (tx != null) {
-	             tx.rollback();
-	             throw e;
-	           }
-	      } 
-		finally{
-			HibernateUtil.closeSession();
-		}
-		return b;
+		return contenu.getParent().getListRedacteur().contains(sessionUtilisateur.getUtilisateur());
 	}
-	
+
 	/**
 	 * 
 	 * @param utilisateur
@@ -528,10 +571,10 @@ public class GestionContenu{
 	 * @throws Exception
 	 */
 	public boolean estAuteur(Contenu contenu) throws Exception{
-		if(sessionUtilisateur.getUtilisateur()==null || contenu==null)throw new Exception("");
+		if(sessionUtilisateur.getUtilisateur()==null || contenu==null)throw new Exception("La liste de redacteur est null");
 		return contenu.getAuteur().equals(sessionUtilisateur.getUtilisateur());
 	}
-	
+
 	/**
 	 * <p>Vérifie si le contenu est une rubrique</p>
 	 * @param contenu
@@ -540,7 +583,7 @@ public class GestionContenu{
 	public boolean estRubrique(Contenu contenu){
 		return contenu instanceof Rubrique;
 	}
-	
+
 	/**
 	 * <p>Vérifie si le contenu est une nouvelle<:p>
 	 * @param contenu
@@ -549,7 +592,7 @@ public class GestionContenu{
 	public boolean estNouvelle(Contenu contenu ){
 		return contenu instanceof Nouvelle;
 	}
-	
+
 	/**
 	 * <p>Vérifie si le contenu est un article</p>
 	 * @param contenu
@@ -558,7 +601,7 @@ public class GestionContenu{
 	public boolean estArticle(Contenu contenu){
 		return contenu instanceof Article;
 	}
-	
+
 	/**
 	 * <p>Vérifie si la rubrique est le ROOT : racine du CMS non modifiable</p>
 	 * @param contenu
@@ -567,14 +610,14 @@ public class GestionContenu{
 	public boolean estRoot(Rubrique rubrique){
 		return (rubrique.getTitreContenu().equals("ROOT"));
 	}
-	
+
 	/**
 	 * <p>Destruction du composant</p>
 	 */
 	@Destroy
 	public void destroy(){}
-	
-	
+
+
 	// GETTER SETTER
 
 	public SessionUtilisateur getSessionUtilisateur() {
@@ -584,7 +627,7 @@ public class GestionContenu{
 	public void setSessionUtilisateur(SessionUtilisateur sessionUtilisateur) {
 		this.sessionUtilisateur = sessionUtilisateur;
 	}
-	
+
 	public List<Contenu> getListContenu() {
 		return listContenu;
 	}
@@ -600,7 +643,7 @@ public class GestionContenu{
 	public void setContenu(Contenu contenu) {
 		this.contenu = contenu;
 	}
-	
+
 	public FileUploadBean getFileUploadBean() {
 		return fileUploadBean;
 	}

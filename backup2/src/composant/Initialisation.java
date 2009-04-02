@@ -15,7 +15,6 @@ import util.HibernateUtil;
 @Name("initialisation")
 public class Initialisation {
 	
-	
 	private Utilisateur admin;
 	
 	private Rubrique root;

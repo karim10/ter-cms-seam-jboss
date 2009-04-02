@@ -14,7 +14,7 @@
 </head>
 		<ui:composition>
 	  	<div align="center">	
-			<rich:panel   id="aA" headerClass="rich-panel-header-adm" >
+			<rich:panel id="aA" headerClass="rich-panel-header-adm" bodyClass="rich-panel-body-acc">
 				<f:facet name="header">
 						<h:outputText value="Ajout d'un article" />
 					</f:facet>
@@ -70,7 +70,7 @@
                 <br />
                 <a4j:commandButton styleClass="button" action="#{fileUploadBean.clearUploadData}"
                     reRender="info, upload" value="Clear Uploaded Data"
-                    rendered="#{fileUploadBean.logo.data!=null}" />
+                    rendered="#{fileUploadBean.logo.data!=null or fileUploadBean.uploadsAvailableLogo==0}" />
             </h:panelGroup>
         </h:panelGrid>
         </h:form>

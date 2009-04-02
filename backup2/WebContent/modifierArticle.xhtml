@@ -72,7 +72,7 @@
                 <br />
                 <a4j:commandButton styleClass="button" action="#{fileUploadBean.clearUploadData}"
                     reRender="info, upload" value="Suppression du logo"
-                    rendered="#{gestionContenu.contenu.logo.data!=null}" />
+                    rendered="#{gestionContenu.contenu.logo.data!=null or fileUploadBean.uploadsAvailableLogo==0}" />
             </h:panelGroup>
         </h:panelGrid>
         </h:form>

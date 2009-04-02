@@ -11,9 +11,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
+import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Scope;
 @Entity
 @Name("file")
+@Scope(ScopeType.PAGE)
 public class File implements Serializable{
 	
 	private static final long serialVersionUID = 2585929164591908297L;

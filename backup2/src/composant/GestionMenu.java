@@ -84,5 +84,9 @@ public class GestionMenu {
 		return (link.equals("contenu.xhtml"));
 	}
 	
+	public void affichePublication(){
+		link = path + "publication.xhtml";
+	}
+	
 
 }

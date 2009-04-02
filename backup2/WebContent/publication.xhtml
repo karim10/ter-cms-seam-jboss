@@ -8,15 +8,17 @@
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 			<div align="center">	
-	  				<h:outputText value="#{gestionContenu.setListContenu(datautil.chargeRubrique())}" />
+	  				<h:outputText value="#{gestionContenu.setListContenu(datautil.chargeContenuPublie())}" />
 					<rich:panel bodyClass="rich-panel-body-acc">
 						<f:facet name="header">
-							<h:outputText><h2>Gestion des rubriques</h2></h:outputText>        
+							<h:outputText><h2>Articles et Rubriques Publiés</h2></h:outputText>        
         				</f:facet>
+        						
 					<!-- affichage des rubriques  -->
 					<h:form>
-					<s:link action="#{menu.afficheAjoutRubrique()}" id="aU" value="Ajouter une nouvelle rubrique"/><br /><br />
-						<rich:dataTable value="#{listContenu}" var="lc" rows="10" reRender="scrol" >
+					<s:link action="#{menu.affichePublication()}" id="aU" value="Mise à jour de la liste"/><br /><br />
+						
+					<rich:dataTable value="#{listContenu}" var="lc" rows="15" reRender="scrol" >
 								<rich:column sortBy="#{lc.id_contenu}" >
 								<f:facet name="header">Id</f:facet>
 								<h:outputText value="#{lc.id_contenu}"/>
@@ -88,17 +90,19 @@
 									<h:outputText value="#{lc.auteur.login}"/>
 									</rich:column>
 									
-							    	<rich:column>
-									<f:facet name="header">Action De Gestion</f:facet> 
-							      		<s:link value="Définir Statut" action="#{menu.afficheChoixStatutRubrique()}" 
+							    	<rich:column rendered="#{gestionContenu.estAdmin()}">
+									<f:facet name="header">Action Gestion</f:facet> 
+							      		<s:link value="Définir gestionnaires" action="#{menu.afficheChoixStatutRubrique()}" 
 							      				rendered="#{gestionContenu.droitDefinirGestionnaire(lc) or gestionContenu.droitDefinirRedacteur(lc)}"/>
-							    		<h:outputText value="N/A" rendered="#{not gestionContenu.droitDefinirGestionnaire(lc) and not gestionContenu.droitDefinirRedacteur(lc)}"/>
-							    	
-							    	<br/>
+							    		<h:outputText value="Définir statut" rendered="#{not gestionContenu.droitDefinirGestionnaire(lc) and not gestionContenu.droitDefinirRedacteur(lc)}"/>
+							    	</rich:column>
+						
+									<rich:column rendered="#{gestionContenu.estAdmin()}">
+									<f:facet name="header">Action admin</f:facet> 
 							      		<h:commandLink value="Supprimer" action="#{gestionContenu.removeContenu(gestionContenu.contenu)}" 
-							      			rendered="#{gestionContenu.droitSupprimerContenu(lc)}"/>
-							      		<h:outputText value="Supprimer" 
-							      			rendered="#{not gestionContenu.droitSupprimerContenu(lc)}"/>
+							      			rendered="#{lc.titreContenu != 'ROOT'}"/>
+							      		<h:outputText value="Non Supprimable" 
+							      			rendered="#{lc.titreContenu == 'ROOT'}"/>
 							    	</rich:column>
 					   	 		<f:facet name="footer">
 	                			<rich:datascroller id="scrol"></rich:datascroller>

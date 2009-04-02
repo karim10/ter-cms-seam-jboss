@@ -1,11 +1,14 @@
 package composant;
 
+
 import java.util.List;
 
 import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.security.Identity;
 
 import util.DataUtil;
 
@@ -16,12 +19,10 @@ import entite.Rubrique;
 @Scope(ScopeType.SESSION)
 public class SessionUtilisateur {
 
-	@In
 	private IUtilisateur utilisateur;
-		
+	
 	public SessionUtilisateur() {}
 
-	
 	public SessionUtilisateur(IUtilisateur utilisateur) {
 		this.utilisateur = utilisateur;
 	}

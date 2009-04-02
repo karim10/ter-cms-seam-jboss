@@ -1,6 +1,5 @@
 package util;
 
-import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +8,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Transaction;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;
@@ -22,10 +20,7 @@ import composant.GestionContenu;
 import composant.GestionFrontEnd;
 import composant.GestionNews;
 
-import entite.Article;
-import entite.Contenu;
 import entite.File;
-import exception.ContenuException;
 
 @SuppressWarnings("serial")
 @Scope(ScopeType.SESSION)
@@ -54,63 +49,7 @@ public class FileUploadBean implements Serializable{
 
 	public FileUploadBean() {
 	}
-	
-//	public void drawImage (OutputStream output, Object emblemTemplateId) throws IOException{
-//
-//		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-//		File logo = (File)HibernateUtil.getSessionFactory().getCurrentSession().load(File.class,gestionContenu.getContenu().getLogo().getId_File());
-//		
-//		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(logo.getData());
-//
-//		write(byteArrayInputStream, output, 1024);
-//
-//	}
-//	
-//	public static void write(InputStream input, OutputStream output, int bufferSize) throws IOException {
-//		byte[] buffer = new byte[bufferSize] ;
-//		int readSize = -1 ;
-//		while ( (readSize = input.read(buffer)) != -1) {
-//			output.write(buffer, 0, readSize);
-//			output.flush();
-//		}
-//		try {
-//			input.close();
-//		} finally {
-//			output.close();
-//		}
-//	}
-	
-//	public void drawImageFromDB(OutputStream output, Object object) throws IOException{
-//		@SuppressWarnings("unused")
-//		Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-//		File logo = (File)HibernateUtil.getSessionFactory().getCurrentSession().load(File.class,gestionContenu.getContenu().getLogo().getId_File());
-//		
-//		java.io.File file = new java.io.File(logo.getName());
-//		byte byteArray[] = logo.getData();
-//		FileInputStream inputStream = new FileInputStream(file);
-//		while(true){
-//			try{
-//				int bytesRead = inputStream.read(byteArray);
-//				output.write(byteArray, 0, bytesRead);
-//			}finally{
-//				if (inputStream != null){
-//					inputStream.close();
-//				}
-//			}
-//		}
-//	}
 
-//	public synchronized void paint(OutputStream stream, Object object) throws IOException {
-//		if(getFiles()!=null || !getFiles().isEmpty())
-//		stream.write(getFiles().get((Integer)object).getData());
-//	}
-	
-//	public synchronized void paintBd(OutputStream stream, Object object) throws IOException {
-//		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-//		File logo = (File)HibernateUtil.getSessionFactory().getCurrentSession().load(File.class,contenu.getLogo().getId_File());
-//		if(logo!=null)
-//		stream.write(logo.getData());
-//	}
 	
 	public synchronized void paintLogoContenu(OutputStream stream, Object object) throws IOException {
 		stream.write(gestionContenu.getContenu().getLogo().getData());
@@ -136,15 +75,6 @@ public class FileUploadBean implements Serializable{
 		stream.write(gestionFrontEnd.getListContenuFront().get(((Integer)object)).getLogo().getData());
 		setUploadsAvailableLogo(0);
 	}
-	
-//	public synchronized void paintFilesContenu(OutputStream stream, Object object) throws IOException {
-//		stream.write(getFiles().get((Integer)object).getData());
-//	}
-//	
-//	public synchronized void paintFiles(OutputStream stream, Object object) throws IOException {
-//		if(!(contenu instanceof Article))throw new ContenuException("Il n'est pas possible d'afficher les fichiers d'un contenu autre qu'un article");
-//		stream.write(((Article)contenu).getFiles().get((Integer)object).getData());
-//	}
 	
 	public synchronized void listenerFiles(UploadEvent event) throws Exception {
 		UploadItem item = event.getUploadItem();

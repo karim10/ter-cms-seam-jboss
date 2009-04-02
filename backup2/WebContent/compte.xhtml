@@ -32,23 +32,20 @@
 				           <h:outputText value="Prénom" />
 				           <h:inputText id="prenom" value="#{sessionUtilisateur.utilisateur.prenom}" required="true"/>
 				           <rich:message errorClass="erreur"  for="prenom"/>
-				           
-				           <h:outputText value="Mot De Passe" />
-				           <h:inputSecret id="mdp" value="#{sessionUtilisateur.utilisateur.motDePasse}" required="true"/>
-				           <rich:message errorClass="erreur" for="mdp"/>
-				           
-				           <h:outputText value="Confirmation Mot De Passe" />
-				           <h:inputSecret id="confirmation" value="#{sessionUtilisateur.utilisateur.confirmation}" required="true"/>
-				           <rich:message errorClass="erreur" for="confirmation"/>
 				        	
 				        	<h:outputText value="e-mail" />
-				           <h:inputText id="e_mail" value="#{sessionUtilisateur.utilisateur.email}" required="true"/>
+				           <h:outputText id="e_mail" value="#{sessionUtilisateur.utilisateur.email}" required="true"/>
 				           <rich:message errorClass="erreur" for="e_mail"/>
 				           
 				           <h:outputText value="Site Web" />
 				           <h:inputText id="website" value="#{sessionUtilisateur.utilisateur.website}"/>
 				            <rich:message errorClass="erreur" for="website"/>
-				        </h:panelGrid>
+				          
+				          
+				            <h:outputText value="Mot De Passe" />
+				           <h:inputSecret id="mdp" value="#{sessionUtilisateur.utilisateur.motDePasse}" required="true"/>
+				           <rich:message errorClass="erreur" for="mdp"/>
+				        </h:panelGrid> 
 				         
 				       </s:validateAll>
 				     

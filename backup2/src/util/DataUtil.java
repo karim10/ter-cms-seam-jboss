@@ -21,7 +21,7 @@ public class DataUtil {
 
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 
-		return (List<Contenu>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Contenu c").list();
+		return (List<Contenu>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Contenu c where c.titreContenu != 'ROOT' ").list();
 
 	}
 
@@ -37,10 +37,18 @@ public class DataUtil {
 
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 
-		return (List<Rubrique>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Rubrique r ").list();
+		return (List<Rubrique>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Rubrique r where r.titreContenu != 'ROOT' ").list();
 
 	}
 
+	public static List<Rubrique> chargeRubriqueAvecRoot() throws HibernateException {
+
+		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+
+		return (List<Rubrique>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Rubrique r").list();
+
+	}
+	
 	public static List<Nouvelle> chargeNouvelle() throws HibernateException {
 
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
@@ -62,23 +70,14 @@ public class DataUtil {
 
 		return (List<IUtilisateur>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Utilisateur u where u.admin = false").list();
 	}
-
-
-	public static List<Contenu> chargeContenuMembre() throws HibernateException {
-
-		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-
-		return (List<Contenu>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Contenu u where u.").list();
-
-	}
-
-	public static List<Contenu> chargeContenuPrivee() throws HibernateException {
+	
+	public static Contenu chargeRoot() throws HibernateException {
 
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 
-		return (List<Contenu>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Contenu u where u.").list();
-
+		return (Contenu)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Rubrique r where r.titreContenu = 'ROOT' ").uniqueResult();
 	}
+
 
 	/**
 	 * Methode retournant la liste des 5 derniers contenus publiés 
@@ -117,6 +116,11 @@ public class DataUtil {
 	public static List<Contenu> chargeRubriquePublie() throws HibernateException {
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 		return (List<Contenu>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(" from Rubrique r where r.titreContenu != 'ROOT' and r.etatContenu = 'publie' order by r.id_contenu desc").list();
+	}
+	
+	public static List<Contenu> chargePublication() throws HibernateException {
+		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
+		return (List<Contenu>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(" from Contenu c where c.titreContenu != 'ROOT' and c.etatContenu = 'publie' order by r.id_contenu desc").list();
 	}
 	
 	

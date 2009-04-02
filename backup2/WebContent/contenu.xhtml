@@ -23,12 +23,6 @@
 					</h:commandLink>	 
 			    </td>
 			    <td class="adminPanel">
-			    	<h:commandLink action="#{menu.afficheAjoutNouvelle()}" id="out2">
-			    		<img src="images/accueil-admin/nouvelle.png" /><br/>
-			    		<span><h:outputText value="Ajouter une Nouvelle" /></span>
-			    	</h:commandLink>
-			    </td>
-			    <td class="adminPanel">
 			    	<h:commandLink action="#{menu.afficheAjoutRubrique()}" >
 			    		<img src="images/accueil-admin/rubrique.png" /><br/>
 			    		<span><h:outputText value="Ajouter une Rubrique" /></span>
@@ -63,16 +57,19 @@
 			    		<span><h:outputText value="Gestion utilisateurs" /></span>
 			    	</h:commandLink>
 			    </td>
+			    </s:fragment>
+			    </tr>
+			 <tr>
+			 <s:fragment rendered="#{s:hasRole('admin')}">
 			    <td class="adminPanel">
 			    	<h:commandLink action="#" id="out8">
 			    		<img src="images/accueil-admin/config.png" /><br/>
 			    		<span><h:outputText value="Configuration globale" /></span>
 			    	</h:commandLink>
 			    </td>
-			    </s:fragment>
-			  </tr>
-			 <tr>
-			 <s:fragment rendered="#{s:hasRole('admin')}">
+			    
+			  
+			 
 			  <td class="adminPanel">
 			    	<h:commandLink action="#" id="out9">
 			    		<img src="images/accueil-admin/frontpage.png" /><br/>

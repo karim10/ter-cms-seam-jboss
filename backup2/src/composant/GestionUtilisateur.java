@@ -118,8 +118,16 @@ public class GestionUtilisateur{
 		if(utilisateur!=null){
 			Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 			IUtilisateur u = (Utilisateur)HibernateUtil.getSessionFactory().getCurrentSession().load(Utilisateur.class,id);
+			if(!utilisateur.getMotDePasse().equals(u.getMotDePasse())){
+				FacesMessages.instance().addToControl("confirmation", "mot de passe erroné");
+				return;
+			}
 			u.setAccesBackend(utilisateur.isAccesBackend());
 			u.setAdmin(utilisateur.isAdmin());
+			u.setPrenom(utilisateur.getPrenom());
+			u.setLogin(utilisateur.getLogin());
+			u.setNom(utilisateur.getNom());
+			u.setCompteActive(utilisateur.isCompteActive());
 			u.setWebsite(utilisateur.getWebsite());
 			setUtilisteur(u);
 			HibernateUtil.getSessionFactory().getCurrentSession().saveOrUpdate(u);
@@ -142,7 +150,7 @@ public class GestionUtilisateur{
 	public void removeUtilisateur(IUtilisateur utilisateur) throws HibernateException, ContenuException {
 		Long id = utilisateur.getId_utilisateur();
 		HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-		IUtilisateur c = (IUtilisateur)HibernateUtil.getSessionFactory().getCurrentSession().load(IUtilisateur.class,id);
+		IUtilisateur c = (IUtilisateur)HibernateUtil.getSessionFactory().getCurrentSession().load(Utilisateur.class,id);
 		if(utilisateur!=null){
 			Transaction tx = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 			HibernateUtil.getSessionFactory().getCurrentSession().delete(c);
