@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+	    
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<ul class="nav">
+					<li class="navLink"><a href="front.seam" class="service">Accueil</a></li>
+					<li class="navLinkNoBdr">
+					<s:link  styleClass="moreLink" action="#{menuFrontEnd.afficheArticle()}" value="Articles" />
+					</li>
+					<li class="navLink">
+					<s:link styleClass="testimonial" action="#{menuFrontEnd.afficheRubrique()}" value="Rubriques"/>
+					</li>
+					<li class="navLink">
+					<s:link action="/admin.xhtml" styleClass="privee" value="administration" rendered="#{not empty sessionUtilisateur}"/>
+					<s:link action="cms.seam" styleClass="privee" value="administration" rendered="#{empty sessionUtilisateur}"/>
+					</li>
+		</ul>
+</ui:composition>				

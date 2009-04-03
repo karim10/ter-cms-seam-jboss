@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+	  xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition >
+			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+			
+				<h:outputText value=" #{gestionContenu.majContenu()}
+							#{gestionUtilisateur.initHashMap(gestionContenu.contenu)}"/>
+	  		<div align="center">	
+	  			<s:fragment rendered="#{s:hasRole('admin')}">
+					<rich:panel style="width:750px;" bodyClass="rich-panel-body-acc">
+						<f:facet name="header">
+							<h:outputText><h2>Choix des gestionnaires pour la rubrique
+							<h:outputText value=" #{gestionContenu.contenu.titreContenu}" />
+							</h2>
+							</h:outputText>        
+        				</f:facet>
+        						
+					<!-- affichage des utilisateurs  -->
+					<h:form>
+						<s:link value="Ajouter un nouveau utilisateur " action="#{menu.afficheAjoutUtilisateur()}"/><br /><br />
+						<rich:dataTable value="#{listUtilisateur}" var="lu" rows="10" reRender="scrol">
+						  	<h:messages globalOnly="true" styleClass="erreur"/>
+						  	<!-- affichage de l'identifiant  -->			
+							<rich:column sortBy="#{lu.id_utilisateur}" >
+								<f:facet name="header">Id</f:facet>
+								<h:outputText value="#{lu.id_utilisateur}" />
+							</rich:column>
+							
+							<!-- affichage du login  -->
+							<rich:column sortBy="#{lu.login}" >
+								<f:facet name="header">Login</f:facet>
+								<s:link  action="#{menu.afficheModifierUtilisateur}">
+								<h:outputText value="#{lu.login}" />
+								</s:link>
+							</rich:column>
+							
+							<!-- affichage du prenom  -->
+							<rich:column sortBy="#{lu.prenom}">
+								<f:facet name="header">Prénom</f:facet>
+								<h:outputText value="#{lu.prenom}" />
+							</rich:column>
+						
+							<!-- affichage du nom  -->
+							<rich:column sortBy="#{lu.nom}">
+						 		<f:facet name="header">Nom</f:facet>
+						  		<h:outputText value="#{lu.nom}"/>
+							</rich:column>
+							
+							
+							<rich:column>
+							<f:facet name="header">Gestionnaire</f:facet>
+							<h:selectOneRadio value="#{gestionUtilisateur.selectGestionnaire[lu.id_utilisateur]}" >
+									<f:selectItem itemValue="#{true}" itemLabel="oui"/>
+									<f:selectItem itemValue="#{false}" itemLabel="non"/>
+								</h:selectOneRadio>
+								</rich:column>
+							
+							<rich:column>
+							<f:facet name="header">Rédacteur</f:facet>
+								<h:selectOneRadio value="#{gestionUtilisateur.selectRedacteur[lu.id_utilisateur]}" >
+									<f:selectItem itemValue="#{true}" itemLabel="oui" />
+									<f:selectItem itemValue="#{false}" itemLabel="non" />
+								</h:selectOneRadio>
+							</rich:column>
+							
+							 <f:facet name="footer">
+	                			<rich:datascroller id="scrol"></rich:datascroller>
+	            			</f:facet>
+						</rich:dataTable>
+						<h:commandButton type="submit" styleClass="button" value="Valider" action="#{gestionUtilisateur.getSelectUtilisateur(gestionContenu.contenu)}"/>
+						<s:button value="retour"  styleClass="button" action="#{menu.afficheGestionRubrique()}"/>
+					</h:form>	
+					</rich:panel>
+				</s:fragment>
+				
+		   
+		 </div>
+	</ui:composition>
+			
+</html>

@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core">
+	
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		
+		<h:form id="inscrire" ajaxSubmit="true" reRender="login,nom,prenom,mdp,confirmation,e_mail,website">
+   					<s:validateAll>
+   					<rich:panel style="width:500px;" bodyClass="rich-panel-body-acc" headerClass="rich-panel-header-auth">
+   					<h:messages globalOnly="true" styleClass="erreur"/>
+   						
+   						<f:facet name="header">
+       					<h:outputText value="Inscription d'un nouveau utilisateur" />
+    					</f:facet>
+				       	<p><span><i>Après votre inscription vous n'aurez accès à la partie privée qu'après validation de votre compte par un administrateur.</i></span></p>	
+				       	<h:panelGrid columns="3">
+				       
+				           <h:outputText value="Login" />
+				           <h:inputText id="login" value="#{utilisateur.login}" required="true"/>
+				          
+				           <rich:message errorClass="erreur" for="login"/>
+				        
+				        	<h:outputText value="Nom" />
+				           <h:inputText id="nom" value="#{utilisateur.nom}" required="true"/>
+				           
+				           <rich:message errorClass="erreur"  for="nom"/>
+				           
+				           <h:outputText value="Prenom" />
+				           <h:inputText id="prénom" value="#{utilisateur.prenom}" required="true"/>
+				          
+				           <rich:message errorClass="erreur"  for="prenom"/>
+				           
+				           <h:outputText value="Mot De Passe" />
+				           <h:inputSecret id="mdp" value="#{utilisateur.motDePasse}" required="true"/>
+				          
+				           <rich:message errorClass="erreur" for="mdp"/>
+				           
+				           <h:outputText value="Confirmation Mot De Passe" />
+				           <h:inputSecret id="confirmation" value="#{utilisateur.confirmation}" required="true"/>
+				          
+				           <rich:message errorClass="erreur" for="confirmation"/>
+				        	
+				        	<h:outputText value="e-mail" />
+				           <h:inputText id="e_mail" value="#{utilisateur.email}" required="true"/>
+				          
+				           <rich:message errorClass="erreur" for="e_mail"/>
+				           
+				           <h:outputText value="Site Web" />
+				           <h:inputText id="website" value="#{utilisateur.website}" />
+				            <rich:message errorClass="erreur" for="website"/>
+				            
+				            <h:commandButton type="submit" class="button" value="Valider" action="#{gestionUtilisateur.inscription(utilisateur)}"/> <br class="spacer" />
+          		   			<s:button value="retour"  styleClass="button" action="/cms.seam"/>
+				        </h:panelGrid>
+     		</rich:panel>
+     
+     </s:validateAll>
+   </h:form>
+  </ui:composition>
