@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+	  xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition >
+			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />	
+	  		<div align="center">	
+	  			
+					<rich:panel style="width:750px;" bodyClass="rich-panel-body-acc">
+						<f:facet name="header">
+							<h:outputText><h2>Choix des gestionnaires et rédacteurs pour la rubrique
+							<h:outputText value=" #{gestionContenu.contenu.titreContenu}" />
+							</h2>
+							</h:outputText>        
+        				</f:facet>
+        				<s:fragment rendered="#{not gestionContenu.droitDefinirRedacteur(lc) and not gestionContenu.droitDefinirGestionnaire(lc)}">
+        					<h:outputText value="Vous n'avez pas les droits nécessaires" />
+        				</s:fragment>
+        				<s:fragment rendered="#{gestionContenu.droitDefinirRedacteur(lc) or gestionContenu.droitDefinirGestionnaire(lc)}">		
+					<!-- affichage des utilisateurs  -->
+					<h:form>
+						<s:link value="Ajouter une nouvelle rubrique" action="#{menu.afficheAjoutRubrique()}"/><br /><br />
+									<s:fragment rendered="#{gestionContenu.droitDefinirRedacteur(lc)}">
+									<rich:panel>
+									<f:facet name="header">Droit de Rédacteur</f:facet>
+									<h:panelGrid columns="2">
+			    	       			<rich:pickList value="#{gestionContenu.contenu.listRedacteur}">
+			    	       				<s:selectItems 	id="pick1"
+					  							value="#{datautil.chargeUtilisateurs()}" 
+					  							var="ctn" 
+					  							label="#{ctn.login}"
+					  							/>
+					  							<f:converter converterId="utilisateurConverter"/>
+			    	       			</rich:pickList>
+			    	       			</h:panelGrid>
+			    	       			<h:commandButton action="#{gestionContenu.modifierRedacteur(gestionContenu.contenu)}" value="Valider" styleClass="button" 
+			    	       							rendered="#{not gestionContenu.droitDefinirRedacteur(lc)}"/>
+			    	       			</rich:panel>
+			    	       			</s:fragment>
+			    	       			<s:fragment rendered="#{gestionContenu.droitDefinirGestionnaire(lc)}">
+			    	       			<rich:panel>
+			    	       			<f:facet name="header">Droit de Gestionnaire</f:facet>
+			    	       			<h:panelGrid columns="2">
+			    	       			<rich:pickList value="#{gestionContenu.contenu.listGestionnaire}">
+			    	       				<s:selectItems 	id="pick2"
+					  							value="#{datautil.chargeUtilisateurs()}" 
+					  							var="ctn" 
+					  							label="#{ctn.login}"
+					  							/>
+					  							<f:converter converterId="utilisateurConverter"/>
+			    	       			</rich:pickList>
+			    	       			</h:panelGrid>
+			    	       			<h:commandButton action="#{gestionContenu.modifierGestionnaireRedacteur(gestionContenu.contenu)}" value="Valider" styleClass="button" />
+			    	       			</rich:panel>
+			    	       			</s:fragment>
+					</h:form>
+					</s:fragment>
+					<s:button value="retour"  styleClass="button" action="#{menu.afficheGestionRubrique()}"/>	
+					</rich:panel>
+		 </div>
+	</ui:composition>
+			
+</html>

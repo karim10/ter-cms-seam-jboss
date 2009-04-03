@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core">
+	
+<ui:composition>
+			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		
+	  	
+	  	<div align="center">	
+			<rich:panel style="width:450px;" id="majU" headerClass="rich-panel-header-adm" bodyClass="rich-panel-body-acc">
+			<f:facet name="header">
+				<h:outputText value="Modification de l'utilisateur #{gestionUtilisateur.utilisateur.login} "/>
+			</f:facet>
+				     
+			   <h:form>
+			     <h:messages globalOnly="true" styleClass="erreur"/>
+			   
+			       <s:validateAll>
+			       	<h:panelGrid columns="3">
+			       		<h:outputText value="ID"/>
+			           <h:outputText id="id" value="#{gestionUtilisateur.utilisateur.id_utilisateur}" required="true" />
+			           <h:message  for="id"/>
+			           <h:outputText value="Login"/>
+			           <h:outputText id="login" value="#{gestionUtilisateur.utilisateur.login}" required="true" />
+			           <h:message  for="login"/>
+			        
+			        	<h:outputText value="Nom" />
+			           <h:outputText id="nom" value="#{gestionUtilisateur.utilisateur.nom}" required="true"/>
+			           <h:message errorClass="erreur" for="nom"/>
+			           
+			           <h:outputText value="Prénom" />
+			           <h:outputText id="prenom" value="#{gestionUtilisateur.utilisateur.prenom}" required="true"/>
+			           <h:message errorClass="erreur" for="prenom"/>
+			        	
+			        	<h:outputText value="e-mail" />
+			           <h:outputText id="e_mail" value="#{gestionUtilisateur.utilisateur.email}"/>
+			           <h:message  errorClass="erreur" for="e_mail"/>
+			           
+			           <h:outputText value="Site Web" />
+			           <h:outputText id="website" value="#{gestionUtilisateur.utilisateur.website}" />
+			           <h:message  for="website"/>
+			           
+			           <h:outputText value="Accès Back-end" />
+			           <h:selectOneRadio id="accesPrivee" value="#{gestionUtilisateur.utilisateur.accesBackend}" required="true"
+							  border="0" disabled="#{sessionUtilisateur.utilisateur.id_utilisateur==gestionUtilisateur.utilisateur.id_utilisateur}">
+							<f:selectItem id="ouiPrivee" itemLabel="oui" itemValue="true" />
+							<f:selectItem id="nonPrivee" itemLabel="non" itemValue="false" />
+							</h:selectOneRadio>
+			  
+			           <h:message  for="accesPrivee"/>
+			           
+			            <h:outputText value="Administrateur" />
+			            <h:selectOneRadio  id="admin" value="#{gestionUtilisateur.utilisateur.admin}" required="true"
+							  border="0" disabled="#{sessionUtilisateur.utilisateur.id_utilisateur==gestionUtilisateur.utilisateur.id_utilisateur}">
+							<f:selectItem id="ouiAdmin" itemLabel="oui" itemValue="true" />
+							<f:selectItem id="nonAdmin" itemLabel="non" itemValue="false" />
+							</h:selectOneRadio>
+			          
+			           <h:message  for="admin"/>
+			           
+			           <h:outputText value="Compte Activé" />
+			            <h:selectOneRadio id="active" value="#{gestionUtilisateur.utilisateur.compteActive}" required="true"
+							  border="0" disabled="#{sessionUtilisateur.utilisateur.id_utilisateur==gestionUtilisateur.utilisateur.id_utilisateur}">
+							<f:selectItem id="ouiActive" itemLabel="oui" itemValue="true" />
+							<f:selectItem id="nonActive" itemLabel="non" itemValue="false" />
+							</h:selectOneRadio>
+			          
+			           <h:message  for="active"/>
+			           
+			           </h:panelGrid>
+			        
+			         
+			       </s:validateAll>
+			     
+			     <h:commandButton type="submit" class="button" value="Valider" action="#{gestionUtilisateur.modifierUtilisateur(gestionUtilisateur.utilisateur)}"/><br/>
+			   	 <s:button value="retour"  styleClass="button" action="#{menu.afficheGestionUtilisateur()}"/>
+			   </h:form>
+			   </rich:panel>
+					  
+			  </div>
+</ui:composition>
+</html>

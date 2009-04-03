@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	
+	<h:form id="ajoutArticle" ajaxSubmit="true" reRender="login,motDePasse">
+		<s:validateAll>
+		<rich:panel style="width:500px;" bodyClass="rich-panel-body-acc" headerClass="rich-panel-header-auth">
+		<h:messages globalOnly="true" styleClass="erreur"/>
+			
+			<f:facet name="header">
+       			<h:outputText value="Connexion à l'administration" />
+    		</f:facet>
+		
+				<h:panelGrid columns="3">
+				
+         			<h:outputText value="Login" />
+         			<h:inputText id="login" value="#{identity.username}" required="true">
+         				<rich:ajaxValidator event="onblur"/>
+         			</h:inputText>
+         			<rich:message errorClass="erreur" for="login" />
+         
+        			<h:outputText value="Mot De Passe" />
+         			<h:inputSecret id="motDePasse" value="#{identity.password}" required="true">
+         				<rich:ajaxValidator event="onblur"/>
+         			</h:inputSecret>
+         			<rich:message errorClass="erreur" for="motDePasse" />
+       			
+       			</h:panelGrid>
+      		 
+			<h:commandButton id="auth" class="button" action="#{identity.login}" value="Connexion"/>
+			
+			<h:panelGrid columns="4">
+       			<h:selectBooleanCheckbox id="rememberMe" value="#{identity.rememberMe}"/>
+       			<h:outputLabel value="Se souvenir de moi" for="" /><br class="spacer" /><br class="spacer" />
+       			<s:link value="S'inscrire" action="/newUser.xhtml"/><br class="spacer" />
+       			<s:link value="Aller au site public" action="/front.xhtml"/>
+       			
+  			</h:panelGrid>
+  			<h:panelGrid columns="2">
+  			<s:link value="Init" action="#{initialisation.init()}" rendered="#{ empty datautil.chargeUtilisateurs()}"/>
+  			</h:panelGrid>
+  		
+  			<h:panelGrid columns="2">
+  				<p>
+  					Pour accéder à la partie <span> administration </span> de ce site, veuillez entrer vos <span>login</span>
+  					et <span>mot de passe</span>. Cependant, un simple <span>membre </span> n'aura pas accès.<br />
+  					Seuls les administrateurs, gestionnaires et rédacteurs ont accès.<br/>
+  					<span>Merci de votre compréhension!</span>
+  				</p>
+  				<p>
+  					<span>Auteurs :</span> Keira Mamadou, Duval Simon et Ahamada Soule.
+  				</p>
+  				
+  				<h:graphicImage value="images/accueil-admin/cad.jpg" />
+  			</h:panelGrid>
+  		
+		<h:panelGroup>
+		
+		</h:panelGroup>
+  	</rich:panel>
+  	</s:validateAll>
+  </h:form>
+</ui:composition>

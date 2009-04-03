@@ -1,0 +1,52 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+      
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		
+		<h2>
+			<h:graphicImage value="images/defaut.jpg" rendered="#{gestionFrontEnd.contenu.logo.data==null}"/>
+       				 <a4j:mediaOutput element="img" mimeType="#{gestionFrontEnd.contenu.logo.mime}" 
+                                    createContent="#{fileUploadBean.paintLogoContenuGF}" 
+                                    style="width:50px; height:50px;" cacheable="false"
+                                    rendered="#{gestionFrontEnd.contenu.logo.data!=null}">
+                                    <f:param value="#{fileUploadBean.timeStamp}" name="time"/>  
+                                </a4j:mediaOutput>
+		
+			<h:outputText value="#{gestionFrontEnd.contenu.titreContenu}" />
+			
+		</h2>
+		<s:fragment rendered="#{!gestionFrontEnd.estArticle(gestionFrontEnd.contenu) and 
+					not empty gestionFronEnd.contenu.listEnfant}">
+	 	
+		 <h4 class="displayFils">Dans la même rubrique</h4>
+		 
+		 <rich:dataList value="#{gestionFronEnd.contenu.listEnfant}" var="fils" >
+		 <s:link action="#{menuFrontEnd.afficheNew()}" value="#{fils.titreContenu}" />
+        			<i><h:outputText value="Date : #{fils.dateCreation}"/></i>
+		 </rich:dataList>
+		 </s:fragment>
+		 <p class="lftText">
+		
+		 <span>
+		 	 	<h:outputText value="#{gestionFrontEnd.contenu.description}" 
+		 			 		rendered="#{gestionFrontEnd.estArticle(gestionFrontEnd.contenu)}"/><br /><br />
+		 </span>			 		
+		 </p>
+		 <p class="lftText">
+		 <h:outputText value="#{gestionFrontEnd.contenu.texte}"
+		 		 rendered="#{gestionFrontEnd.estArticle(gestionFrontEnd.contenu)}"/><br /><br />
+		 	
+		 <span> 
+		 	<h:outputText value="Rubrique : #{gestionFrontEnd.contenu.parent.titreContenu}" /><br />
+		 </span>	 
+		 Clics : <h:outputText value="#{gestionFrontEnd.contenu.clic}" /><br />
+		 	<i>Date de création :  <h:outputText value="#{gestionFrontEnd.contenu.dateCreation}" /> 
+		 	Auteur :  <h:outputText value="#{gestionFrontEnd.contenu.auteur.login}" />
+		 	</i>
+		 </p>
+</ui:composition>
